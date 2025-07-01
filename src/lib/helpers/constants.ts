@@ -1,0 +1,1 @@
+export const REQUIRED_MAC_OS_VERSION = 26.0;

@@ -1,24 +1,29 @@
-<script lang="ts">
-    import { ModeWatcher } from "mode-watcher";
-    import "../app.css";
+<script>
+    import "../app.css"
+    import { onMount } from "svelte";
 
-    import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-    import AppSidebar from "$lib/components/app-sidebar.svelte";
-    import SiteHeader from "$lib/components/site-header.svelte";
+    import {goto} from "$app/navigation";
+
+    import { Toaster } from "$lib/components/ui/sonner";
+    import { mode, ModeWatcher } from "mode-watcher";
+    import { startContainerization } from "$lib/services/containerization/system.js";
+    import { isUnsupported } from "$lib/stores/mac-os.svelte.js";
+
+    // if (isUnsupported()) {
+    //     goto("/unsupported");
+    // }
+
+    // onMount(async () => {
+    //     await startContainerization()
+    //     await goto('/containers')
+    // })
+
 
     let { children } = $props();
 </script>
 
-<ModeWatcher defaultMode="light" track={true} defaultTheme="tangerine" />
 
-<div class="min-h-screen bg-background w-full">
-    <Sidebar.Provider
-        style="--sidebar-width: calc(var(--spacing) * 72); --header-height: calc(var(--spacing) * 12);"
-    >
-        <AppSidebar variant="inset" />
-        <Sidebar.Inset>
-            <SiteHeader />
-            {@render children()}
-        </Sidebar.Inset>
-    </Sidebar.Provider>
-</div>
+<ModeWatcher defaultMode="light" track={true} defaultTheme="tangerine" />
+<Toaster theme={mode.current} richColors={true} closeButton={true} />
+
+{@render children()}
