@@ -58,26 +58,3 @@
         </DropdownMenu.Root>
     </Sidebar.MenuItem>
 </Sidebar.Menu>
-
-<style lang="postcss">
-    @reference "tailwindcss";
-    :global(.default-stroke) {
-        @apply text-[oklch(0 0 0)] dark:text-[oklch(1 0 0)];
-    }
-
-    :global(.perpetuity-stroke) {
-        @apply text-[oklch(0.5624 0.0947 203.2755)] dark:text-[oklch(0.852 0.1269 195.0354)];
-    }
-
-    :global(.tangerine-stroke) {
-        @apply text-[oklch(0.7227 0.192 149.5793)] dark:text-[oklch(0.7729 0.1535 163.2231)];
-    }
-
-    :global(.cosmic-night-stroke) {
-        @apply text-[oklch(0.5417 0.1790 288.0332)] dark:text-[oklch(0.7162 0.1597 290.3962)];
-    }
-
-    :global(.modern-minimal-stroke) {
-        @apply text-[oklch(0.6231 0.1880 259.8145)] dark:text-[oklch(0.6231 0.1880 259.8145)];
-    }
-</style>

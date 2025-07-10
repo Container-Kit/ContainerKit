@@ -74,7 +74,7 @@
                         table.getColumn("id")?.setFilterValue(searchValue);
                     }
                 }}
-                class="pl-8"
+                class="pl-8 text-pretty"
             />
         </div>
         <div class="flex items-center space-x-2">

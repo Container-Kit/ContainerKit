@@ -1,7 +1,4 @@
 <script lang="ts" module>
-    import AudioWaveformIcon from "@lucide/svelte/icons/audio-waveform";
-    import CommandIcon from "@lucide/svelte/icons/command";
-    import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
     import Container from "@lucide/svelte/icons/container";
     import Image from "@lucide/svelte/icons/image";
     import Hammer from "@lucide/svelte/icons/hammer";
@@ -35,6 +32,16 @@
                 title: "Modern Minimal",
                 name: "modern-minimal",
             },
+            {
+                class: "text-[#a84370] dark:text-[#a3004c]",
+                title: "T3 Chat",
+                name: "t3-chat",
+            },
+            {
+                class: "text-[#3a5ba0] dark:text-[#3a5ba0]",
+                title: "Starry Night",
+                name: "starry-night",
+            }
         ],
         containers: [
             {
@@ -79,20 +86,33 @@
 
 <script lang="ts">
     import NavGroup from "./nav-group.svelte";
-    import NavUser from "./nav-user.svelte";
-    import TeamSwitcher from "../../atoms/team-switcher.svelte";
     import * as Sidebar from "$lib/components/ui/sidebar";
     import type { ComponentProps } from "svelte";
     import ThemeSwitcher from "$lib/components/atoms/theme-switcher.svelte";
     import {mode, setMode, setTheme} from "mode-watcher";
     import Moon from "@lucide/svelte/icons/moon";
     import Sun from "@lucide/svelte/icons/sun";
+    import {PressedKeys} from "runed";
 
     let {
         ref = $bindable(null),
         collapsible = "icon",
         ...restProps
     }: ComponentProps<typeof Sidebar.Root> = $props();
+
+
+    const keys = new PressedKeys();
+
+    keys.onKeys(["meta", "l"], () => {
+        handleModeChange()
+    })
+
+    data.themes.forEach((theme, index) => {
+        keys.onKeys(["meta", "t", (index+1).toString()], () => {
+            setTheme(theme.name)
+        });
+    })
+
 
     function updateTheme() {
         setMode( mode.current === 'light' ? 'dark' : 'light' );
@@ -110,17 +130,15 @@
         <Sidebar.Menu>
             <Sidebar.MenuItem>
                 <Sidebar.MenuButton
-                        class="hover:bg-transparent data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                        class="hover:bg-transparent data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group"
                         size="lg"
                 >
                     <div
-                            class="flex aspect-square size-8 items-center justify-center rounded-lg text-primary"
+                            class="flex aspect-square size-8 items-center justify-center rounded-lg bg-secondary-foreground"
                     >
-                        <img src="/logo.png" />
-<!--                        <Cat class="stroke-primary dark:fill-white"/>-->
+                        <img src="/logo.png" class="rounded-xs scale-125 transform-3d transition-all duration-500 group-hover:scale-150" />
                     </div>
-
-                    <span class="font-sour-gummy text-xl text-primary">AniHour</span>
+                    <span class="font-mono text-xl text-primary">AniHour</span>
                 </Sidebar.MenuButton>
             </Sidebar.MenuItem>
         </Sidebar.Menu>
