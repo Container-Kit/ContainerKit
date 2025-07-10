@@ -13,7 +13,7 @@
     <Sidebar.Provider
         style="--sidebar-width: calc(var(--spacing) * 60); --header-height: calc(var(--spacing) * 20);"
     >
-        <AppSidebar variant="inset" />
+        <AppSidebar variant="inset" collapsible="icon"/>
         <Sidebar.Inset>
             <SiteHeader {route} />
             <div class="flex flex-1 flex-col gap-4 p-4 pt-0">

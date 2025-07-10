@@ -23,7 +23,7 @@
 </script>
 
 
-<ModeWatcher defaultMode="light" track={true} defaultTheme="tangerine" />
-<Toaster theme={mode.current} richColors={true} closeButton={true} />
+<ModeWatcher defaultMode="light" track={true} defaultTheme="perpetuity" />
+<Toaster theme={mode.current} richColors={true} closeButton={true} position="top-right"/>
 
 {@render children()}

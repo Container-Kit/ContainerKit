@@ -1,0 +1,83 @@
+<script lang="ts">
+    import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+    import * as Sidebar from "$lib/components/ui/sidebar";
+    import ChevronsUpDownIcon from "@lucide/svelte/icons/chevrons-up-down";
+    import PlusIcon from "@lucide/svelte/icons/plus";
+    import PaintBucket from "@lucide/svelte/icons/paint-bucket";
+    import SwatchBook from "@lucide/svelte/icons/swatch-book";
+
+    let { themes, setTheme }: { themes: { name: string; class: string; title: string;}[], setTheme: (theme: string) => void } = $props();
+
+    let activeTheme = $state(themes[0]);
+</script>
+
+<Sidebar.Menu>
+    <Sidebar.MenuItem>
+        <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+                {#snippet child({ props })}
+                    <Sidebar.MenuButton
+                            {...props}
+                            size="lg"
+                            class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                    >
+                        <div
+                                class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+                        >
+                            <SwatchBook class="size-4" />
+                        </div>
+                        <div class="grid flex-1 text-left text-sm leading-tight">
+							<span class="truncate font-medium">
+								Themes
+							</span>
+                            <span class="truncate text-xs">{activeTheme.title}</span>
+                        </div>
+                        <ChevronsUpDownIcon class="ml-auto" />
+                    </Sidebar.MenuButton>
+                {/snippet}
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content
+                    class="w-(--bits-dropdown-menu-anchor-width) min-w-56 rounded-lg"
+                    align="start"
+                    side="top"
+                    sideOffset={4}
+            >
+                <DropdownMenu.Label class="text-muted-foreground text-xs">Themes</DropdownMenu.Label>
+                {#each themes as theme, index (theme.name)}
+                    <DropdownMenu.Item disabled={activeTheme.name === theme.name} onSelect={() => {activeTheme = theme; setTheme(theme.name)}} class="gap-2 p-2">
+                        <div class="flex size-6 items-center justify-center rounded-md border">
+                            <PaintBucket class={[
+                                    "size-3.5 shrink-0", theme.class
+                                ]} />
+                        </div>
+                        {theme.title}
+                        <DropdownMenu.Shortcut>⌘T{index + 1}</DropdownMenu.Shortcut>
+                    </DropdownMenu.Item>
+                {/each}
+            </DropdownMenu.Content>
+        </DropdownMenu.Root>
+    </Sidebar.MenuItem>
+</Sidebar.Menu>
+
+<style lang="postcss">
+    @reference "tailwindcss";
+    :global(.default-stroke) {
+        @apply text-[oklch(0 0 0)] dark:text-[oklch(1 0 0)];
+    }
+
+    :global(.perpetuity-stroke) {
+        @apply text-[oklch(0.5624 0.0947 203.2755)] dark:text-[oklch(0.852 0.1269 195.0354)];
+    }
+
+    :global(.tangerine-stroke) {
+        @apply text-[oklch(0.7227 0.192 149.5793)] dark:text-[oklch(0.7729 0.1535 163.2231)];
+    }
+
+    :global(.cosmic-night-stroke) {
+        @apply text-[oklch(0.5417 0.1790 288.0332)] dark:text-[oklch(0.7162 0.1597 290.3962)];
+    }
+
+    :global(.modern-minimal-stroke) {
+        @apply text-[oklch(0.6231 0.1880 259.8145)] dark:text-[oklch(0.6231 0.1880 259.8145)];
+    }
+</style>

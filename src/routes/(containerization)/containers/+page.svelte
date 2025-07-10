@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { ContainerClient } from "$lib/models/container";
-    import { Command } from "@tauri-apps/plugin-shell";
     import { onMount } from "svelte";
     import ContainerList from "../../(components)/container-list.svelte";
     import { columns } from "../../(components)/columns";
+    import {getAllContainers} from "$lib/services/containerization/containers";
 
     type ErrorLog = {
         message: string;
@@ -16,29 +16,16 @@
     let showOnlyRunningContainers = $state(false);
     let error: ErrorLog | null = $state(null);
 
-    async function getAllContainers() {
-        const output = await Command.create("container", [
-            "ls",
-            "-a",
-            "--format",
-            "json",
-        ]).execute();
+    async function getAllContainerList() {
+        const output = await getAllContainers()
 
-        if (output.code === null) {
-            error = {
-                message: "Process was terminated by a signal on Unix",
-                stderr: output.stderr,
-                stdout: output.stdout,
-            };
+        if (output.error) {
+            error = output;
             return;
         }
 
         if (!output.stdout) {
-            error = {
-                message: "No container found",
-                stderr: output.stderr,
-                stdout: output.stdout,
-            };
+            error = output;
             return;
         }
 
@@ -52,7 +39,7 @@
     }
 
     onMount(async () => {
-        await getAllContainers();
+        await getAllContainerList();
     });
 </script>
 
@@ -63,8 +50,8 @@
                 data={showOnlyRunningContainers
                     ? runningContainers
                     : allContainers}
-                columns={columns({ getAllContainers })}
-                {getAllContainers}
+                columns={columns({ getAllContainerList })}
+                getAllContainers={getAllContainerList}
                 bind:showOnlyRunningContainers
             />
         </div>

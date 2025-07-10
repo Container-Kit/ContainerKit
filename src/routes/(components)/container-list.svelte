@@ -79,6 +79,7 @@
         </div>
         <div class="flex items-center space-x-2">
             <Switch
+                disabled={!showOnlyRunningContainers && data.length === 0}
                 id="running-containers-only"
                 bind:checked={showOnlyRunningContainers}
             />

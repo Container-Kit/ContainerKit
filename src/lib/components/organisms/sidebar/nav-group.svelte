@@ -1,6 +1,7 @@
 <script lang="ts">
     import * as Sidebar from "$lib/components/ui/sidebar";
     import { page } from "$app/state";
+    import {useSidebar} from "$lib/components/ui/sidebar";
     type Props = {
         label: string;
         data: {
@@ -15,12 +16,14 @@
     let { data, label }: Props = $props();
 </script>
 
-<Sidebar.Group class="group-data-[collapsible=icon]:hidden">
+<Sidebar.Group>
     <Sidebar.GroupLabel>{label}</Sidebar.GroupLabel>
     <Sidebar.Menu>
         {#each data as item (item.name)}
             <Sidebar.MenuItem>
-                <Sidebar.MenuButton isActive={item.url === page?.url.pathname}>
+                <Sidebar.MenuButton isActive={item.url === page?.url.pathname} tooltipContent={item.name} tooltipContentProps={{
+                    "class": "bg-primary"
+                }}>
                     {#snippet child({ props })}
                         <a href={item.url} {...props}>
                             <item.icon />

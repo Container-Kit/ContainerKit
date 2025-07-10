@@ -2,6 +2,7 @@
     import CirclePlay from "@lucide/svelte/icons/circle-play";
     import CircleStop from "@lucide/svelte/icons/circle-stop";
     import Delete from "@lucide/svelte/icons/trash-2";
+    import Loader from "@lucide/svelte/icons/loader";
     import { toast } from "svelte-sonner";
 
     import type { ContainerClient } from "$lib/models/container";
@@ -17,19 +18,24 @@
     type Props = {
         status: ContainerClient["status"];
         id: string;
-        getAllContainers: () => Promise<void>;
+        getAllContainerList: () => Promise<void>;
     };
 
-    let { status, id, getAllContainers }: Props = $props();
+
+    let { status, id, getAllContainerList }: Props = $props();
+
+    let disableActions = $state(false)
+    let startingContainer = $state(false)
 
     async function handleContainerRunningState() {
+        startingContainer = disableActions = true
         const message = status === "running" ? "stopped" : "started";
         const output =
             status === "running"
                 ? await stopContainer(id)
                 : await startContainer(id);
-        console.log(output);
-        await getAllContainers();
+        await getAllContainerList();
+        startingContainer = disableActions = false
         if (output.error) {
             toast.error(output.message);
             console.error(output);
@@ -57,9 +63,12 @@
                                 ? "text-red-400 hover:bg-red-100 hover:text-red-400"
                                 : "text-green-400",
                         ]}
+                        disabled={disableActions}
                     >
                         {#if status === "running"}
                             <CircleStop />
+                        {:else if startingContainer}
+                            <Loader class="animate-spin"/>
                         {:else}
                             <CirclePlay />
                         {/if}
@@ -76,19 +85,20 @@
 
     <Tooltip.Provider delayDuration={10}>
         <Tooltip.Root>
-            <Tooltip.Trigger>
+            <Tooltip.Trigger class="bg-destructive">
                 {#snippet child({ props })}
                     <Button
                         {...props}
                         variant="ghost"
                         size="icon"
                         class="text-red-400 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-100"
+                        disabled={disableActions}
                     >
                         <Delete />
                     </Button>
                 {/snippet}
             </Tooltip.Trigger>
-            <Tooltip.Content side="right">
+            <Tooltip.Content side="right" class="bg-destructive text-foreground" arrowClasses="bg-destructive">
                 <p>Delete</p>
             </Tooltip.Content>
         </Tooltip.Root>

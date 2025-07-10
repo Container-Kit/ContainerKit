@@ -6,11 +6,11 @@ import ContainerStatus from "./container-status.svelte";
 import ContainerListActions from "./container-list-actions.svelte";
 
 type ContainerColumnProps = {
-  getAllContainers: () => Promise<void>;
+  getAllContainerList: () => Promise<void>;
 };
 
 export function columns({
-  getAllContainers,
+                          getAllContainerList,
 }: ContainerColumnProps): ColumnDef<ContainerClient>[] {
   return [
     {
@@ -37,7 +37,7 @@ export function columns({
       id: "host",
       header: "Host",
       accessorFn: (row) =>
-        `${row.configuration.hostname}.${row.configuration.dns.domain}`,
+        `${row.configuration.hostname}${(row.configuration?.dns?.domain === null || row.configuration?.dns?.domain === undefined) ? '' : `.${row.configuration.dns.domain}`}`,
     },
     {
       id: "actions",
@@ -48,7 +48,7 @@ export function columns({
         return renderComponent(ContainerListActions, {
           status,
           id,
-          getAllContainers,
+          getAllContainerList,
         });
       },
     },
