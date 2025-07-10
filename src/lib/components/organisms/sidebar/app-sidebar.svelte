@@ -84,13 +84,25 @@
     import * as Sidebar from "$lib/components/ui/sidebar";
     import type { ComponentProps } from "svelte";
     import ThemeSwitcher from "$lib/components/atoms/theme-switcher.svelte";
-    import {setTheme} from "mode-watcher";
+    import {mode, setMode, setTheme} from "mode-watcher";
+    import Moon from "@lucide/svelte/icons/moon";
+    import Sun from "@lucide/svelte/icons/sun";
 
     let {
         ref = $bindable(null),
         collapsible = "icon",
         ...restProps
     }: ComponentProps<typeof Sidebar.Root> = $props();
+
+    function updateTheme() {
+        setMode( mode.current === 'light' ? 'dark' : 'light' );
+    }
+
+    async function handleModeChange() {
+        document.documentElement.style.viewTransitionName = 'theme-transition';
+        await document.startViewTransition( updateTheme ).finished;
+        document.documentElement.style.viewTransitionName = '';
+    }
 </script>
 
 <Sidebar.Root {collapsible} {...restProps}>
@@ -118,5 +130,18 @@
     </Sidebar.Content>
     <Sidebar.Footer>
         <ThemeSwitcher themes={data.themes} {setTheme}/>
+        <Sidebar.Menu>
+            <Sidebar.MenuItem>
+                <Sidebar.MenuButton onclick={handleModeChange}>
+                    {#if mode.current === 'light'}
+                        <Moon class="h-5 w-5"/>
+                    {:else}
+                        <Sun class="h-6 w-[1.3rem]"/>
+                    {/if}
+                    <span class="sr-only">Toggle theme</span>
+                    <span>{mode.current === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+                </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+        </Sidebar.Menu>
     </Sidebar.Footer>
 </Sidebar.Root>
