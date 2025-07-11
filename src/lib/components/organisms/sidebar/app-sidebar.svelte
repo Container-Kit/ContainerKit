@@ -138,7 +138,7 @@
                     >
                         <img src="/logo.png" class="rounded-xs scale-125 transform-3d transition-all duration-500 group-hover:scale-150" />
                     </div>
-                    <span class="font-mono text-xl text-primary">AniHour</span>
+                    <span class="font-mono text-xl text-primary">ContainerKit</span>
                 </Sidebar.MenuButton>
             </Sidebar.MenuItem>
         </Sidebar.Menu>

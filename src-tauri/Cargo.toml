@@ -1,9 +1,9 @@
 [package]
-name = "container-kit"
+name = "ContainerKit"
 version = "0.1.0"
 description = "GUI for apple container"
-authors = ["you"]
-edition = "2021"
+authors = ["theetherGit"]
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

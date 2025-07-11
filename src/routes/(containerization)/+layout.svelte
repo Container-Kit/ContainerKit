@@ -11,7 +11,7 @@
 
 <div class="flex min-h-svh bg-background w-full">
     <Sidebar.Provider
-        style="--sidebar-width: calc(var(--spacing) * 60); --header-height: calc(var(--spacing) * 20);"
+        style="--sidebar-width: calc(var(--spacing) * 65); --header-height: calc(var(--spacing) * 20);"
     >
         <AppSidebar variant="inset" collapsible="icon"/>
         <Sidebar.Inset>

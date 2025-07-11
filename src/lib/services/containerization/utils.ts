@@ -14,7 +14,7 @@ export function validateCommandOutput(output: ChildProcess<string>): Output {
   if (!output.stdout) {
     return {
       error: true,
-      message: "No container found",
+      message: "Error processing stdout",
       stderr: output.stderr,
       stdout: output.stdout,
     };

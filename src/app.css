@@ -9,6 +9,7 @@
 @import "./themes/perpetuity.css";
 @import "./themes/modern-minimal.css";
 @import "./themes/t3-chat.css";
+@import "./themes/starry-night.css";
 
 @custom-variant dark (&:is(.dark *));
 

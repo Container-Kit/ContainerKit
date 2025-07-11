@@ -14,6 +14,15 @@
     import { Input } from "$lib/components/ui/input";
     import { Label } from "$lib/components/ui/label/index.js";
     import { Switch } from "$lib/components/ui/switch/index.js";
+    import {PressedKeys} from "runed";
+
+    const keys = new PressedKeys();
+    let searchInputBox: HTMLInputElement | null = $state(null);
+    let showKeyboardShortcut = $state(true)
+    keys.onKeys(["meta", "k"], () => {
+        searchInputBox?.focus()
+    })
+
     type DataTableProps<TData, TValue> = {
         columns: ColumnDef<TData, TValue>[];
         data: TData[];
@@ -63,7 +72,13 @@
             <Search
                 class="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground"
             />
+            {#if showKeyboardShortcut}
+                <kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                    <span class="text-xs tracking-wider">⌘</span>K
+                </kbd>
+            {/if}
             <Input
+                bind:ref={searchInputBox}
                 type="text"
                 placeholder="Search containers..."
                 bind:value={searchValue}
@@ -74,6 +89,8 @@
                         table.getColumn("id")?.setFilterValue(searchValue);
                     }
                 }}
+                onfocus={() => showKeyboardShortcut = false}
+                onblur={() => showKeyboardShortcut = searchValue?.length === 0}
                 class="pl-8 text-pretty"
             />
         </div>

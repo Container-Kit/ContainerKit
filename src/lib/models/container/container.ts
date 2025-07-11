@@ -1,3 +1,5 @@
+import type {ContainerImage} from "$lib/models/container/image";
+
 export type ContainerClient = {
   configuration: ContainerConfiguration;
   networks: string[]; // This seems to be a duplicate or distinct from configuration.networks
@@ -39,15 +41,6 @@ export type ContainerInitProcess = {
 export type ContainerPlatform = {
   os: string;
   architecture: string;
-};
-
-export type ContainerImage = {
-  descriptor: {
-    digest: string;
-    size: number;
-    mediaType: string;
-  };
-  reference: string;
 };
 
 export type ContainerResources = {
