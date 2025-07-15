@@ -1,13 +1,13 @@
 <script>
-    import "../app.css"
-    import { onMount } from "svelte";
+    import '../app.css';
+    import { onMount } from 'svelte';
 
-    import {goto} from "$app/navigation";
+    import { goto } from '$app/navigation';
 
-    import { Toaster } from "$lib/components/ui/sonner";
-    import { mode, ModeWatcher } from "mode-watcher";
-    import { startContainerization } from "$lib/services/containerization/system.js";
-    import { isUnsupported } from "$lib/stores/mac-os.svelte.js";
+    import { Toaster } from '$lib/components/ui/sonner';
+    import { mode, ModeWatcher } from 'mode-watcher';
+    import { startContainerization } from '$lib/services/containerization/system.js';
+    import { isUnsupported } from '$lib/stores/mac-os.svelte.js';
 
     // if (isUnsupported()) {
     //     goto("/unsupported");
@@ -18,12 +18,10 @@
     //     await goto('/containers')
     // })
 
-
     let { children } = $props();
 </script>
 
-
 <ModeWatcher defaultMode="light" track={true} defaultTheme="perpetuity" />
-<Toaster theme={mode.current} richColors={true} closeButton={true} position="top-right"/>
+<Toaster theme={mode.current} richColors={true} closeButton={true} position="top-right" />
 
 {@render children()}

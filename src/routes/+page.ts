@@ -1,7 +1,7 @@
-import {redirect} from "@sveltejs/kit";
+import { redirect } from '@sveltejs/kit';
 
-export const load = async ({url}) => {
+export const load = async ({ url }) => {
     if (url.pathname === '/') {
-        return redirect(301, '/containers')
+        return redirect(301, '/containers');
     }
-}
+};

@@ -1,9 +1,10 @@
 <script lang="ts">
-    import type { ContainerClient } from "$lib/models/container";
-    import { onMount } from "svelte";
-    import ContainerList from "../../(components)/container-list.svelte";
-    import { columns } from "../../(components)/columns";
-    import {getAllContainers} from "$lib/services/containerization/containers";
+    import type { ContainerClient } from '$lib/models/container';
+    import { onMount } from 'svelte';
+    import ContainerList from './(components)/container-list.svelte';
+    import { columns } from './(components)/columns.svelte';
+    import { getAllContainers, removeContainer } from '$lib/services/containerization/containers';
+    import { toast } from 'svelte-sonner';
 
     type ErrorLog = {
         message: string;
@@ -17,7 +18,7 @@
     let error: ErrorLog | null = $state(null);
 
     async function getAllContainerList() {
-        const output = await getAllContainers()
+        const output = await getAllContainers();
 
         if (output.error) {
             error = output;
@@ -33,9 +34,27 @@
         allContainers = containers;
         if (allContainers.length > 0) {
             runningContainers = containers.filter(
-                (container: ContainerClient) => container.status === "running",
+                (container: ContainerClient) => container.status === 'running'
             );
         }
+    }
+
+    async function deleteContainer(id: string) {
+        await getAllContainerList();
+        const isRunning = runningContainers.find((container) => container.configuration.id === id);
+        if (isRunning) {
+            return toast.error(`You can't delete a running container`);
+        }
+        const output = await removeContainer(id);
+        if (output.error) {
+            return toast.error(`Unable to delete ${id} container`);
+        }
+
+        if (!output.stdout) {
+            return toast.error(`Unable to delete ${id} container`);
+        }
+
+        return toast.success(`Successfully deleted ${id} container`);
     }
 
     onMount(async () => {
@@ -47,10 +66,8 @@
     <div class="@container/main flex flex-1 flex-col gap-2">
         <div class="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             <ContainerList
-                data={showOnlyRunningContainers
-                    ? runningContainers
-                    : allContainers}
-                columns={columns({ getAllContainerList })}
+                data={showOnlyRunningContainers ? runningContainers : allContainers}
+                columns={columns({ getAllContainerList, deleteContainer })}
                 getAllContainers={getAllContainerList}
                 bind:showOnlyRunningContainers
             />
