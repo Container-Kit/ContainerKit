@@ -30,3 +30,7 @@ export async function removeContainer(id: string): Promise<Output> {
     const output = await command.execute();
     return validateCommandOutput(output);
 }
+
+// export async function getContainerLogs(id: string): Promise<Output> {
+//     const command = Command.create('container', ['ls', id]);
+// }

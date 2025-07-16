@@ -1,10 +1,11 @@
 import type { ColumnDef } from '@tanstack/table-core';
 import type { ContainerClient } from '$lib/models/container';
-import { renderComponent } from '$lib/components/ui/data-table';
+import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
 import DataTableCheckbox from '$lib/components/atoms/data-table-checkbox.svelte';
 
 import ContainerStatus from './container-status.svelte';
 import ContainerListActions from './container-list-actions.svelte';
+import { createRawSnippet } from 'svelte';
 
 type ContainerColumnProps = {
     getAllContainerList: () => Promise<void>;
@@ -38,7 +39,16 @@ export function columns({
         {
             id: 'id',
             header: 'ID',
-            accessorFn: (row) => row.configuration.id
+            accessorFn: (row) => row.configuration.id,
+            cell: ({ row }) => {
+                const idSnippet = createRawSnippet<[string]>((getId) => {
+                    const status = getId();
+                    return {
+                        render: () => `<p class="w-full">${status}</p>`
+                    };
+                });
+                return renderSnippet(idSnippet, row.getValue('id'));
+            }
         },
         {
             id: 'status',
