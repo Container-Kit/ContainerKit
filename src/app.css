@@ -184,7 +184,7 @@
         cursor: pointer;
     }
 
-button(:disabled),
+    button(:disabled),
     [role='button'(:disabled)] {
         cursor: not-allowed;
     }

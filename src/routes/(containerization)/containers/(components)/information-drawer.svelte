@@ -7,6 +7,7 @@
     import Inspect from './container-details/inspect.svelte';
     import { tabs, type Tabs as TabsType } from './container-details/utils';
     import type { Component } from 'svelte';
+    import { ScrollArea } from '$lib/components/ui/scroll-area';
 
     type Props = {
         open: boolean;
@@ -21,10 +22,13 @@
         logs: Logs,
         inspect: Inspect
     };
+
+    let drawerHeader: HTMLDivElement | null = $state(null);
+    let tabList: HTMLDivElement | null = $state(null);
 </script>
 
 <Drawer.Root bind:open direction="right">
-    <Drawer.Content class="min-w-[66%] rounded-lg h-full">
+    <Drawer.Content class="min-w-[66%] @container/drawer rounded-lg h-full">
         <Drawer.Header>
             <Drawer.Title class="flex flex-row items-center gap-x-2">
                 <Container />
@@ -39,9 +43,11 @@
                 {/each}
             </Tabs.List>
             {#if open}
-                <Tabs.Content value={activeTab} class="h-[80vh] w-full">
+                <Tabs.Content value={activeTab} class="w-full h-[120vh] p-2">
                     {@const ActiveTabComponent = componentMap[activeTab]}
-                    <ActiveTabComponent {id} />
+                    <ScrollArea class="w-full rounded-3xl h-5/6 pr-3" orientation="vertical">
+                        <ActiveTabComponent {id} />
+                    </ScrollArea>
                 </Tabs.Content>
             {/if}
         </Tabs.Root>
