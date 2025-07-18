@@ -1,4 +1,115 @@
-<script lang="ts" generics="TData, TValue" ✂prettier:content✂="CiAgICBpbXBvcnQgewogICAgICAgIHR5cGUgQ29sdW1uRGVmLAogICAgICAgIHR5cGUgQ29sdW1uRmlsdGVyc1N0YXRlLAogICAgICAgIHR5cGUgUm93U2VsZWN0aW9uU3RhdGUsCiAgICAgICAgdHlwZSBQYWdpbmF0aW9uU3RhdGUsCiAgICAgICAgdHlwZSBTb3J0aW5nU3RhdGUsCiAgICAgICAgZ2V0Q29yZVJvd01vZGVsLAogICAgICAgIGdldEZpbHRlcmVkUm93TW9kZWwsCiAgICAgICAgZ2V0UGFnaW5hdGlvblJvd01vZGVsCiAgICB9IGZyb20gJ0B0YW5zdGFjay90YWJsZS1jb3JlJzsKICAgIGltcG9ydCB7IGFuaW1hdGUsIHN0YWdnZXIgfSBmcm9tICdtb3Rpb24nOwogICAgaW1wb3J0IHsgY3JlYXRlU3ZlbHRlVGFibGUsIEZsZXhSZW5kZXIgfSBmcm9tICckbGliL2NvbXBvbmVudHMvdWkvZGF0YS10YWJsZSc7CiAgICBpbXBvcnQgKiBhcyBUYWJsZSBmcm9tICckbGliL2NvbXBvbmVudHMvdWkvdGFibGUnOwogICAgaW1wb3J0IHsgSW5wdXQgfSBmcm9tICckbGliL2NvbXBvbmVudHMvdWkvaW5wdXQnOwogICAgaW1wb3J0IHsgTGFiZWwgfSBmcm9tICckbGliL2NvbXBvbmVudHMvdWkvbGFiZWwnOwogICAgaW1wb3J0IHsgU3dpdGNoIH0gZnJvbSAnJGxpYi9jb21wb25lbnRzL3VpL3N3aXRjaCc7CiAgICBpbXBvcnQgeyBQcmVzc2VkS2V5cyB9IGZyb20gJ3J1bmVkJzsKICAgIGltcG9ydCB7IEJ1dHRvbiB9IGZyb20gJyRsaWIvY29tcG9uZW50cy91aS9idXR0b24nOwogICAgaW1wb3J0IFJlZnJlc2ggZnJvbSAnQGx1Y2lkZS9zdmVsdGUvaWNvbnMvcm90YXRlLWNjdyc7CiAgICBpbXBvcnQgU2VhcmNoIGZyb20gJ0BsdWNpZGUvc3ZlbHRlL2ljb25zL3NlYXJjaCc7CiAgICBpbXBvcnQgeyBvbk1vdW50IH0gZnJvbSAnc3ZlbHRlJzsKCiAgICB0eXBlIERhdGFUYWJsZVByb3BzPFREYXRhLCBUVmFsdWU+ID0gewogICAgICAgIGNvbHVtbnM6IENvbHVtbkRlZjxURGF0YSwgVFZhbHVlPltdOwogICAgICAgIGRhdGE6IFREYXRhW107CiAgICB9OwoKICAgIHR5cGUgUHJvcHMgPSB7CiAgICAgICAgc2hvd09ubHlSdW5uaW5nQ29udGFpbmVyczogYm9vbGVhbjsKICAgICAgICBnZXRBbGxDb250YWluZXJzOiAoKSA9PiBQcm9taXNlPHZvaWQ+OwogICAgfTsKCiAgICBsZXQgewogICAgICAgIGRhdGEsCiAgICAgICAgY29sdW1ucywKICAgICAgICBzaG93T25seVJ1bm5pbmdDb250YWluZXJzID0gJGJpbmRhYmxlKCksCiAgICAgICAgZ2V0QWxsQ29udGFpbmVycwogICAgfTogRGF0YVRhYmxlUHJvcHM8VERhdGEsIFRWYWx1ZT4gJiBQcm9wcyA9ICRwcm9wcygpOwoKICAgIGxldCBzZWFyY2hJbnB1dEJveDogSFRNTElucHV0RWxlbWVudCB8IG51bGwgPSAkc3RhdGUobnVsbCk7CiAgICBsZXQgc2hvd0tleWJvYXJkU2hvcnRjdXQgPSAkc3RhdGUodHJ1ZSk7CgogICAgY29uc3Qga2V5cyA9IG5ldyBQcmVzc2VkS2V5cygpOwogICAga2V5cy5vbktleXMoWydtZXRhJywgJ2snXSwgKCkgPT4gewogICAgICAgIHNlYXJjaElucHV0Qm94Py5mb2N1cygpOwogICAgfSk7CgogICAgbGV0IGNvbHVtbkZpbHRlcnMgPSAkc3RhdGU8Q29sdW1uRmlsdGVyc1N0YXRlPihbXSk7CiAgICBsZXQgcm93U2VsZWN0aW9uID0gJHN0YXRlPFJvd1NlbGVjdGlvblN0YXRlPih7fSk7CiAgICBsZXQgcGFnaW5hdGlvbiA9ICRzdGF0ZTxQYWdpbmF0aW9uU3RhdGU+KHsgcGFnZUluZGV4OiAwLCBwYWdlU2l6ZTogMTAgfSk7CiAgICBsZXQgc29ydGluZyA9ICRzdGF0ZTxTb3J0aW5nU3RhdGU+KFtdKTsKCiAgICBjb25zdCB0YWJsZSA9IGNyZWF0ZVN2ZWx0ZVRhYmxlKHsKICAgICAgICBnZXQgZGF0YSgpIHsKICAgICAgICAgICAgcmV0dXJuIGRhdGE7CiAgICAgICAgfSwKICAgICAgICBjb2x1bW5zLAogICAgICAgIGdldENvcmVSb3dNb2RlbDogZ2V0Q29yZVJvd01vZGVsKCksCiAgICAgICAgZ2V0UGFnaW5hdGlvblJvd01vZGVsOiBnZXRQYWdpbmF0aW9uUm93TW9kZWwoKSwKICAgICAgICBnZXRGaWx0ZXJlZFJvd01vZGVsOiBnZXRGaWx0ZXJlZFJvd01vZGVsKCksCiAgICAgICAgc3RhdGU6IHsKICAgICAgICAgICAgZ2V0IGNvbHVtbkZpbHRlcnMoKSB7CiAgICAgICAgICAgICAgICByZXR1cm4gY29sdW1uRmlsdGVyczsKICAgICAgICAgICAgfSwKICAgICAgICAgICAgZ2V0IHBhZ2luYXRpb24oKSB7CiAgICAgICAgICAgICAgICByZXR1cm4gcGFnaW5hdGlvbjsKICAgICAgICAgICAgfSwKICAgICAgICAgICAgZ2V0IHNvcnRpbmcoKSB7CiAgICAgICAgICAgICAgICByZXR1cm4gc29ydGluZzsKICAgICAgICAgICAgfSwKICAgICAgICAgICAgZ2V0IHJvd1NlbGVjdGlvbigpIHsKICAgICAgICAgICAgICAgIHJldHVybiByb3dTZWxlY3Rpb247CiAgICAgICAgICAgIH0KICAgICAgICB9LAogICAgICAgIG9uQ29sdW1uRmlsdGVyc0NoYW5nZTogKHVwZGF0ZXIpID0+IHsKICAgICAgICAgICAgaWYgKHR5cGVvZiB1cGRhdGVyID09PSAnZnVuY3Rpb24nKSB7CiAgICAgICAgICAgICAgICBjb2x1bW5GaWx0ZXJzID0gdXBkYXRlcihjb2x1bW5GaWx0ZXJzKTsKICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgIGNvbHVtbkZpbHRlcnMgPSB1cGRhdGVyOwogICAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICBvblBhZ2luYXRpb25DaGFuZ2U6ICh1cGRhdGVyKSA9PiB7CiAgICAgICAgICAgIGlmICh0eXBlb2YgdXBkYXRlciA9PT0gJ2Z1bmN0aW9uJykgewogICAgICAgICAgICAgICAgcGFnaW5hdGlvbiA9IHVwZGF0ZXIocGFnaW5hdGlvbik7CiAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgICAgICBwYWdpbmF0aW9uID0gdXBkYXRlcjsKICAgICAgICAgICAgfQogICAgICAgIH0sCiAgICAgICAgb25Sb3dTZWxlY3Rpb25DaGFuZ2U6ICh1cGRhdGVyKSA9PiB7CiAgICAgICAgICAgIGlmICh0eXBlb2YgdXBkYXRlciA9PT0gJ2Z1bmN0aW9uJykgewogICAgICAgICAgICAgICAgcm93U2VsZWN0aW9uID0gdXBkYXRlcihyb3dTZWxlY3Rpb24pOwogICAgICAgICAgICB9IGVsc2UgewogICAgICAgICAgICAgICAgcm93U2VsZWN0aW9uID0gdXBkYXRlcjsKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0pOwoKICAgIGxldCBzZWFyY2hWYWx1ZSA9ICRzdGF0ZSgodGFibGUuZ2V0Q29sdW1uKCdpZCcpPy5nZXRGaWx0ZXJWYWx1ZSgpIGFzIHN0cmluZykgPz8gJycpOwoKICAgICRlZmZlY3QoKCkgPT4gewogICAgICAgIGlmIChkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCcudGFibGUtYW5pbWF0ZScpLmxlbmd0aCA9PT0gMCkgcmV0dXJuOwogICAgICAgIGFuaW1hdGUoCiAgICAgICAgICAgICd0ci50YWJsZS1hbmltYXRlJywKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgb3BhY2l0eTogWzAsIDFdLAogICAgICAgICAgICAgICAgdHJhbnNsYXRlWTogWy01MCwgMF0KICAgICAgICAgICAgfSwKICAgICAgICAgICAge30KICAgICAgICApOwogICAgfSk7Cg==">{}</script>
+<script lang="ts" generics="TData, TValue">
+    import {
+        type ColumnDef,
+        type ColumnFiltersState,
+        type RowSelectionState,
+        type PaginationState,
+        type SortingState,
+        getCoreRowModel,
+        getFilteredRowModel,
+        getPaginationRowModel
+    } from '@tanstack/table-core';
+    import { animate, stagger } from 'motion';
+    import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
+    import * as Table from '$lib/components/ui/table';
+    import { Input } from '$lib/components/ui/input';
+    import { Label } from '$lib/components/ui/label';
+    import { Switch } from '$lib/components/ui/switch';
+    import { PressedKeys } from 'runed';
+    import { Button } from '$lib/components/ui/button';
+    import Refresh from '@lucide/svelte/icons/rotate-ccw';
+    import Search from '@lucide/svelte/icons/search';
+    import { onMount } from 'svelte';
+
+    type DataTableProps<TData, TValue> = {
+        columns: ColumnDef<TData, TValue>[];
+        data: TData[];
+    };
+
+    type Props = {
+        showOnlyRunningContainers: boolean;
+        getAllContainers: () => Promise<void>;
+    };
+
+    let {
+        data,
+        columns,
+        showOnlyRunningContainers = $bindable(),
+        getAllContainers
+    }: DataTableProps<TData, TValue> & Props = $props();
+
+    let searchInputBox: HTMLInputElement | null = $state(null);
+    let showKeyboardShortcut = $state(true);
+
+    const keys = new PressedKeys();
+    keys.onKeys(['meta', 'k'], () => {
+        searchInputBox?.focus();
+    });
+
+    let columnFilters = $state<ColumnFiltersState>([]);
+    let rowSelection = $state<RowSelectionState>({});
+    let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
+    let sorting = $state<SortingState>([]);
+
+    const table = createSvelteTable({
+        get data() {
+            return data;
+        },
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        state: {
+            get columnFilters() {
+                return columnFilters;
+            },
+            get pagination() {
+                return pagination;
+            },
+            get sorting() {
+                return sorting;
+            },
+            get rowSelection() {
+                return rowSelection;
+            }
+        },
+        onColumnFiltersChange: (updater) => {
+            if (typeof updater === 'function') {
+                columnFilters = updater(columnFilters);
+            } else {
+                columnFilters = updater;
+            }
+        },
+        onPaginationChange: (updater) => {
+            if (typeof updater === 'function') {
+                pagination = updater(pagination);
+            } else {
+                pagination = updater;
+            }
+        },
+        onRowSelectionChange: (updater) => {
+            if (typeof updater === 'function') {
+                rowSelection = updater(rowSelection);
+            } else {
+                rowSelection = updater;
+            }
+        }
+    });
+
+    let searchValue = $state((table.getColumn('id')?.getFilterValue() as string) ?? '');
+
+    $effect(() => {
+        if (document.querySelectorAll('.table-animate').length === 0) return;
+        animate(
+            'tr.table-animate',
+            {
+                opacity: [0, 1],
+                translateY: [-50, 0]
+            },
+            {}
+        );
+    });
+</script>
 
 <div class="space-y-4">
     <div class="flex items-center space-x-2">

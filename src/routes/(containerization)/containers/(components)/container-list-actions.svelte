@@ -1,4 +1,59 @@
-<script lang="ts" ✂prettier:content✂="CiAgICBpbXBvcnQgQ2lyY2xlUGxheSBmcm9tICdAbHVjaWRlL3N2ZWx0ZS9pY29ucy9jaXJjbGUtcGxheSc7CiAgICBpbXBvcnQgQ2lyY2xlU3RvcCBmcm9tICdAbHVjaWRlL3N2ZWx0ZS9pY29ucy9jaXJjbGUtc3RvcCc7CiAgICBpbXBvcnQgRGVsZXRlIGZyb20gJ0BsdWNpZGUvc3ZlbHRlL2ljb25zL3RyYXNoLTInOwogICAgaW1wb3J0IExvYWRlciBmcm9tICdAbHVjaWRlL3N2ZWx0ZS9pY29ucy9sb2FkZXInOwogICAgaW1wb3J0IEluZm9ybWF0aW9uIGZyb20gJ0BsdWNpZGUvc3ZlbHRlL2ljb25zL3NsaWRlcnMtaG9yaXpvbnRhbCc7CiAgICBpbXBvcnQgeyB0b2FzdCB9IGZyb20gJ3N2ZWx0ZS1zb25uZXInOwogICAgaW1wb3J0IHR5cGUgeyBDb250YWluZXJDbGllbnQgfSBmcm9tICckbGliL21vZGVscy9jb250YWluZXInOwoKICAgIGltcG9ydCB7IEJ1dHRvbiB9IGZyb20gJyRsaWIvY29tcG9uZW50cy91aS9idXR0b24nOwogICAgaW1wb3J0ICogYXMgVG9vbHRpcCBmcm9tICckbGliL2NvbXBvbmVudHMvdWkvdG9vbHRpcCc7CiAgICBpbXBvcnQgeyBTZXBhcmF0b3IgfSBmcm9tICckbGliL2NvbXBvbmVudHMvdWkvc2VwYXJhdG9yJzsKICAgIGltcG9ydCB7IHN0YXJ0Q29udGFpbmVyLCBzdG9wQ29udGFpbmVyIH0gZnJvbSAnJGxpYi9zZXJ2aWNlcy9jb250YWluZXJpemF0aW9uL2NvbnRhaW5lcnMnOwogICAgaW1wb3J0IERlbGV0ZUNvbnRhaW5lckRpYWxvZyBmcm9tICcuL2RlbGV0ZS1jb250YWluZXItZGlhbG9nLnN2ZWx0ZSc7CiAgICBpbXBvcnQgSW5mb3JtYXRpb25EcmF3ZXIgZnJvbSAnLi9pbmZvcm1hdGlvbi1kcmF3ZXIuc3ZlbHRlJzsKCiAgICB0eXBlIFByb3BzID0gewogICAgICAgIHN0YXR1czogQ29udGFpbmVyQ2xpZW50WydzdGF0dXMnXTsKICAgICAgICBpZDogc3RyaW5nOwogICAgICAgIGdldEFsbENvbnRhaW5lckxpc3Q6ICgpID0+IFByb21pc2U8dm9pZD47CiAgICAgICAgZGVsZXRlQ29udGFpbmVyOiAoaWQ6IHN0cmluZykgPT4gUHJvbWlzZTx2b2lkPjsKICAgIH07CgogICAgbGV0IHsgc3RhdHVzLCBpZCwgZ2V0QWxsQ29udGFpbmVyTGlzdCwgZGVsZXRlQ29udGFpbmVyIH06IFByb3BzID0gJHByb3BzKCk7CgogICAgbGV0IGRpc2FibGVBY3Rpb25zID0gJHN0YXRlKGZhbHNlKTsKICAgIGxldCBzdGFydGluZ0NvbnRhaW5lciA9ICRzdGF0ZShmYWxzZSk7CiAgICBsZXQgc2hvd0RlbGV0ZURpYWxvZyA9ICRzdGF0ZShmYWxzZSk7CiAgICBsZXQgc2hvd0luZm9ybWF0aW9uRHJhd2VyID0gJHN0YXRlKGZhbHNlKTsKCiAgICBhc3luYyBmdW5jdGlvbiBoYW5kbGVDb250YWluZXJSdW5uaW5nU3RhdGUoKSB7CiAgICAgICAgc3RhcnRpbmdDb250YWluZXIgPSBkaXNhYmxlQWN0aW9ucyA9IHRydWU7CiAgICAgICAgY29uc3QgbWVzc2FnZSA9IHN0YXR1cyA9PT0gJ3J1bm5pbmcnID8gJ3N0b3BwZWQnIDogJ3N0YXJ0ZWQnOwogICAgICAgIGNvbnN0IG91dHB1dCA9IHN0YXR1cyA9PT0gJ3J1bm5pbmcnID8gYXdhaXQgc3RvcENvbnRhaW5lcihpZCkgOiBhd2FpdCBzdGFydENvbnRhaW5lcihpZCk7CiAgICAgICAgYXdhaXQgZ2V0QWxsQ29udGFpbmVyTGlzdCgpOwogICAgICAgIHN0YXJ0aW5nQ29udGFpbmVyID0gZGlzYWJsZUFjdGlvbnMgPSBmYWxzZTsKICAgICAgICBpZiAob3V0cHV0LmVycm9yKSB7CiAgICAgICAgICAgIHRvYXN0LmVycm9yKG91dHB1dC5tZXNzYWdlKTsKICAgICAgICAgICAgY29uc29sZS5lcnJvcihvdXRwdXQpOwogICAgICAgICAgICByZXR1cm47CiAgICAgICAgfQoKICAgICAgICBpZiAob3V0cHV0LnN0ZG91dCAmJiAhb3V0cHV0LmVycm9yKSB7CiAgICAgICAgICAgIHRvYXN0LnN1Y2Nlc3MoYENvbnRhaW5lciAke291dHB1dC5zdGRvdXR9ICR7bWVzc2FnZX0gc3VjY2Vzc2Z1bGx5YCk7CiAgICAgICAgfQogICAgfQoKICAgIGZ1bmN0aW9uIGhhbmRsZURlbGV0ZUNvbnRhaW5lcigpIHsKICAgICAgICBkZWxldGVDb250YWluZXIoaWQpOwogICAgICAgIHNob3dEZWxldGVEaWFsb2cgPSBmYWxzZTsKICAgIH0KCiAgICBmdW5jdGlvbiBoYW5kbGVTaG93SW5mb3JtYXRpb25EcmF3ZXIoKSB7CiAgICAgICAgc2hvd0luZm9ybWF0aW9uRHJhd2VyID0gdHJ1ZTsKICAgIH0K">{}</script>
+<script lang="ts">
+    import CirclePlay from '@lucide/svelte/icons/circle-play';
+    import CircleStop from '@lucide/svelte/icons/circle-stop';
+    import Delete from '@lucide/svelte/icons/trash-2';
+    import Loader from '@lucide/svelte/icons/loader';
+    import Information from '@lucide/svelte/icons/sliders-horizontal';
+    import { toast } from 'svelte-sonner';
+    import type { ContainerClient } from '$lib/models/container';
+
+    import { Button } from '$lib/components/ui/button';
+    import * as Tooltip from '$lib/components/ui/tooltip';
+    import { Separator } from '$lib/components/ui/separator';
+    import { startContainer, stopContainer } from '$lib/services/containerization/containers';
+    import DeleteContainerDialog from './delete-container-dialog.svelte';
+    import InformationDrawer from './information-drawer.svelte';
+
+    type Props = {
+        status: ContainerClient['status'];
+        id: string;
+        getAllContainerList: () => Promise<void>;
+        deleteContainer: (id: string) => Promise<void>;
+    };
+
+    let { status, id, getAllContainerList, deleteContainer }: Props = $props();
+
+    let disableActions = $state(false);
+    let startingContainer = $state(false);
+    let showDeleteDialog = $state(false);
+    let showInformationDrawer = $state(false);
+
+    async function handleContainerRunningState() {
+        startingContainer = disableActions = true;
+        const message = status === 'running' ? 'stopped' : 'started';
+        const output = status === 'running' ? await stopContainer(id) : await startContainer(id);
+        await getAllContainerList();
+        startingContainer = disableActions = false;
+        if (output.error) {
+            toast.error(output.message);
+            console.error(output);
+            return;
+        }
+
+        if (output.stdout && !output.error) {
+            toast.success(`Container ${output.stdout} ${message} successfully`);
+        }
+    }
+
+    function handleDeleteContainer() {
+        deleteContainer(id);
+        showDeleteDialog = false;
+    }
+
+    function handleShowInformationDrawer() {
+        showInformationDrawer = true;
+    }
+</script>
 
 <div class="flex items-center h-full">
     <Tooltip.Provider delayDuration={150}>
