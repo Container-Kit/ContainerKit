@@ -12,3 +12,8 @@ vite.config.ts.timestamp-*
 
 # SQLite
 *.db
+
+# AI/LLM Context
+# llm.txt is intentionally kept public to provide context to AI assistants
+# Add to gitignore if you prefer to keep project details private:
+# llm.txt

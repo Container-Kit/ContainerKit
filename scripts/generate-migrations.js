@@ -112,7 +112,7 @@ pub fn load_migrations() -> Vec<Migration> {
             }
 
             console.log(`📖 Found ${migrations.length} migration(s):`);
-            migrations.forEach(m => {
+            migrations.forEach((m) => {
                 console.log(`   - ${m.filename} (version: ${m.version})`);
             });
 
@@ -124,7 +124,6 @@ pub fn load_migrations() -> Vec<Migration> {
 
             console.log(`✅ Generated: ${this.outFile}`);
             console.log('\n🎉 Migration generation completed successfully!');
-
         } catch (error) {
             console.error('❌ Error during generation:', error.message);
             process.exit(1);

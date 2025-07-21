@@ -6,6 +6,6 @@ export const init: ClientInit = async () => {
     if (isSupportedVersion()) {
         await startContainerization();
         // Apply seeds
-        await Promise.all([])
+        await Promise.all([]);
     }
 };

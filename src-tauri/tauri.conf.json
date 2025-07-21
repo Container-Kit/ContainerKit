@@ -3,7 +3,7 @@
     "productName": "Container Kit",
     "mainBinaryName": "Container Kit",
     "version": "0.1.0",
-    "identifier": "com.container-kit.app",
+    "identifier": "com.container-kit",
     "build": {
         "beforeDevCommand": "pnpm dev",
         "devUrl": "http://localhost:1420",
@@ -25,15 +25,53 @@
         }
     },
     "bundle": {
-        "resources": ["migrations/*"],
+        "copyright": "Copyright (c) 2025 Container Kit - MIT License",
+        "licenseFile": "../LICENSE",
+        "category": "DeveloperTool",
+        "macOS": {
+	        "dmg": {
+                "appPosition": {
+                    "x": 250,
+                    "y": 200
+                },
+                "applicationFolderPosition": {
+                    "x": 650,
+                    "y": 200
+                },
+                "windowSize": {
+                    "height": 500,
+                    "width": 900
+                }
+            },
+	        "files": {},
+	        "hardenedRuntime": true,
+	        "minimumSystemVersion": "26.0"
+        },
+        "resources": ["migrations/*", "icons/icon.iconset/*"],
         "createUpdaterArtifacts": true,
         "active": true,
-        "targets": ["app", "dmg"],
-        "icon": ["icons/icon.iconset", "icons/icon.icns"]
+        "targets": ["dmg"],
+        "icon": [
+            "icons/icon.png",
+            "icons/icon.iconset/icon_16x16.png",
+            "icons/icon.iconset/icon_16x16@2x.png",
+            "icons/icon.iconset/icon_32x32.png",
+            "icons/icon.iconset/icon_32x32@2x.png",
+            "icons/icon.iconset/icon_128x128.png",
+            "icons/icon.iconset/icon_128x128@2x.png",
+            "icons/icon.iconset/icon_256x256.png",
+            "icons/icon.iconset/icon_256x256@2x.png",
+            "icons/icon.iconset/icon_512x512.png",
+            "icons/icon.iconset/icon_512x512@2x.png",
+            "icons/icon.icns"
+        ]
     },
     "plugins": {
         "sql": {
             "preload": ["sqlite:container-kit.db"]
+        },
+        "updater": {
+            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU3NzMwMDE5MkI4RjNGODcKUldTSFA0OHJHUUJ6Vjd2VDRnZHNFdGM0akhMd2NNSnR6dDBsQXkxRnBaYnJSQThrNnBtNDY3VkQK"
         }
     }
 }

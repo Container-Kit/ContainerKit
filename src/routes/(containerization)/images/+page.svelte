@@ -12,16 +12,16 @@
         const output = await getAllImages();
 
         if (output.error) {
-            toast.error("Unable to fetch images", {
-                description: output.stderr,
+            toast.error('Unable to fetch images', {
+                description: output.stderr
             });
             error = output;
             return;
         }
 
         if (!output.stdout) {
-            toast.error("Unable to fetch images", {
-                description: output.stderr,
+            toast.error('Unable to fetch images', {
+                description: output.stderr
             });
             error = output;
             return;

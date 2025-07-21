@@ -24,11 +24,11 @@ This script reads SQL migration files created by `drizzle-kit generate` and crea
 ### Run the generator
 
 ```bash
-# TypeScript version (recommended)
-pnpm run migrations:generate
+# Using CLI (recommended)
+pnpm migration:generate
 
-# JavaScript version
-pnpm run migrations:generate:js
+# Using TypeScript script directly
+pnpm db:migrations
 ```
 
 ### Test the generator
@@ -57,7 +57,7 @@ You can modify the paths in the script constructor:
 
 ```typescript
 class MigrationGenerator {
-    private readonly outDir: string = './rust-migrations';           // Output directory
+    private readonly outDir: string = './rust-migrations'; // Output directory
     private readonly migrationsDir: string = './src-tauri/migrations'; // Input directory
     private readonly outFile: string = path.join(this.outDir, 'generated_migrations.rs');
 }
@@ -80,9 +80,30 @@ let migrations = load_migrations();
 ## Workflow
 
 1. Update your Drizzle schema (`src/lib/db/schema.ts`)
-2. Run `pnpm run db:generate` to create SQL migrations
-3. Run `pnpm run migrations:generate` to create Rust migrations
+2. Run `pnpm db:generate` to create SQL migrations
+3. Run `pnpm migration:generate` to create Rust migrations
 4. Copy/use the generated Rust file in your Tauri application
+
+## CLI Commands
+
+The CLI provides additional migration management commands:
+
+```bash
+# Generate migrations with CLI (recommended)
+pnpm migration:generate
+
+# List all migrations
+pnpm migration:list
+
+# Validate migration files
+pnpm migration:validate
+
+# Check migration system status
+pnpm migration:status
+
+# Interactive migration management
+pnpm migration:interactive
+```
 
 ## Features
 
@@ -113,27 +134,30 @@ ContainerKit/
 ## Troubleshooting
 
 ### No SQL migration files found
-- Make sure you've run `pnpm run db:generate` first
+
+- Make sure you've run `pnpm db:generate` first
 - Check that migrations exist in `./src-tauri/migrations/`
 - Ensure files have `.sql` extension
 
 ### Permission errors
+
 - Make sure the output directory is writable
 - Check file permissions in your project
 
 ### Generated file has incorrect paths
+
 - Verify the `migrationsDir` path in the script
 - Ensure relative paths are correct for your project structure
 
 ## Comparison with Original Rust Version
 
-| Feature | Rust Version | Node.js Version |
-|---------|-------------|-----------------|
-| Language | Rust | JavaScript/TypeScript |
-| Input scanning | ✅ | ✅ |
-| Version extraction | ✅ | ✅ |
-| File copying | ✅ | ❌ (uses include_str! directly) |
-| Error handling | ✅ | ✅ |
-| Output format | ✅ | ✅ |
+| Feature            | Rust Version | Node.js Version                 |
+| ------------------ | ------------ | ------------------------------- |
+| Language           | Rust         | JavaScript/TypeScript           |
+| Input scanning     | ✅           | ✅                              |
+| Version extraction | ✅           | ✅                              |
+| File copying       | ✅           | ❌ (uses include_str! directly) |
+| Error handling     | ✅           | ✅                              |
+| Output format      | ✅           | ✅                              |
 
 The Node.js version simplifies the process by using `include_str!()` directly with the original filenames instead of copying files first.

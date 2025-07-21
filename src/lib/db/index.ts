@@ -8,8 +8,6 @@ function isSelectQuery(sql: string): boolean {
     return selectRegex.test(sql);
 }
 
-
-
 export const db = drizzle<typeof schema>(
     async (sql: string, params: string[], method: string) => {
         const sqlite = await Database.load('sqlite:container-kit.db');
