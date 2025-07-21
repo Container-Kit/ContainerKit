@@ -103,42 +103,14 @@ xcode-select --install
 brew install --cask container
 ```
 
-## 🔧 Recommended IDE Setup
+## 🔧 Development Environment
 
-**[Zed](https://zed.dev/)** - Fast, collaborative code editor built for performance
+For detailed IDE setup, development workflow, and code standards, see our [Contributing Guide](CONTRIBUTING.md).
 
-### Extensions
+**Quick Setup:**
 
-- **Svelte** - Syntax highlighting and IntelliSense for Svelte components
-- **Rust** - Full Rust language support with rust-analyzer
-- **TypeScript** - Enhanced TypeScript development experience
-- **Tailwind CSS** - IntelliSense for Tailwind CSS classes
-
-### Configuration
-
-Add to your Zed `settings.json`:
-
-```json
-{
-    "languages": {
-        "Svelte": {
-            "language_servers": ["svelte-language-server"],
-            "formatter": "prettier"
-        },
-        "Rust": {
-            "language_servers": ["rust-analyzer"]
-        }
-    },
-    "formatter": "prettier",
-    "format_on_save": true,
-    "useTabs": false,
-    "tab_size": 4
-}
-```
-
-### Alternative IDEs
-
-- **VS Code** + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- **Recommended**: [Zed](https://zed.dev/) with Svelte, Rust, and TypeScript extensions
+- **Alternative**: VS Code with Svelte, Tauri, and rust-analyzer extensions
 
 ### Download
 
@@ -240,90 +212,25 @@ pnpm db:migrations
 
 ### Tech Stack
 
-**Frontend**
+- **Frontend**: Svelte 5, SvelteKit, TypeScript, TailwindCSS
+- **Backend**: Tauri 2.x, Rust, LibSQL, Drizzle ORM
+- **Build**: TypeScript automation scripts, pnpm, Vite
 
-- **Svelte 5** - Latest reactivity system with runes
-- **SvelteKit** - Full-stack framework with SSG
-- **TailwindCSS 4.x** - Latest engine with custom themes
-- **TypeScript** - Strict typing throughout
-- **Motion** - Smooth animations and transitions
-
-**Backend**
-
-- **Tauri 2.x** - Rust-based desktop framework
-- **Rust** - Systems programming for performance
-- **LibSQL** - SQLite-compatible database
-- **Drizzle ORM** - Type-safe database operations
-
-**Build & Automation**
-
-- **TypeScript Scripts** - Comprehensive build and automation scripts. [see more](./scripts/docs/README.md)
-
-### Project Structure
-
-```
-ContainerKit/
-├── src/                          # Svelte frontend
-│   ├── lib/
-│   │   ├── components/          # UI components (atomic design)
-│   │   ├── db/                  # Database schema and types
-│   │   ├── services/            # Apple container APIs
-│   │   └── stores/              # Svelte stores
-│   ├── routes/                  # SvelteKit routes
-│   └── themes/                  # Custom CSS themes
-├── src-tauri/                   # Rust/Tauri backend
-│   ├── src/                     # Rust source code
-│   ├── migrations/              # SQL migration files
-│   └── tauri.conf.json         # Tauri configuration
-└── scripts/                     # TypeScript build and automation scripts
-```
-
-### Development Setup
+### Quick Start
 
 ```bash
-# Install dependencies (requires pnpm)
+# Install dependencies
 npm install -g pnpm
 pnpm install
 
 # Start development server
 pnpm dev
-```
 
-### Build Process
-
-```bash
-# Development build
-pnpm build
-
-# Build Tauri application only
+# Build application
 pnpm build:tauri
-
-# Complete release workflow with code signing
-pnpm release
 ```
 
-### Database Development
-
-```bash
-# Generate SQL migrations from schema changes
-pnpm db:generate
-
-# Generate Rust migration bindings for Tauri
-pnpm db:migrations
-```
-
-### Code Quality
-
-```bash
-# Format code
-pnpm format
-
-# Lint code
-pnpm lint
-
-# Type checking
-pnpm check
-```
+For detailed setup, architecture, project structure, and development workflows, see our [Contributing Guide](CONTRIBUTING.md).
 
 ## 🤖 AI/LLM Integration
 
@@ -365,31 +272,19 @@ For detailed documentation on all available scripts, see [scripts/docs/README.md
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Whether you're fixing bugs, adding features, improving documentation, or enhancing the developer experience, your contributions help make Container Kit better for everyone.
 
-### Development Workflow
+Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on:
 
-1. **Fork** the repository
-2. **Create** a feature branch
-3. **Make** your changes
-4. **Test** thoroughly
-5. **Submit** a pull request
+- 🏗️ **Development Setup** - Getting your environment ready
+- 📏 **Code Standards** - TypeScript, Svelte, and Rust conventions
+- 🧪 **Testing Guidelines** - How to test your changes
+- 🚀 **Build Process** - Development and release workflows
+- 📝 **Documentation** - Writing and updating docs
+- 🐛 **Bug Reports** - How to report issues effectively
+- 💡 **Feature Requests** - Proposing new functionality
 
-### Code Standards
-
-- **TypeScript** - Strict typing required
-- **Prettier** - Auto-formatting enforced
-- **Svelte** - Component-scoped styles preferred
-- **Tests** - Comprehensive test coverage expected
-
-### Areas for Contribution
-
-- 🐛 **Bug Fixes** - Help improve stability
-- ✨ **Features** - New container management capabilities
-- 📚 **Documentation** - Improve guides and examples
-- 🎨 **UI/UX** - Design improvements and accessibility
-- 🔧 **Build Scripts** - Enhanced developer experience with TypeScript automation
-- 🧪 **Testing** - Expand test coverage
+**Quick Start**: Fork → Clone → `pnpm install` → `pnpm dev` → Make changes → Submit PR
 
 ## 🙏 Acknowledgments
 
