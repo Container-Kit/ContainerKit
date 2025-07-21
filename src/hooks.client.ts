@@ -5,5 +5,7 @@ import { startContainerization } from '$lib/services/containerization/system';
 export const init: ClientInit = async () => {
     if (isSupportedVersion()) {
         await startContainerization();
+        // Apply seeds
+        await Promise.all([])
     }
 };

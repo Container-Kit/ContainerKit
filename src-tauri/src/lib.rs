@@ -1,5 +1,8 @@
+#[cfg(debug_assertions)]
 use specta_typescript::Typescript;
 use tauri_specta::{Builder, collect_commands};
+
+include!(concat!("../migrations", "/generated_migrations.rs"));
 
 #[tauri::command]
 #[specta::specta] // < You must annotate your commands
@@ -9,6 +12,8 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub async fn run() {
+    let migrations = load_migrations();
+
     let spectabuilder = Builder::<tauri::Wry>::new().commands(collect_commands![greet]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
@@ -25,6 +30,16 @@ pub async fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_window_state::Builder::new().build())
+        //         .plugin(tauri_plugin_persisted_scope::init())
+        .plugin(tauri_plugin_clipboard_manager::init())
+        //         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_store::Builder::new().build())
+        .plugin(
+            tauri_plugin_sql::Builder::default()
+                .add_migrations("sqlite:container-kit.db", migrations)
+                .build(),
+        )
         .invoke_handler(spectabuilder.invoke_handler())
         .setup(move |app| {
             spectabuilder.mount_events(app);

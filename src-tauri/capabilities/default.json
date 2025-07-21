@@ -1,56 +1,63 @@
 {
   "$schema": "../gen/schemas/macOS-schema.json",
-    "identifier": "default",
-    "description": "Capability for the main window",
-    "windows": ["main"],
-    "permissions": [
-        "core:default",
-        "opener:default",
-        "os:default",
+  "identifier": "default",
+  "description": "Capability for the main window",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "os:default",
+    "sql:default",
+    "sql:allow-execute",
+    "store:default",
+    {
+      "identifier": "shell:allow-execute",
+      "description": "Permission to run apple containers",
+      "allow": [
         {
-            "identifier": "shell:allow-execute",
-            "description": "Permission to run apple containers",
-            "allow": [
-                {
-                    "name": "container",
-                    "cmd": "container",
-                  "args": true
-                }
-            ]
-        },
-      {
-        "identifier": "shell:allow-spawn",
-        "description": "Permission to run apple containers",
-        "allow": [
-          {
-            "name": "container",
-            "cmd": "container",
-            "args": true
-          }
-        ]
-      },
-      {
-        "identifier": "shell:allow-kill",
-        "description": "Permission to run apple containers",
-        "allow": [
-          {
-            "name": "container",
-            "cmd": "container",
-            "args": true
-          }
-        ]
-      },
-      {
-        "identifier": "shell:allow-stdin-write",
-        "description": "Permission to run apple containers",
-        "allow": [
-          {
-            "name": "container",
-            "cmd": "container",
-                    "args": true
-                }
-            ]
+          "name": "container",
+          "cmd": "container",
+          "args": true
         }
-    ],
-    "platforms": ["macOS"]
+      ]
+    },
+    {
+      "identifier": "shell:allow-spawn",
+      "description": "Permission to run apple containers",
+      "allow": [
+        {
+          "name": "container",
+          "cmd": "container",
+          "args": true
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-kill",
+      "description": "Permission to run apple containers",
+      "allow": [
+        {
+          "name": "container",
+          "cmd": "container",
+          "args": true
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-stdin-write",
+      "description": "Permission to run apple containers",
+      "allow": [
+        {
+          "name": "container",
+          "cmd": "container",
+          "args": true
+        }
+      ]
+    }
+  ],
+  "platforms": [
+    "macOS"
+  ]
 }

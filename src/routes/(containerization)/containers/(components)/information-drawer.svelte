@@ -1,6 +1,5 @@
 <script lang="ts">
     import * as Drawer from '$lib/components/ui/drawer/index.js';
-    import { Button } from '$lib/components/ui/button';
     import * as Tabs from '$lib/components/ui/tabs/index.js';
     import Container from '@lucide/svelte/icons/container';
     import Logs from './container-details/logs.svelte';
@@ -22,9 +21,6 @@
         logs: Logs,
         inspect: Inspect
     };
-
-    let drawerHeader: HTMLDivElement | null = $state(null);
-    let tabList: HTMLDivElement | null = $state(null);
 </script>
 
 <Drawer.Root bind:open direction="right">

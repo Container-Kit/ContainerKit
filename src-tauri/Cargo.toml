@@ -29,3 +29,11 @@ specta-typescript = "0.0.9"
 specta = "=2.0.0-rc.22"
 tauri-specta = { version = "=2.0.0-rc.21", features = ["typescript", "derive"] }
 tauri-plugin-devtools = "2.0.0"
+tauri-plugin-sql = { version = "2", features = ["sqlite"] }
+tauri-plugin-store = "2"
+tauri-plugin-clipboard-manager = "2"
+tauri-plugin-persisted-scope = "2"
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"
+tauri-plugin-window-state = "2"
