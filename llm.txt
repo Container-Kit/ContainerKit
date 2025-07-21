@@ -1,0 +1,308 @@
+# Container Kit - LLM Context File
+
+## Project Overview
+
+Container Kit is a modern desktop application built with Tauri, Svelte 5, and Go. It provides a beautiful, native interface for Apple container management on macOS with a focus on developer experience and visual design.
+
+## Architecture
+
+### Frontend
+- **Framework**: Svelte 5 with SvelteKit
+- **Styling**: TailwindCSS 4.x with custom themes
+- **UI Components**: Custom component library with shadcn/ui-inspired design
+- **Animations**: Motion library for smooth transitions
+- **Charts**: LayerChart for data visualization
+
+### Backend
+- **Desktop Framework**: Tauri 2.x (Rust)
+- **Database**: LibSQL with Drizzle ORM
+- **CLI Tool**: Go with Bubble Tea TUI framework
+- **Build System**: TypeScript build scripts
+
+### Development Tools
+- **Package Manager**: pnpm (required)
+- **Language**: TypeScript throughout
+- **Code Quality**: Prettier + svelte-check
+- **Database Migrations**: Custom Rust/Go migration system
+
+## Key Features
+
+1. **Apple Container Management**: Full lifecycle management of macOS containers including:
+   - **App Sandbox containers** for sandboxed macOS applications
+   - **System containers** and isolated service environments
+   - **Virtualization containers** using Apple's Virtualization.framework
+   - **iOS/iPadOS containers** running on Apple Silicon Macs
+   - **XPC service containers** for system extensions
+2. **Container Registry**: Apple container configuration and policy management
+3. **Network Management**: Container networking for Apple virtualization and sandbox isolation
+4. **DNS Management**: Container DNS settings for Apple virtualization environments
+5. **Build System**: Custom Tauri build pipeline with Apple code signing and notarization
+6. **Migration System**: Database schema migration management for container configurations
+7. **Beautiful UI**: Modern, themed interface with dark/light modes following Apple HIG
+
+## Project Structure
+
+```
+ContainerKit/
+├── src/                          # Svelte frontend
+│   ├── lib/
+│   │   ├── components/          # UI components (atoms, molecules, organisms)
+│   │   ├── db/                  # Database schema and container configurations
+│   │   ├── services/            # Apple container APIs and system integration
+│   │   └── stores/              # Svelte stores for container state management
+│   ├── routes/                  # SvelteKit routes for container management
+│   └── themes/                  # Custom CSS themes optimized for macOS
+├── src-tauri/                   # Rust/Tauri backend
+│   ├── src/                     # Rust source code
+│   ├── migrations/              # SQL migration files
+│   └── tauri.conf.json         # Tauri configuration
+├── cli/                         # Go CLI tool
+│   ├── cmd/                     # CLI commands (build, dev, migration)
+│   ├── internal/tui/           # Bubble Tea UI components
+│   └── main.go                 # CLI entry point
+├── scripts/                     # Build and utility scripts
+├── bin/                         # Compiled binaries
+└── build/                       # Build artifacts
+```
+
+## Important Scripts
+
+### Core Development (DO NOT CHANGE)
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm preview` - Preview build
+- `pnpm tauri` - Tauri CLI commands
+
+### CLI & Migration Management
+- `pnpm migration:generate` - Generate Rust migration files from SQL
+- `pnpm migration:list` - List all migrations
+- `pnpm migration:status` - Check migration system status
+- `pnpm cli:interactive` - Interactive Tauri build with TUI
+- `pnpm dev:status` - Check development environment
+
+### Database
+- `pnpm db:generate` - Generate SQL migrations + Rust bindings
+- `pnpm db:push` - Push schema to database
+- `pnpm db:studio` - Open Drizzle Studio
+
+## Key Technologies
+
+### Frontend Stack
+- **Svelte 5**: Latest version with new reactivity system
+- **SvelteKit**: Full-stack framework with SSG
+- **TailwindCSS 4.x**: Latest version with new engine
+- **TypeScript**: Strict typing throughout
+- **Vite**: Build tool and dev server
+
+### Backend Stack
+- **Tauri 2.x**: Desktop app framework
+- **Rust**: Systems programming for performance
+- **LibSQL**: SQLite-compatible database
+- **Drizzle ORM**: Type-safe database operations
+
+### CLI Stack
+- **Go**: CLI implementation language
+- **Bubble Tea**: TUI framework for beautiful interfaces
+- **Lipgloss**: Styling for terminal UIs
+- **Cobra**: CLI command structure
+
+*See `cli/llm.txt` for detailed CLI architecture and patterns.*
+
+## Database Schema
+
+The database uses Drizzle ORM with:
+- **Users table**: User and developer account management
+- **Containers table**: Apple container definitions, sandbox policies, and runtime state
+- **Container_configs table**: Virtualization settings, resource limits, and security policies
+- **Migration system**: Custom SQL migrations with Rust bindings for container configurations
+
+Migration workflow:
+1. Update Drizzle schema (`src/lib/db/schema.ts`)
+2. Run `pnpm db:generate` (creates SQL migrations)
+3. Run `pnpm migration:generate` (creates Rust bindings)
+4. Rust code uses generated bindings for runtime migrations
+
+## Build System
+
+### Development
+- `pnpm dev` starts Vite dev server with Tauri in dev mode
+- Hot reload for frontend changes
+- Rust compilation on backend changes
+
+### Production
+- Custom TypeScript build script (`scripts/build-tauri.ts`)
+- Go CLI tool for interactive builds (`pnpm cli:interactive`)
+- Automatic Apple code signing and notarization for macOS distribution
+- Generates native `.app` bundle and `.dmg` installer for Apple ecosystem
+
+### Targets
+- **Universal**: Apple Silicon + Intel (default for distribution)
+- **Apple Silicon**: ARM64 optimized builds
+- **Intel**: x86_64 compatibility builds
+
+## Code Patterns
+
+### Svelte Components
+- **Atomic Design**: atoms, molecules, organisms structure
+- **Typed Props**: Full TypeScript integration
+- **Reactive State**: Svelte 5 reactivity patterns
+- **Theme Support**: CSS custom properties for theming
+
+### Rust Backend
+- **Tauri Commands**: Exposed to frontend via `#[tauri::command]`
+- **Plugin Architecture**: Tauri plugins for system integration
+- **Type Safety**: Generated TypeScript bindings via Specta
+
+### Go CLI
+- **Cobra Commands**: Structured command hierarchy
+- **TUI Components**: Bubble Tea models for interactive UIs
+- **Verbose Mode**: Detailed output enabled by default
+- **Non-fullscreen**: TUI designed for IDE terminal integration
+
+*For detailed CLI patterns and architecture, see `cli/llm.txt`.*
+
+## Configuration Files
+
+### Key Files
+- `package.json` - pnpm scripts and dependencies
+- `src-tauri/tauri.conf.json` - Tauri app configuration
+- `drizzle.config.ts` - Database configuration
+- `svelte.config.js` - SvelteKit configuration
+- `tailwind.config.js` - TailwindCSS configuration
+- `tsconfig.json` - TypeScript configuration
+
+### Environment
+- `.env` file required for build secrets
+- Code signing certificates for macOS distribution
+- Database connection strings
+
+## Development Workflow
+
+### Initial Setup
+```bash
+pnpm install              # Install dependencies
+pnpm dev:setup            # Setup development environment
+pnpm dev:status           # Verify setup
+```
+
+### Daily Development
+```bash
+pnpm dev                  # Start dev server
+pnpm check:watch          # Type checking in watch mode
+```
+
+### Schema Changes
+```bash
+# 1. Edit src/lib/db/schema.ts
+pnpm db:generate          # Generate SQL migrations
+pnpm migration:validate   # Verify migrations
+```
+
+### Building
+```bash
+pnpm cli:interactive      # Interactive build with TUI
+# OR
+pnpm build:tauri         # Direct build script
+```
+
+## Common Patterns
+
+### Adding New Routes
+1. Create route in `src/routes/`
+2. Add to navigation in sidebar component
+3. Update routing logic if needed
+
+### Adding New Database Tables
+1. Define schema in `src/lib/db/schema.ts` (container configs, policies, etc.)
+2. Run `pnpm db:generate` (creates SQL migrations)
+3. Run `pnpm migration:generate` (creates Rust bindings)
+4. Update TypeScript types for Apple container integration
+
+### Adding New CLI Commands
+1. Create command in `cli/cmd/`
+2. Add TUI model in `cli/internal/tui/`
+3. Register command in init functions
+4. Add script to `package.json`
+
+## Important Notes
+
+### Package Manager
+- **MUST use pnpm** - npm will not work properly
+- Lock file: `pnpm-lock.yaml`
+- Scripts are optimized for pnpm
+
+### Build Requirements
+- **macOS**: Required for Apple code signing, notarization, and DMG creation
+- **Xcode Command Line Tools**: Required for native compilation and Apple frameworks
+- **Apple Developer Account**: Required for code signing certificates
+- **Go 1.21+**: For CLI tool compilation
+- **Rust/Tauri**: Latest stable versions with Apple Silicon support
+- **Node.js 18+**: For frontend compilation
+
+### Migration System
+- **Never edit generated files**: `generated_migrations.rs` is auto-generated
+- **SQL migrations**: Hand-written in `src-tauri/migrations/`
+- **Version ordering**: Filename format `NNNN_description.sql`
+- **Rust bindings**: Generated by CLI tool, not TypeScript script
+
+### Code Style
+- **Prettier**: Auto-formatting enforced
+- **TypeScript**: Strict mode enabled
+- **Svelte**: Component-scoped styles preferred
+- **Go**: Standard Go formatting
+
+## Troubleshooting
+
+### Common Issues
+1. **Migration errors**: Run `pnpm migration:status` to diagnose
+2. **Build failures**: Check `pnpm dev:status` for environment issues
+3. **CLI not working**: Rebuild with `pnpm build:cli`
+4. **Database issues**: Verify schema with `pnpm db:studio`
+
+### Reset Commands
+```bash
+pnpm dev:clean            # Clean build artifacts
+pnpm dev:reset            # Full environment reset
+```
+
+## Recent Development Context
+
+### Migration System Evolution
+- **Go CLI Implementation**: Recently migrated from TypeScript-only to Go CLI tool
+- **TUI Integration**: Non-fullscreen Bubble Tea interfaces for IDE compatibility
+- **Verbose by Default**: All CLI commands show detailed output by default
+- **Perfect TypeScript Parity**: Go migration generator produces identical output to TypeScript version
+
+### CLI Tool Features
+- **Interactive Build System**: Beautiful TUI for Tauri builds with progress tracking
+- **Migration Management**: Complete migration lifecycle from CLI
+- **Development Workflow**: Integrated dev environment management
+- **Code Signing**: Automatic macOS app signing and DMG generation
+
+### Script Organization
+- **pnpm Standardization**: All scripts consistently use pnpm (never npm)
+- **Protected Core Scripts**: `dev`, `build`, `preview`, `tauri` must never change
+- **Logical Grouping**: Scripts organized by function (db, migration, cli, dev)
+- **Comprehensive Documentation**: SCRIPTS.md provides complete usage guide
+
+### Current Patterns
+- **Atomic Component Design**: Components organized in atoms/molecules/organisms
+- **Type-Safe Database**: Drizzle ORM with generated TypeScript types
+- **Custom Migration Flow**: SQL → Drizzle → Go CLI → Rust bindings
+- **Theme System**: CSS custom properties with multiple theme support
+
+### Build System
+- **Universal Binaries**: Default target for macOS distribution
+- **Interactive CLI**: `pnpm cli:interactive` for guided builds
+- **Environment Validation**: Comprehensive development environment checking
+- **Hot Reload**: Vite + Tauri integration for fast development
+
+## Documentation
+- `README.md` - Project overview and setup
+- `SCRIPTS.md` - Comprehensive script documentation
+- `cli/README.md` - CLI tool documentation
+- `cli/llm.txt` - CLI-specific LLM context and architecture
+- `scripts/README-migrations.md` - Migration system documentation
+- `llm.txt` - This file, providing AI/LLM context
+
+This is a modern, well-architected project that prioritizes developer experience, type safety, and beautiful user interfaces. The CLI tooling is extensive and the migration system is custom-built for the specific needs of a Tauri application. Recent focus has been on CLI standardization, migration system reliability, and maintaining consistent pnpm usage throughout.
