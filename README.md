@@ -8,10 +8,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Built with Tauri](https://img.shields.io/badge/Built%20with-Tauri-24C8DB?logo=tauri)](https://tauri.app)
 [![Svelte 5](https://img.shields.io/badge/Svelte-5-FF3E00?logo=svelte)](https://svelte.dev)
-[![Go CLI](https://img.shields.io/badge/CLI-Go-00ADD8?logo=go)](https://golang.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript)](https://www.typescriptlang.org)
 
-_Built with Tauri, Svelte 5, and Go • Features beautiful native interface for managing macOS containers, sandboxes, and virtualization_
+_Built with Tauri, Svelte 5, Typescript • Features beautiful native interface for managing macOS containers, sandboxes, and virtualization_
 
 [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Development](#-development) • [CLI Tools](#-cli-tools)
 
@@ -26,11 +25,10 @@ Container Kit is a comprehensive desktop application designed specifically for A
 ### 🎯 Key Highlights
 
 - **🍎 Apple-First Design** - Built specifically for macOS with native Apple HIG compliance
-- **⚡ Modern Architecture** - Tauri + Svelte 5 + Go for optimal performance and developer experience
+- **⚡ Modern Architecture** - Tauri + Svelte 5 + Typescript developer experience
 - **🛡️ Security Focused** - Comprehensive sandbox and container security management
-- **🎨 Beautiful Interface** - Native theming with dark/light modes and smooth animations
-- **🔧 Developer Friendly** - Extensive CLI tooling and migration system
-- **📱 Multi-Platform** - Support for iOS/iPadOS containers on Apple Silicon
+- **🎨 Beautiful Interface** - Multiple theming options with dark/light modes and smooth animations
+- **🔧 Developer Friendly** - Extensive CLI tooling and migration system for development
 
 ## ✨ Features
 
@@ -38,20 +36,17 @@ Container Kit is a comprehensive desktop application designed specifically for A
 
 - **App Sandbox Containers** - Manage sandboxed macOS application environments
 - **System Containers** - Handle isolated service environments and system processes
-- **Virtualization Containers** - Full integration with Apple's Virtualization.framework
-- **iOS/iPadOS Containers** - Run and manage iOS apps on Apple Silicon Macs
-- **XPC Service Containers** - Manage system extensions and background services
+- **Virtualization Containers** - Full integration with Apple's container CLI
 
 ### 🌐 Network & Infrastructure
 
 - **Container Networking** - Advanced networking configuration for Apple virtualization
 - **DNS Management** - Container-specific DNS settings and resolution
 - **Registry Management** - Apple container configuration and policy management
-- **Resource Control** - CPU, memory, and storage limits for optimal performance
 
 ### 🎨 User Experience
 
-- **Native macOS Interface** - Follows Apple Human Interface Guidelines
+- **ShadCN Interface** - Follows ShadCN Interface Guidelines
 - **Dark/Light Themes** - Automatic theme switching with system preferences
 - **Smooth Animations** - Powered by Motion library for fluid interactions
 - **Data Visualization** - Beautiful charts and graphs with LayerChart
@@ -59,11 +54,10 @@ Container Kit is a comprehensive desktop application designed specifically for A
 
 ### 🛠️ Developer Tools
 
-- **Interactive CLI** - Beautiful TUI powered by Bubble Tea framework
+- **Robust CLI** - Robust CLI scripts for minor to major problems.
 - **Migration System** - Robust database schema management with version control
 - **Build Pipeline** - Custom Tauri build system with Apple code signing
 - **Type Safety** - Full TypeScript integration throughout the stack
-- **Hot Reload** - Fast development with Vite and Tauri integration
 
 ## 📸 Screenshots
 
@@ -103,6 +97,12 @@ _Comprehensive configuration options_
 xcode-select --install
 ```
 
+- **Apple Container**
+
+```bash
+brew install --cask container
+```
+
 ## 🔧 Recommended IDE Setup
 
 **[Zed](https://zed.dev/)** - Fast, collaborative code editor built for performance
@@ -111,7 +111,6 @@ xcode-select --install
 
 - **Svelte** - Syntax highlighting and IntelliSense for Svelte components
 - **Rust** - Full Rust language support with rust-analyzer
-- **Go** - Go language support with gopls
 - **TypeScript** - Enhanced TypeScript development experience
 - **Tailwind CSS** - IntelliSense for Tailwind CSS classes
 
@@ -128,15 +127,12 @@ Add to your Zed `settings.json`:
         },
         "Rust": {
             "language_servers": ["rust-analyzer"]
-        },
-        "Go": {
-            "language_servers": ["gopls"],
-            "formatter": "gofmt"
         }
     },
     "formatter": "prettier",
     "format_on_save": true,
-    "tab_size": 2
+    "useTabs": false,
+    "tab_size": 4
 }
 ```
 
@@ -157,8 +153,8 @@ Add to your Zed `settings.json`:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/container-kit.git
-cd container-kit
+git clone https://github.com/etherCorps/containerKit.git
+cd containerKit
 
 # Install dependencies (requires pnpm)
 npm install -g pnpm
@@ -179,40 +175,57 @@ pnpm build:tauri
 ### Getting Started
 
 1. **Launch Container Kit** from Applications or Spotlight
-2. **Welcome Screen** - Complete the initial setup wizard
-3. **Dashboard** - Overview of your container ecosystem
-4. **Create Containers** - Use the Builder tab to create new containers
-5. **Manage Existing** - View and manage containers in the Containers tab
+2. **Dashboard** - Overview of your containers
+3. **Create Containers** - Use the container tab to create new Containers from images
+4. **Manage Existing** - View and manage containers in the Containers tab
 
 ### Core Workflows
 
-#### Creating a New Container
+[//]: # (#### Creating a New Container)
 
-1. Navigate to **Builder** → **New Container**
-2. Select container type (App Sandbox, System, Virtualization, etc.)
-3. Configure resources and security policies
-4. Review settings and create
+[//]: # ()
+[//]: # (1. Navigate to **Builder** → **New Container**)
 
-#### Managing Existing Containers
+[//]: # (2. Select container type &#40;App Sandbox, System, Virtualization, etc.&#41;)
 
-1. Go to **Containers** tab
-2. View running, stopped, and configured containers
-3. Use context menus for start/stop/configure operations
-4. Monitor resource usage and logs
+[//]: # (3. Configure resources and security policies)
 
-#### Network Configuration
+[//]: # (4. Review settings and create)
 
-1. Access **Network** section
-2. Configure container networking and DNS
-3. Set up port forwarding and security rules
-4. Monitor network activity
+[//]: # (#### Managing Existing Containers)
 
-#### Registry Management
+[//]: # ()
+[//]: # (1. Go to **Containers** tab)
 
-1. Open **Registry** tab
-2. Manage container images and configurations
-3. Import/export container policies
-4. Version control for container definitions
+[//]: # (2. View running, stopped, and configured containers)
+
+[//]: # (3. Use context menus for start/stop/configure operations)
+
+[//]: # (4. Monitor resource usage and logs)
+
+[//]: # ()
+[//]: # (#### Network Configuration)
+
+[//]: # ()
+[//]: # (1. Access **Network** section)
+
+[//]: # (2. Configure container networking and DNS)
+
+[//]: # (3. Set up port forwarding and security rules)
+
+[//]: # (4. Monitor network activity)
+
+[//]: # ()
+[//]: # (#### Registry Management)
+
+[//]: # ()
+[//]: # (1. Open **Registry** tab)
+
+[//]: # (2. Manage container images and configurations)
+
+[//]: # (3. Import/export container policies)
+
+[//]: # (4. Version control for container definitions)
 
 ### Advanced Features
 
@@ -237,55 +250,9 @@ pnpm dev:status
 #### Database Management
 
 ```bash
-# View database
-pnpm db:studio
-
 # Generate migrations
 pnpm db:generate
-
-# Push schema changes
-pnpm db:push
 ```
-
-## 🛠️ CLI Tools
-
-Container Kit includes a powerful Go-based CLI with beautiful Terminal User Interface (TUI) components.
-
-### Available Commands
-
-```bash
-# Development workflow
-./bin/container-kit-cli dev setup    # Setup development environment
-./bin/container-kit-cli dev status   # Check environment status
-./bin/container-kit-cli dev clean    # Clean build artifacts
-./bin/container-kit-cli dev reset    # Reset development environment
-
-# Migration management
-./bin/container-kit-cli migration generate    # Generate new migrations
-./bin/container-kit-cli migration list       # List all migrations
-./bin/container-kit-cli migration status     # Check migration status
-./bin/container-kit-cli migration validate   # Validate migrations
-
-# Build system
-./bin/container-kit-cli build               # Build application
-./bin/container-kit-cli build --interactive # Interactive build with TUI
-```
-
-### Interactive Mode
-
-The CLI features beautiful TUI interfaces powered by Bubble Tea:
-
-```bash
-# Launch interactive build system
-pnpm cli:interactive
-```
-
-Features:
-
-- **Progress Tracking** - Real-time build progress with visual indicators
-- **Environment Validation** - Comprehensive development environment checking
-- **Error Handling** - Clear error messages with suggested solutions
-- **Non-fullscreen** - Designed for IDE terminal integration
 
 ## 🏗️ Development
 
@@ -308,10 +275,7 @@ Features:
 
 **CLI & Tools**
 
-- **Go** - CLI implementation with excellent performance
-- **Bubble Tea** - Beautiful terminal user interfaces
-- **Cobra** - Command-line interface framework
-- **Lipgloss** - Terminal styling and layout
+- **Javascript with Typescript** - Robust cli scripts for multiple uses. [see more](./scripts/docs/README.md)
 
 ### Project Structure
 
@@ -329,10 +293,6 @@ ContainerKit/
 │   ├── src/                     # Rust source code
 │   ├── migrations/              # SQL migration files
 │   └── tauri.conf.json         # Tauri configuration
-├── cli/                         # Go CLI tool
-│   ├── cmd/                     # CLI commands
-│   ├── internal/tui/           # Bubble Tea components
-│   └── main.go                 # CLI entry point
 ├── scripts/                     # Build and utility scripts
 └── bin/                         # Compiled binaries
 ```
@@ -344,14 +304,8 @@ ContainerKit/
 npm install -g pnpm
 pnpm install
 
-# Setup development environment
-pnpm dev:setup
-
 # Start development server
 pnpm dev
-
-# In another terminal, start type checking
-pnpm check:watch
 ```
 
 ### Build Process
@@ -362,9 +316,6 @@ pnpm build
 
 # Production build with code signing
 pnpm build:tauri
-
-# Interactive build with TUI
-pnpm cli:interactive
 ```
 
 ### Database Development
@@ -375,12 +326,6 @@ pnpm db:generate
 
 # Create Rust migration bindings
 pnpm migration:generate
-
-# Validate migration system
-pnpm migration:validate
-
-# Open database studio
-pnpm db:studio
 ```
 
 ### Code Quality
@@ -420,34 +365,6 @@ pnpm tauri    # Tauri CLI commands
 
 ```bash
 pnpm db:generate   # Generate migrations
-pnpm db:push       # Push schema
-pnpm db:studio     # Database GUI
-```
-
-### CLI Operations
-
-```bash
-pnpm build:cli          # Build CLI tool
-pnpm cli:interactive    # Interactive build
-pnpm cli:help          # CLI help
-```
-
-### Migration System
-
-```bash
-pnpm migration:generate   # Generate Rust bindings
-pnpm migration:list      # List migrations
-pnpm migration:status    # Migration status
-pnpm migration:validate  # Validate system
-```
-
-### Development Workflow
-
-```bash
-pnpm dev:setup    # Setup environment
-pnpm dev:status   # Check status
-pnpm dev:clean    # Clean artifacts
-pnpm dev:reset    # Reset environment
 ```
 
 ## 🤝 Contributing
@@ -467,7 +384,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - **TypeScript** - Strict typing required
 - **Prettier** - Auto-formatting enforced
 - **Svelte** - Component-scoped styles preferred
-- **Go** - Standard Go formatting
 - **Tests** - Comprehensive test coverage expected
 
 ### Areas for Contribution
@@ -479,40 +395,19 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - 🔧 **CLI Tools** - Enhanced developer experience
 - 🧪 **Testing** - Expand test coverage
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
-MIT License
-
-Copyright (c) 2025 - Container Kit
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-```
-
 ## 🙏 Acknowledgments
 
-- **Apple** - For the excellent Virtualization.framework and developer tools
+- **Apple** - For the excellent container and developer tools
 - **Tauri Team** - For the amazing desktop application framework
 - **Svelte Team** - For the revolutionary frontend framework
-- **Go Team** - For the powerful and efficient programming language
 - **Open Source Community** - For the incredible ecosystem of tools and libraries
 
 ## 📞 Support
 
 - 📖 **Documentation** - Check our [Wiki](https://github.com/your-username/container-kit/wiki)
-- 🐛 **Bug Reports** - [GitHub Issues](https://github.com/your-username/container-kit/issues)
-- 💬 **Discussions** - [GitHub Discussions](https://github.com/your-username/container-kit/discussions)
-- 📧 **Email** - [support@container-kit.dev](mailto:support@container-kit.dev)
+- 🐛 **Bug Reports** - [GitHub Issues](https://github.com/etherCorps/ContainerKit/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen)
+- 💬 **Discussions** - [GitHub Discussions](https://github.com/etherCorps/ContainerKit/discussions)
+- 📧 **Email** - [shivam@ethercorps.io](mailto:shivam@ethercorps.io)
 
 ---
 
@@ -520,6 +415,6 @@ copies or substantial portions of the Software.
 
 **Built with ❤️ for the Apple ecosystem**
 
-[⭐ Star this project](https://github.com/your-username/container-kit) • [🐦 Follow updates](https://twitter.com/container_kit) • [💻 Contribute](CONTRIBUTING.md)
+[⭐ Star this project](https://github.com/etherCorps/ContainerKit) • [🐦 Follow updates](https://twitter.com/theether0) • [💻 Contribute](CONTRIBUTING.md)
 
 </div>
