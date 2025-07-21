@@ -54,7 +54,7 @@ Container Kit is a comprehensive desktop application designed specifically for A
 
 ### 🛠️ Developer Tools
 
-- **Robust CLI** - Robust CLI scripts for minor to major problems.
+- **TypeScript Scripts** - Comprehensive build and automation scripts
 - **Migration System** - Robust database schema management with version control
 - **Build Pipeline** - Custom Tauri build system with Apple code signing
 - **Type Safety** - Full TypeScript integration throughout the stack
@@ -73,11 +73,11 @@ _Intuitive container lifecycle management_
 
 ![Container Management](docs/images/containers-preview.png)
 
-### CLI Interface
+### Development Scripts
 
-_Powerful command-line tools with beautiful TUI_
+_Powerful TypeScript automation and build scripts_
 
-![CLI Interface](docs/images/cli-preview.png)
+![Development Scripts](docs/images/scripts-preview.png)
 
 ### Settings & Configuration
 
@@ -97,7 +97,7 @@ _Comprehensive configuration options_
 xcode-select --install
 ```
 
-- **Apple Container**
+- **Apple Container CLI** (if using container features)
 
 ```bash
 brew install --cask container
@@ -161,7 +161,7 @@ npm install -g pnpm
 pnpm install
 
 # Build the application
-pnpm build:tauri
+pnpm release
 ```
 
 ### First Launch
@@ -181,77 +181,59 @@ pnpm build:tauri
 
 ### Core Workflows
 
-[//]: # (#### Creating a New Container)
-
-[//]: # ()
-[//]: # (1. Navigate to **Builder** → **New Container**)
-
-[//]: # (2. Select container type &#40;App Sandbox, System, Virtualization, etc.&#41;)
-
-[//]: # (3. Configure resources and security policies)
-
-[//]: # (4. Review settings and create)
-
-[//]: # (#### Managing Existing Containers)
-
-[//]: # ()
-[//]: # (1. Go to **Containers** tab)
-
-[//]: # (2. View running, stopped, and configured containers)
-
-[//]: # (3. Use context menus for start/stop/configure operations)
-
-[//]: # (4. Monitor resource usage and logs)
-
-[//]: # ()
-[//]: # (#### Network Configuration)
-
-[//]: # ()
-[//]: # (1. Access **Network** section)
-
-[//]: # (2. Configure container networking and DNS)
-
-[//]: # (3. Set up port forwarding and security rules)
-
-[//]: # (4. Monitor network activity)
-
-[//]: # ()
-[//]: # (#### Registry Management)
-
-[//]: # ()
-[//]: # (1. Open **Registry** tab)
-
-[//]: # (2. Manage container images and configurations)
-
-[//]: # (3. Import/export container policies)
-
-[//]: # (4. Version control for container definitions)
+[//]: # '#### Creating a New Container'
+[//]: #
+[//]: # '1. Navigate to **Builder** → **New Container**'
+[//]: # '2. Select container type (App Sandbox, System, Virtualization, etc.)'
+[//]: # '3. Configure resources and security policies'
+[//]: # '4. Review settings and create'
+[//]: # '#### Managing Existing Containers'
+[//]: #
+[//]: # '1. Go to **Containers** tab'
+[//]: # '2. View running, stopped, and configured containers'
+[//]: # '3. Use context menus for start/stop/configure operations'
+[//]: # '4. Monitor resource usage and logs'
+[//]: #
+[//]: # '#### Network Configuration'
+[//]: #
+[//]: # '1. Access **Network** section'
+[//]: # '2. Configure container networking and DNS'
+[//]: # '3. Set up port forwarding and security rules'
+[//]: # '4. Monitor network activity'
+[//]: #
+[//]: # '#### Registry Management'
+[//]: #
+[//]: # '1. Open **Registry** tab'
+[//]: # '2. Manage container images and configurations'
+[//]: # '3. Import/export container policies'
+[//]: # '4. Version control for container definitions'
 
 ### Advanced Features
 
-#### CLI Integration
+#### Script Integration
 
 ```bash
-# Install CLI tools
-pnpm build:cli
+# Build Tauri application
+pnpm build:tauri
 
-# Interactive build system
-pnpm cli:interactive
+# Complete release workflow
+pnpm release
 
 # Migration management
-pnpm migration:status
-pnpm migration:generate
+pnpm db:migrations
 
 # Development workflow
-pnpm dev:setup
-pnpm dev:status
+pnpm dev
 ```
 
 #### Database Management
 
 ```bash
-# Generate migrations
+# Generate SQL migrations from schema
 pnpm db:generate
+
+# Generate Rust migration bindings
+pnpm db:migrations
 ```
 
 ## 🏗️ Development
@@ -273,9 +255,9 @@ pnpm db:generate
 - **LibSQL** - SQLite-compatible database
 - **Drizzle ORM** - Type-safe database operations
 
-**CLI & Tools**
+**Build & Automation**
 
-- **Javascript with Typescript** - Robust cli scripts for multiple uses. [see more](./scripts/docs/README.md)
+- **TypeScript Scripts** - Comprehensive build and automation scripts. [see more](./scripts/docs/README.md)
 
 ### Project Structure
 
@@ -293,8 +275,7 @@ ContainerKit/
 │   ├── src/                     # Rust source code
 │   ├── migrations/              # SQL migration files
 │   └── tauri.conf.json         # Tauri configuration
-├── scripts/                     # Build and utility scripts
-└── bin/                         # Compiled binaries
+└── scripts/                     # TypeScript build and automation scripts
 ```
 
 ### Development Setup
@@ -314,18 +295,21 @@ pnpm dev
 # Development build
 pnpm build
 
-# Production build with code signing
+# Build Tauri application only
 pnpm build:tauri
+
+# Complete release workflow with code signing
+pnpm release
 ```
 
 ### Database Development
 
 ```bash
-# Generate migrations from schema changes
+# Generate SQL migrations from schema changes
 pnpm db:generate
 
-# Create Rust migration bindings
-pnpm migration:generate
+# Generate Rust migration bindings for Tauri
+pnpm db:migrations
 ```
 
 ### Code Quality
@@ -346,26 +330,38 @@ pnpm check
 This project includes comprehensive AI/LLM context files:
 
 - **`llm.txt`** - Main project context and architecture
-- **`cli/llm.txt`** - CLI-specific patterns and architecture
 
 These files help AI assistants understand the project structure and provide better development assistance.
 
 ## 📋 Scripts Reference
 
-### Core Commands (Protected)
+### Core Development Commands
 
 ```bash
-pnpm dev      # Development server
-pnpm build    # Production build
-pnpm preview  # Preview build
-pnpm tauri    # Tauri CLI commands
+pnpm dev           # Development server with hot reload
+pnpm build         # Production frontend build
+pnpm preview       # Preview production build
+pnpm tauri         # Tauri CLI commands
+```
+
+### Build and Release Commands
+
+```bash
+pnpm build:tauri           # Build Tauri application
+pnpm release               # Complete build and release workflow
+pnpm copy:build-files      # Copy build artifacts to release structure
 ```
 
 ### Database Management
 
 ```bash
-pnpm db:generate   # Generate migrations
+pnpm db:generate           # Generate SQL migrations from schema, also runs db:migrations
+pnpm db:migrations         # Generate Rust migration bindings
 ```
+
+### Development Utilities
+
+For detailed documentation on all available scripts, see [scripts/docs/README.md](./scripts/docs/README.md)
 
 ## 🤝 Contributing
 
@@ -392,7 +388,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - ✨ **Features** - New container management capabilities
 - 📚 **Documentation** - Improve guides and examples
 - 🎨 **UI/UX** - Design improvements and accessibility
-- 🔧 **CLI Tools** - Enhanced developer experience
+- 🔧 **Build Scripts** - Enhanced developer experience with TypeScript automation
 - 🧪 **Testing** - Expand test coverage
 
 ## 🙏 Acknowledgments

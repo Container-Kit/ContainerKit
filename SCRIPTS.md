@@ -59,7 +59,6 @@ pnpm lint
 | `build:tauri`           | `pnpm build:tauri`           | Build Tauri application with TypeScript script |
 | `build:tauri:skip-deps` | `pnpm build:tauri:skip-deps` | Build Tauri app without dependency preparation |
 | `build:tauri:help`      | `pnpm build:tauri:help`      | Show Tauri build script help                   |
-| `build:cli`             | `pnpm build:cli`             | Build the Go CLI binary                        |
 
 ### Examples
 
@@ -69,29 +68,39 @@ pnpm build:tauri
 
 # Build Tauri app (skip deps for faster iteration)
 pnpm build:tauri:skip-deps
-
-# Build CLI only
-pnpm build:cli
 ```
 
-## ⚡ CLI Scripts
+## 📦 Release Automation Scripts
 
-| Script      | Command          | Description                         |
-| ----------- | ---------------- | ----------------------------------- |
-| `cli`       | `pnpm cli`       | Run the Container Kit CLI           |
-| `cli:build` | `pnpm cli:build` | Build CLI and run interactive build |
-| `cli:help`  | `pnpm cli:help`  | Show CLI help                       |
+| Script                    | Command                        | Description                                         |
+| ------------------------- | ------------------------------ | --------------------------------------------------- |
+| `release`                 | `pnpm release`                 | Complete release workflow (build + copy to release) |
+| `release:force`           | `pnpm release:force`           | Force overwrite existing release                    |
+| `release:skip-build`      | `pnpm release:skip-build`      | Skip build step (only copy existing artifacts)      |
+| `release:skip-copy`       | `pnpm release:skip-copy`       | Skip copy step (only build)                         |
+| `release:help`            | `pnpm release:help`            | Show release script help                            |
+| `copy:build-files`        | `pnpm copy:build-files`        | Copy build artifacts to release directories         |
+| `copy:build-files:force`  | `pnpm copy:build-files:force`  | Force overwrite when copying build files            |
+| `copy:build-files:custom` | `pnpm copy:build-files:custom` | Copy with custom domain                             |
+| `copy:build-files:help`   | `pnpm copy:build-files:help`   | Show copy script help                               |
 
 ### Examples
 
 ```bash
-# Show CLI help
-pnpm cli:help
+# Complete release workflow
+pnpm release
 
-# Build for Apple Silicon (default)
-pnpm cli:build
+# Release with custom version and domain
+pnpm release -- -v 1.0.0 -d https://releases.mydomain.com
 
+# Force overwrite existing release
+pnpm release:force
 
+# Only copy existing build artifacts
+pnpm release:skip-build
+
+# Copy build files with custom settings
+pnpm copy:build-files:custom https://releases.example.com
 ```
 
 ## 🗄️ Database Scripts
@@ -137,39 +146,6 @@ pnpm migration:list
 
 # Validate migration structure
 pnpm migration:validate
-```
-
-## 📦 Release Automation Scripts
-
-| Script                    | Command                        | Description                                         |
-| ------------------------- | ------------------------------ | --------------------------------------------------- |
-| `release`                 | `pnpm release`                 | Complete release workflow (build + copy to release) |
-| `release:force`           | `pnpm release:force`           | Force overwrite existing release                    |
-| `release:skip-build`      | `pnpm release:skip-build`      | Skip build step (only copy existing artifacts)      |
-| `release:skip-copy`       | `pnpm release:skip-copy`       | Skip copy step (only build)                         |
-| `release:help`            | `pnpm release:help`            | Show release script help                            |
-| `copy:build-files`        | `pnpm copy:build-files`        | Copy build artifacts to release directories         |
-| `copy:build-files:force`  | `pnpm copy:build-files:force`  | Force overwrite when copying build files            |
-| `copy:build-files:custom` | `pnpm copy:build-files:custom` | Copy with custom domain                             |
-| `copy:build-files:help`   | `pnpm copy:build-files:help`   | Show copy script help                               |
-
-### Examples
-
-```bash
-# Complete release workflow
-pnpm release
-
-# Release with custom version and domain
-pnpm release -- -v 1.0.0 -d https://releases.mydomain.com
-
-# Force overwrite existing release
-pnpm release:force
-
-# Only copy existing build artifacts
-pnpm release:skip-build
-
-# Copy build files with custom settings
-pnpm copy:build-files:custom https://releases.example.com
 ```
 
 ### Release Documentation
@@ -223,16 +199,11 @@ pnpm migration:validate
 pnpm build
 
 # Build with CLI (Apple Silicon default)
-pnpm cli:build
-
-# Or direct Tauri build
+# Build Tauri application
 pnpm build:tauri
 
 # Complete release workflow
 pnpm release
-
-# Build only (no release packaging)
-pnpm build:tauri
 ```
 
 ### Code Quality Check
@@ -246,14 +217,14 @@ pnpm check
 
 ## 🚨 Troubleshooting
 
-### CLI Build Issues
+### Build Issues
 
 ```bash
-# Rebuild CLI
-pnpm build:cli
+# Rebuild Tauri application
+pnpm build:tauri
 
-# Check CLI status
-pnpm cli:help
+# Check script help
+pnpm build:tauri:help
 ```
 
 ### Database Issues
@@ -299,7 +270,6 @@ pnpm install
 - **🎨 Quality**: Code formatting and type checking
 - **🏗️ Build**: Compilation and bundling
 - **📦 Release**: Release automation and deployment
-- **⚡ CLI**: Container Kit CLI operations
 - **🗄️ Database**: Schema and migration management
 - **🚀 Migration**: Migration-specific operations
 
@@ -317,7 +287,6 @@ pnpm install
 This project includes comprehensive context files for AI assistants:
 
 - **`llm.txt`** - Main project architecture, tech stack, and development patterns
-- **`cli/llm.txt`** - CLI-specific architecture, Bubble Tea patterns, and command structure
 
 These files help AI assistants understand the project better and provide more accurate assistance.
 
