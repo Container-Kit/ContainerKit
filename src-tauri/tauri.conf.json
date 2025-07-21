@@ -2,7 +2,7 @@
     "$schema": "https://schema.tauri.app/config/2",
     "productName": "Container Kit",
     "mainBinaryName": "Container Kit",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "identifier": "com.container-kit",
     "build": {
         "beforeDevCommand": "pnpm dev",
@@ -25,11 +25,13 @@
         }
     },
     "bundle": {
+        "shortDescription": "GUI for apple container CLI",
         "copyright": "Copyright (c) 2025 Container Kit - MIT License",
         "licenseFile": "../LICENSE",
         "category": "DeveloperTool",
         "macOS": {
 	        "dmg": {
+				"background": "./images/background.jpg",
                 "appPosition": {
                     "x": 250,
                     "y": 200
@@ -50,7 +52,7 @@
         "resources": ["migrations/*", "icons/icon.iconset/*"],
         "createUpdaterArtifacts": true,
         "active": true,
-        "targets": ["dmg"],
+        "targets": ["dmg", "app"],
         "icon": [
             "icons/icon.png",
             "icons/icon.iconset/icon_16x16.png",

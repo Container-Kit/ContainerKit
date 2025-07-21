@@ -54,16 +54,21 @@ pnpm lint
 
 ## 🏗️ Build Scripts
 
-| Script        | Command            | Description                                    |
-| ------------- | ------------------ | ---------------------------------------------- |
-| `build:tauri` | `pnpm build:tauri` | Build Tauri application with TypeScript script |
-| `build:cli`   | `pnpm build:cli`   | Build the Go CLI binary                        |
+| Script                  | Command                      | Description                                    |
+| ----------------------- | ---------------------------- | ---------------------------------------------- |
+| `build:tauri`           | `pnpm build:tauri`           | Build Tauri application with TypeScript script |
+| `build:tauri:skip-deps` | `pnpm build:tauri:skip-deps` | Build Tauri app without dependency preparation |
+| `build:tauri:help`      | `pnpm build:tauri:help`      | Show Tauri build script help                   |
+| `build:cli`             | `pnpm build:cli`             | Build the Go CLI binary                        |
 
 ### Examples
 
 ```bash
 # Build Tauri app
 pnpm build:tauri
+
+# Build Tauri app (skip deps for faster iteration)
+pnpm build:tauri:skip-deps
 
 # Build CLI only
 pnpm build:cli
@@ -134,6 +139,49 @@ pnpm migration:list
 pnpm migration:validate
 ```
 
+## 📦 Release Automation Scripts
+
+| Script                    | Command                        | Description                                         |
+| ------------------------- | ------------------------------ | --------------------------------------------------- |
+| `release`                 | `pnpm release`                 | Complete release workflow (build + copy to release) |
+| `release:force`           | `pnpm release:force`           | Force overwrite existing release                    |
+| `release:skip-build`      | `pnpm release:skip-build`      | Skip build step (only copy existing artifacts)      |
+| `release:skip-copy`       | `pnpm release:skip-copy`       | Skip copy step (only build)                         |
+| `release:help`            | `pnpm release:help`            | Show release script help                            |
+| `copy:build-files`        | `pnpm copy:build-files`        | Copy build artifacts to release directories         |
+| `copy:build-files:force`  | `pnpm copy:build-files:force`  | Force overwrite when copying build files            |
+| `copy:build-files:custom` | `pnpm copy:build-files:custom` | Copy with custom domain                             |
+| `copy:build-files:help`   | `pnpm copy:build-files:help`   | Show copy script help                               |
+
+### Examples
+
+```bash
+# Complete release workflow
+pnpm release
+
+# Release with custom version and domain
+pnpm release -- -v 1.0.0 -d https://releases.mydomain.com
+
+# Force overwrite existing release
+pnpm release:force
+
+# Only copy existing build artifacts
+pnpm release:skip-build
+
+# Copy build files with custom settings
+pnpm copy:build-files:custom https://releases.example.com
+```
+
+### Release Documentation
+
+For detailed documentation on the release automation system, see:
+
+- **`scripts/docs/README.md`** - Complete scripts documentation overview
+- **`scripts/docs/build-and-copy-to-release.md`** - Complete release workflow
+- **`scripts/docs/build-tauri.md`** - Tauri build process
+- **`scripts/docs/copy-to-release.md`** - Release copying and packaging
+- **`scripts/docs/quick-reference.md`** - Command quick reference
+
 ## 🌟 Common Workflows
 
 ### Initial Setup
@@ -171,7 +219,6 @@ pnpm migration:validate
 ### Building for Production
 
 ```bash
-# Quick build
 # Build for production
 pnpm build
 
@@ -179,6 +226,12 @@ pnpm build
 pnpm cli:build
 
 # Or direct Tauri build
+pnpm build:tauri
+
+# Complete release workflow
+pnpm release
+
+# Build only (no release packaging)
 pnpm build:tauri
 ```
 
@@ -245,6 +298,7 @@ pnpm install
 - **🔄 Core**: Essential development commands (don't change these)
 - **🎨 Quality**: Code formatting and type checking
 - **🏗️ Build**: Compilation and bundling
+- **📦 Release**: Release automation and deployment
 - **⚡ CLI**: Container Kit CLI operations
 - **🗄️ Database**: Schema and migration management
 - **🚀 Migration**: Migration-specific operations

@@ -1,6 +1,6 @@
 [package]
 name = "ContainerKit"
-version = "0.1.0"
+version = "0.2.0"
 description = "GUI for apple container"
 authors = ["theetherGit"]
 edition = "2024"
@@ -18,6 +18,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 tokio = { version = "1.45.1", features = ["full"] }
 tauri = { version = "2", features = ["devtools", "tray-icon"] }
 serde = { version = "1", features = ["derive"] }

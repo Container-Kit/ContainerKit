@@ -4,8 +4,9 @@ version = 4
 
 [[package]]
 name = "ContainerKit"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
+ "fix-path-env",
  "serde",
  "serde_json",
  "specta",
@@ -1305,6 +1306,16 @@ dependencies = [
  "libc",
  "libredox",
  "windows-sys 0.59.0",
+]
+
+[[package]]
+name = "fix-path-env"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/fix-path-env-rs#0e479e2804edc1a7e5f15ece2b48ee30858c2838"
+dependencies = [
+ "home",
+ "strip-ansi-escapes",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -4923,6 +4934,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "strip-ansi-escapes"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a8f8038e7e7969abb3f1b7c2a811225e9296da208539e0f79c5251d6cac0025"
+dependencies = [
+ "vte",
+]
+
+[[package]]
 name = "strsim"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6320,6 +6340,15 @@ checksum = "fb067e4cbd1ff067d1df46c9194b5de0e98efd2810bbc95c5d5e5f25a3231150"
 dependencies = [
  "cc",
  "libc",
+]
+
+[[package]]
+name = "vte"
+version = "0.14.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "231fdcd7ef3037e8330d8e17e61011a2c244126acc0a982f4040ac3f9f0bc077"
+dependencies = [
+ "memchr",
 ]
 
 [[package]]
