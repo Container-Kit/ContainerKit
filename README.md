@@ -107,11 +107,6 @@ brew install --cask container
 
 For detailed IDE setup, development workflow, and code standards, see our [Contributing Guide](CONTRIBUTING.md).
 
-**Quick Setup:**
-
-- **Recommended**: [Zed](https://zed.dev/) with Svelte, Rust, and TypeScript extensions
-- **Alternative**: VS Code with Svelte, Tauri, and rust-analyzer extensions
-
 ### Download
 
 #### Option 1: Direct Download (Recommended)

@@ -59,25 +59,7 @@ Before you begin, ensure you have:
 
 ### Configuration
 
-Add to your Zed `settings.json`:
-
-```json
-{
-    "languages": {
-        "Svelte": {
-            "language_servers": ["svelte-language-server"],
-            "formatter": "prettier"
-        },
-        "Rust": {
-            "language_servers": ["rust-analyzer"]
-        }
-    },
-    "formatter": "prettier",
-    "format_on_save": true,
-    "useTabs": false,
-    "tab_size": 4
-}
-```
+Add to your Zed `.zed/settings.json`: [Zed project settings](./.zed/settings.json)
 
 ### Alternative IDEs
 
