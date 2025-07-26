@@ -7,7 +7,6 @@ export const registry = sqliteTable('registry', {
         .$defaultFn(() => uuid()),
     name: text('name').notNull().notNull(),
     url: text('url').unique().notNull(),
-    default: integer('default', { mode: 'boolean' }).default(false),
     loggedIn: integer('logged_in', { mode: 'boolean' }).default(false)
 });
 

@@ -43,6 +43,13 @@
       "when": 1753069296560,
       "tag": "0005_silent_bug",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1753193987067,
+      "tag": "0006_overjoyed_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }

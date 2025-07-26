@@ -234,17 +234,13 @@ export const container = sqliteTable('container', {
 - **Integration tests** - Test Tauri commands end-to-end
 - **Database tests** - Test schema and queries
 
-[//]: # ()
-[//]: # (### Running Tests)
-
-[//]: # ()
-[//]: # (```bash)
-
-[//]: # (# Frontend tests)
-
-[//]: # (pnpm test)
-
-[//]: # (```)
+[//]: #
+[//]: # '### Running Tests'
+[//]: #
+[//]: # '```bash'
+[//]: # '# Frontend tests'
+[//]: # 'pnpm test'
+[//]: # '```'
 
 ## 📝 Documentation Standards
 
@@ -602,7 +598,8 @@ Contributors will be recognized in:
 
 - **GitHub Discussions** - [Project Discussions](https://github.com/etherCorps/ContainerKit/discussions)
 
-[//]: # (- **Discord** - [Development Chat]&#40;https://discord.gg/containerkit&#41; &#40;if available&#41;)
+[//]: # '- **Discord** - [Development Chat](https://discord.gg/containerkit) (if available)'
+
 - **Email** - [shivam@ethercorps.io](mailto:shivam@ethercorps.io)
 
 ## 📚 Additional Resources

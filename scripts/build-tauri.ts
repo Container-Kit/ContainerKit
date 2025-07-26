@@ -55,7 +55,9 @@ function showUsage(): void {
     console.log('4. Verify build artifacts');
     console.log('');
     console.log('Options:');
-    console.log('  -v, --version VERSION      Override version (default: read from tauri.conf.json)');
+    console.log(
+        '  -v, --version VERSION      Override version (default: read from tauri.conf.json)'
+    );
     console.log('  -t, --target TARGET        Build target (default: aarch64-apple-darwin)');
     console.log('  --skip-deps                Skip dependency preparation');
     console.log('  -h, --help                 Show this help message');
@@ -134,18 +136,15 @@ function prepareDependencies(): void {
     log.success('Dependencies preparation completed successfully');
 }
 
-function buildTauri(target: string): void {
+async function buildTauri(target: string): Promise<void> {
     log.header('Building Tauri Application');
 
     // Load environment variables
     loadEnvironmentVariables();
 
     // Build Tauri app (includes frontend build automatically)
-    const buildCommand = `tauri build --target ${target}`;
-    executeCommand(
-        buildCommand,
-        `Building Tauri application for ${target} (includes frontend)`
-    );
+    const buildCommand = `source .env && TAURI_SIGNING_PRIVATE_KEY_PASSWORD=$TAURI_SIGNING_PRIVATE_KEY_PASSWORD TAURI_SIGNING_PRIVATE_KEY=$TAURI_SIGNING_PRIVATE_KEY tauri build --target ${target}`;
+    executeCommand(buildCommand, `Building Tauri application for ${target} (includes frontend)`);
 
     // Verify build artifacts
     const targetDir = path.join(
@@ -156,6 +155,8 @@ function buildTauri(target: string): void {
         'release',
         'bundle'
     );
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     if (!fs.existsSync(targetDir)) {
         log.error('Tauri build failed - target directory not found');
@@ -301,7 +302,7 @@ async function main(): Promise<void> {
         }
 
         // 3. Build Tauri app
-        buildTauri(options.target);
+        await buildTauri(options.target);
 
         // 4. Validate build artifacts
         validateBuildArtifacts(version, options.target);

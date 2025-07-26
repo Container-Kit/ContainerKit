@@ -8,5 +8,6 @@ pub fn load_migrations() -> Vec<Migration> {
         Migration { version: 3, description: "0003_adorable_eternals.sql", sql: include_str!("0003_adorable_eternals.sql"), kind: MigrationKind::Up },
         Migration { version: 4, description: "0004_lyrical_rick_jones.sql", sql: include_str!("0004_lyrical_rick_jones.sql"), kind: MigrationKind::Up },
         Migration { version: 5, description: "0005_silent_bug.sql", sql: include_str!("0005_silent_bug.sql"), kind: MigrationKind::Up },
+        Migration { version: 6, description: "0006_overjoyed_cassandra_nova.sql", sql: include_str!("0006_overjoyed_cassandra_nova.sql"), kind: MigrationKind::Up },
     ]
 }

@@ -28,24 +28,27 @@ release/
 ### Release Artifacts
 
 1. **DMG File** (`Container Kit_{version}_aarch64.dmg`)
-   - Complete installer package for new users
-   - Contains the app bundle and installation logic
-   - Used for fresh installations from website downloads
+
+    - Complete installer package for new users
+    - Contains the app bundle and installation logic
+    - Used for fresh installations from website downloads
 
 2. **App Bundle** (`Container Kit.app.tar.gz`)
-   - Compressed application bundle for automatic updates
-   - Downloaded by the Tauri updater system
-   - Verified using the accompanying signature file
+
+    - Compressed application bundle for automatic updates
+    - Downloaded by the Tauri updater system
+    - Verified using the accompanying signature file
 
 3. **Signature File** (`Container Kit.app.tar.gz.sig`)
-   - Cryptographic signature for the app bundle
-   - Generated using Tauri's minisign implementation
-   - Ensures update authenticity and integrity
+
+    - Cryptographic signature for the app bundle
+    - Generated using Tauri's minisign implementation
+    - Ensures update authenticity and integrity
 
 4. **App Directory** (`Container Kit.app/`)
-   - Uncompressed macOS application bundle
-   - Contains the complete application structure
-   - Useful for direct deployment or testing
+    - Uncompressed macOS application bundle
+    - Contains the complete application structure
+    - Useful for direct deployment or testing
 
 ## Updater Configuration
 
@@ -63,12 +66,12 @@ Update your `tauri.conf.json` with the updater endpoint:
 
 ```json
 {
-  "plugins": {
-    "updater": {
-      "endpoints": ["https://container-kit.ethercorps.io/release/{version}/update.json"],
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU3NzMwMDE5MkI4RjNGODcKUldTSFA0OHJHUUJ6Vjd2VDRnZHNFdGM0akhMd2NNSnR6dDBsQXkxRnBaYnJSQThrNnBtNDY3VkQK"
+    "plugins": {
+        "updater": {
+            "endpoints": ["https://container-kit.ethercorps.io/release/{version}/update.json"],
+            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU3NzMwMDE5MkI4RjNGODcKUldTSFA0OHJHUUJ6Vjd2VDRnZHNFdGM0akhMd2NNSnR6dDBsQXkxRnBaYnJSQThrNnBtNDY3VkQK"
+        }
     }
-  }
 }
 ```
 

@@ -8,8 +8,4 @@ export const load = async ({ url }) => {
     if (isUnsupported() && url.pathname !== '/unsupported') {
         return redirect(301, '/unsupported');
     }
-
-    if (url.pathname === '/') {
-        return redirect(301, '/containers');
-    }
 };

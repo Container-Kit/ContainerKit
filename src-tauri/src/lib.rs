@@ -2,10 +2,15 @@
 use specta_typescript::Typescript;
 use tauri_specta::{Builder, collect_commands};
 
+use crate::commands::registry::run_container_command_with_stdin;
+
+// mods
+mod commands;
+
 include!(concat!("../migrations", "/generated_migrations.rs"));
 
 #[tauri::command]
-#[specta::specta] // < You must annotate your commands
+#[specta::specta]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
@@ -14,7 +19,8 @@ fn greet(name: &str) -> String {
 pub async fn run() {
     let migrations = load_migrations();
 
-    let spectabuilder = Builder::<tauri::Wry>::new().commands(collect_commands![greet]);
+    let spectabuilder = Builder::<tauri::Wry>::new()
+        .commands(collect_commands![greet, run_container_command_with_stdin]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
     spectabuilder

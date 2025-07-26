@@ -4,7 +4,7 @@
     import Hammer from '@lucide/svelte/icons/hammer';
     import WayPoints from '@lucide/svelte/icons/waypoints';
     import Network from '@lucide/svelte/icons/network';
-    import Warehouse from '@lucide/svelte/icons/warehouse';
+    import BigLibrary from '@lucide/svelte/icons/library-big';
     const data = {
         themes: [
             {
@@ -77,7 +77,7 @@
             {
                 name: 'Registry',
                 url: '/registry',
-                icon: Warehouse,
+                icon: BigLibrary,
                 isActive: false
             }
         ]

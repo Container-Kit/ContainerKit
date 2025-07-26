@@ -11,9 +11,7 @@
                 "app_bundle": "./0.2.0/macos/Container%20Kit.app.tar.gz",
                 "app_directory": "./0.2.0/macos/Container%20Kit.app"
             },
-            "platforms": [
-                "darwin-aarch64"
-            ],
+            "platforms": ["darwin-aarch64"],
             "file_size": 7821591,
             "changelog": [
                 "Latest features and improvements",

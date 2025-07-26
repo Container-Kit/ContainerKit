@@ -17,3 +17,7 @@ vite.config.ts.timestamp-*
 # llm.txt is intentionally kept public to provide context to AI assistants
 # Add to gitignore if you prefer to keep project details private:
 # llm.txt
+
+apple-container-cli/**
+apple-container-cli/libexec/**
+apple-container-cli/bin/**

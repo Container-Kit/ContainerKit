@@ -1,16 +1,13 @@
 import { type InferInsertModel } from 'drizzle-orm';
 import { seeds, registry } from '$lib/db/schema';
-import type { Seeds } from '$lib/db/types';
 import { db } from '$lib/db';
+import type { InsertSeed, Seeds } from '$lib/models/utils';
+import type { InsertRegistry } from '$lib/models/container';
 
-type InsertRegistery = InferInsertModel<typeof registry>;
-type InsertSeed = InferInsertModel<typeof seeds>;
-
-const registries: InsertRegistery[] = [
+const registries: InsertRegistry[] = [
     {
         name: 'Docker',
-        url: 'docker.io',
-        default: true
+        url: 'docker.io'
     }
 ];
 
@@ -29,8 +26,5 @@ export async function addRegistriesSeedV1() {
         name: seedName,
         applied: true
     };
-    await db.transaction(async (tx) => {
-        tx.insert(registry).values(registries);
-        tx.insert(seeds).values(seedData);
-    });
+    await Promise.all([db.insert(registry).values(registries), db.insert(seeds).values(seedData)]);
 }
