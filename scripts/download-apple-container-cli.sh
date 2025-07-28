@@ -65,7 +65,7 @@ PKG_FILE_EXPAND_DIR="container-${VERSION}-expanded"
 # Define directories for downloading, temporary extraction, and final binaries.
 DOWNLOAD_DIR="apple-container-cli"
 EXTRACT_DIR="temp_extracted_payload"
-FINAL_BINARIES_DIR="src-tauri/binaries/sidecar/${VERSION}"
+FINAL_BINARIES_DIR="src-tauri/binaries/sidecar/apple-container/${VERSION}"
 
 # Create necessary directories
 echo "Creating directories..."
