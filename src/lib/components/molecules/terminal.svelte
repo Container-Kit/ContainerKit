@@ -8,7 +8,7 @@
 
     import { spawn } from 'tauri-pty';
 
-    let terminal: Terminal | null = $state(null);
+    let terminal: Terminal = $state();
 
     type TerminalProps = {
         class?: string;
@@ -97,3 +97,30 @@
 <div class={['terminal-container', className]}>
     <Xterm class="w-full h-full" bind:terminal {options} {onLoad} />
 </div>
+
+<style>
+    :global(.terminal-container .xterm) {
+        padding: 12px;
+    }
+
+    :global(.terminal-container .xterm-viewport) {
+        overflow-y: auto;
+    }
+
+    :global(.terminal-container .xterm-viewport::-webkit-scrollbar) {
+        width: 8px;
+    }
+
+    :global(.terminal-container .xterm-viewport::-webkit-scrollbar-track) {
+        background: transparent;
+    }
+
+    :global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb) {
+        background: hsl(var(--muted-foreground) / 0.4);
+        border-radius: 4px;
+    }
+
+    :global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb:hover) {
+        background: hsl(var(--muted-foreground) / 0.6);
+    }
+</style>
