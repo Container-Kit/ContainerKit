@@ -1,20 +1,19 @@
-import { Command } from '@tauri-apps/plugin-shell';
-import { validateCommandOutput } from '$lib/services/containerization/utils';
+import { createContainerCommand, validateCommandOutput } from '$lib/services/containerization/utils';
 
 export const getDefaultRegistry = async () => {
-    const command = Command.create('container', ['registry', 'default', 'inspect']);
+    const command = createContainerCommand( ['registry', 'default', 'inspect']);
     const output = await command.execute();
     return validateCommandOutput(output);
 };
 
 export const setDefaultRegistry = async (registry: string) => {
-    const command = Command.create('container', ['registry', 'default', 'set', registry]);
+    const command = createContainerCommand( ['registry', 'default', 'set', registry]);
     const output = await command.execute();
     return validateCommandOutput(output);
 };
 
 export const unsetDefaultRegistry = async (registry: string) => {
-    const command = Command.create('container', ['registry', 'default', 'unset', registry]);
+    const command = createContainerCommand( ['registry', 'default', 'unset', registry]);
     const output = await command.execute();
     return validateCommandOutput(output);
 };

@@ -1,4 +1,4 @@
-import type { ChildProcess } from '@tauri-apps/plugin-shell';
+import { type ChildProcess, Command } from '@tauri-apps/plugin-shell';
 import type { Output } from './models.js';
 
 export function validateCommandOutput(output: ChildProcess<string>): Output {
@@ -23,4 +23,8 @@ export function validateCommandOutput(output: ChildProcess<string>): Output {
         stderr: output.stderr,
         stdout: output.stdout
     };
+}
+
+export function createContainerCommand(args: string[]): Command<string> {
+   return  Command.create('container', args)
 }

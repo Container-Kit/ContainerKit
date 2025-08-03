@@ -1,10 +1,12 @@
 <script lang="ts">
     import type { ContainerClient } from '$lib/models/container';
-    import { onMount } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
     import ContainerList from './(components)/container-list.svelte';
     import { columns } from './(components)/columns.svelte';
     import { getAllContainers, removeContainer } from '$lib/services/containerization/containers';
     import { toast } from 'svelte-sonner';
+    import { watchContainerChanges } from '$lib/services/fs-events/containers';
+    import type { UnwatchFn } from '@tauri-apps/plugin-fs';
 
     type ErrorLog = {
         message: string;
@@ -15,25 +17,27 @@
     let allContainers: Array<ContainerClient> = $state([]);
     let runningContainers: Array<ContainerClient> = $state([]);
     let showOnlyRunningContainers = $state(false);
+    let containerChangeWatcher: UnwatchFn | null = $state(null)
     let error: ErrorLog | null = $state(null);
 
     async function getAllContainerList() {
         const output = await getAllContainers();
 
         if (output.error) {
-            error = output;
+            // error = output;
             return;
         }
 
         if (!output.stdout) {
-            error = output;
+            // error = output;
             return;
         }
 
-        const containers = JSON.parse(output.stdout) ?? [];
-        allContainers = containers;
+        allContainers = JSON.parse(output.stdout) ?? [];
+
+        console.log(allContainers);
         if (allContainers.length > 0) {
-            runningContainers = containers.filter(
+            runningContainers = allContainers.filter(
                 (container: ContainerClient) => container.status === 'running'
             );
         }
@@ -56,13 +60,20 @@
             toast.error(`Unable to delete ${id} container`);
             return;
         }
-        await getAllContainerList();
+        // await getAllContainerList();
         toast.success(`Successfully deleted ${id} container`);
     }
 
     onMount(async () => {
         await getAllContainerList();
+        containerChangeWatcher = await watchContainerChanges(getAllContainerList, 100)
     });
+
+    onDestroy(() => {
+        if (containerChangeWatcher) {
+            containerChangeWatcher()
+        }
+    })
 </script>
 
 <div class="flex flex-1 flex-col">
@@ -77,3 +88,5 @@
         </div>
     </div>
 </div>
+
+<!--<Terminal />-->

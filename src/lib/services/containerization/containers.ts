@@ -1,6 +1,5 @@
-import { Command } from '@tauri-apps/plugin-shell';
 import type { Output } from './models';
-import { validateCommandOutput } from './utils';
+import { createContainerCommand, validateCommandOutput } from './utils';
 
 export async function createContainer(name: string, image: string): Promise<void> {
     // const command = new Command(`docker create --name ${name} ${image}`);
@@ -8,29 +7,29 @@ export async function createContainer(name: string, image: string): Promise<void
 }
 
 export async function getAllContainers(): Promise<Output> {
-    const command = Command.create('container', ['ls', '-a', '--format', 'json']);
+    const command = createContainerCommand(['ls', '-a', '--format', 'json']);
     const output = await command.execute();
     return validateCommandOutput(output);
 }
 
 export async function startContainer(id: string): Promise<Output> {
-    const command = Command.create('container', ['start', id]);
+    const command = createContainerCommand(['start', id]);
     const output = await command.execute();
     return validateCommandOutput(output);
 }
 
 export async function stopContainer(id: string): Promise<Output> {
-    const command = Command.create('container', ['stop', id]);
+    const command = createContainerCommand(['stop', id]);
     const output = await command.execute();
     return validateCommandOutput(output);
 }
 
 export async function removeContainer(id: string): Promise<Output> {
-    const command = Command.create('container', ['rm', id]);
+    const command = createContainerCommand(['rm', id]);
     const output = await command.execute();
     return validateCommandOutput(output);
 }
 
 // export async function getContainerLogs(id: string): Promise<Output> {
-//     const command = Command.create('container', ['ls', id]);
+//     const command = createContainerCommand(['ls', id]);
 // }

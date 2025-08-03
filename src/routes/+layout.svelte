@@ -13,7 +13,7 @@
     import { goto } from '$app/navigation';
 
     let { children } = $props();
-    let containerizationInterval: Timeout | null = $state(null);
+    let containerizationInterval: ReturnType<typeof setInterval> | null = $state(null);
 
     if (isSupportedVersion()) {
         startContainerization();

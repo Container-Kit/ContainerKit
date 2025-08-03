@@ -1,6 +1,5 @@
-import { validateCommandOutput } from '$lib/services/containerization/utils';
+import { createContainerCommand, validateCommandOutput } from '$lib/services/containerization/utils';
 import { commands } from '$lib/models/bindings';
-import { Command } from '@tauri-apps/plugin-shell';
 import type { RegistryLoginParams, RegistryLogoutParams } from '$lib/models/container';
 
 export const registryLogin = async (options: RegistryLoginParams) => {
@@ -29,7 +28,7 @@ export const registryLogin = async (options: RegistryLoginParams) => {
 };
 
 export const registryLogout = async (options: RegistryLogoutParams) => {
-    const command = Command.create('container', ['registry', 'logout', options.registry]);
+    const command = createContainerCommand(['registry', 'logout', options.registry]);
     const output = await command.execute();
     return validateCommandOutput(output);
 }

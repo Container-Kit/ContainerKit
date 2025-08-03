@@ -54,7 +54,7 @@ set -e
 # --- Configuration ---
 # Set the version of the Apple Container CLI you want to download.
 # You will need to update this variable for new releases.
-VERSION="0.2.0"
+VERSION="0.3.0"
 
 # Set the URL and filename for the signed installer package.
 PKG_URL="https://github.com/apple/container/releases/download/${VERSION}/container-${VERSION}-installer-signed.pkg"
@@ -65,7 +65,7 @@ PKG_FILE_EXPAND_DIR="container-${VERSION}-expanded"
 # Define directories for downloading, temporary extraction, and final binaries.
 DOWNLOAD_DIR="apple-container-cli"
 EXTRACT_DIR="temp_extracted_payload"
-FINAL_BINARIES_DIR="src-tauri/binaries/sidecar/apple-container/${VERSION}"
+FINAL_BINARIES_DIR="src-tauri/binaries/sidecar/apple-container"
 
 # Create necessary directories
 echo "Creating directories..."

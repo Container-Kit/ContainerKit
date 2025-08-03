@@ -55,7 +55,15 @@
           "args": true
         }
       ]
-    }
+    },
+    "fs:default",
+    "fs:allow-data-read-recursive",
+    "fs:allow-data-read",
+    {
+        "identifier": "fs:allow-exists",
+        "allow": [{ "path": "$DATA/*" }]
+    },
+    "pty:allow-spawn", "pty:default"
   ],
   "platforms": [
     "macOS"

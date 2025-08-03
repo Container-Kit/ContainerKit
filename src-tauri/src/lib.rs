@@ -28,7 +28,8 @@ pub async fn run() {
         .expect("Failed to export typescript bindings");
 
     #[cfg(debug_assertions)]
-    let builder = tauri::Builder::default().plugin(tauri_plugin_devtools::init());
+    let builder = tauri::Builder::default()
+        .plugin(tauri_plugin_devtools::init());
     #[cfg(not(debug_assertions))]
     let builder = tauri::Builder::default();
 
@@ -36,6 +37,7 @@ pub async fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_pty::init())
         .plugin(tauri_plugin_window_state::Builder::new().build())
         //         .plugin(tauri_plugin_persisted_scope::init())
         .plugin(tauri_plugin_clipboard_manager::init())
@@ -46,6 +48,7 @@ pub async fn run() {
                 .add_migrations("sqlite:container-kit.db", migrations)
                 .build(),
         )
+        .plugin(tauri_plugin_fs::init())
         .invoke_handler(spectabuilder.invoke_handler())
         .setup(move |app| {
             spectabuilder.mount_events(app);
