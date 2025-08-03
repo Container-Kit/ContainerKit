@@ -7,11 +7,15 @@
     } from '@battlefieldduck/xterm-svelte';
 
     import { spawn } from 'tauri-pty';
+    import { onDestroy } from 'svelte';
 
-    let terminal: Terminal = $state();
+    let terminal: Terminal;
+    let ptyProcess: ReturnType<typeof spawn>;
 
     type TerminalProps = {
         class?: string;
+        sessionId?: string;
+        onPtyCreated?: (ptyProcess: any) => void;
     };
 
     let options: ITerminalOptions & ITerminalInitOnlyOptions = {
@@ -55,28 +59,33 @@
             setTimeout(() => fitAddon.fit(), 100);
 
             // Create PTY process
-            const pty = spawn('zsh', [], {
+            ptyProcess = spawn('zsh', [], {
                 cols: terminal?.cols || 80,
                 rows: terminal?.rows || 24
             });
 
+            // Notify parent component about PTY creation
+            if (onPtyCreated) {
+                onPtyCreated(ptyProcess);
+            }
+
             // Handle data flow
-            pty.onData((data) => {
+            ptyProcess.onData((data) => {
                 if (terminal) {
                     terminal.write(data);
                 }
             });
 
-            terminal?.onData((data) => {
-                if (pty) {
-                    pty.write(data);
+            terminal.onData((data) => {
+                if (ptyProcess) {
+                    ptyProcess.write(data);
                 }
             });
 
             // Handle resize events
-            terminal?.onResize(({ cols, rows }) => {
-                if (pty) {
-                    pty.resize(cols, rows);
+            terminal.onResize(({ cols, rows }) => {
+                if (ptyProcess) {
+                    ptyProcess.resize(cols, rows);
                 }
             });
 
@@ -91,14 +100,26 @@
         }
     }
 
-    let { class: className }: TerminalProps = $props();
+    let { class: className, sessionId, onPtyCreated }: TerminalProps = $props();
+
+    // Cleanup PTY process when component is destroyed
+    onDestroy(() => {
+        if (ptyProcess) {
+            try {
+                ptyProcess.kill();
+                console.log(`Cleaned up PTY process for session: ${sessionId || 'unknown'}`);
+            } catch (error) {
+                console.warn(`Failed to cleanup PTY process:`, error);
+            }
+        }
+    });
 </script>
 
 <div class={['terminal-container', className]}>
     <Xterm class="w-full h-full" bind:terminal {options} {onLoad} />
 </div>
 
-<style>
+<style lang="css">
     :global(.terminal-container .xterm) {
         padding: 12px;
     }

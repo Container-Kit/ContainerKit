@@ -1,15 +1,32 @@
 <script lang="ts">
-    import { Button } from '$lib/components/ui/button';
     import Terminal from '$lib/components/molecules/terminal.svelte';
-    import { Terminal as TerminalIcon, X, Minimize2 } from '@lucide/svelte';
+    import TerminalHeader from '$lib/components/molecules/terminal/header.svelte';
+    import TabsBar from '$lib/components/molecules/terminal/tabs-bar.svelte';
+    import TerminalFooter from '$lib/components/molecules/terminal/footer.svelte';
+
+    type TerminalSession = {
+        id: string;
+        title: string;
+        active: boolean;
+        editing: boolean;
+        ptyProcess?: any;
+    };
 
     let open = $state(false);
     let minimized = $state(false);
+    let sessions = $state<TerminalSession[]>([]);
+    let activeSessionId = $state<string | null>(null);
+
+    // Inline editing state
+    let editingValue = $state('');
 
     function handleToggleTerminal() {
         if (!open) {
             open = true;
             minimized = false;
+            if (sessions.length === 0) {
+                createNewSession();
+            }
         } else {
             open = false;
         }
@@ -23,10 +40,124 @@
         open = false;
         minimized = false;
     }
+
+    function createNewSession() {
+        // Find the next available terminal number
+        const existingSession = new Set(
+            sessions
+                .map((session) => {
+                    const match = session.title.match(/^Terminal (\d+)$/);
+                    return match ? parseInt(match[1], 10) : 0;
+                })
+                .filter((num) => num > 0)
+        );
+
+        let nextSession = 1;
+        while (existingSession.has(nextSession)) {
+            nextSession++;
+        }
+
+        const newSession: TerminalSession = {
+            id: `terminal-${Date.now()}-${nextSession}`,
+            title: `Terminal ${nextSession}`,
+            active: true,
+            editing: false
+        };
+
+        // Set all existing sessions to inactive and not editing
+        sessions = sessions.map((session) => ({ ...session, active: false, editing: false }));
+
+        // Add new session
+        sessions = [...sessions, newSession];
+        activeSessionId = newSession.id;
+    }
+
+    function switchToSession(sessionId: string) {
+        // Don't switch if currently editing
+        if (sessions.some((s) => s.editing)) return;
+
+        sessions = sessions.map((session) => ({
+            ...session,
+            active: session.id === sessionId
+        }));
+        activeSessionId = sessionId;
+    }
+
+    function closeSession(sessionId: string) {
+        // Find the session and cleanup its PTY process
+        const session = sessions.find((s) => s.id === sessionId);
+        if (session?.ptyProcess) {
+            try {
+                session.ptyProcess.kill();
+                console.log(`Closed PTY process for session: ${sessionId}`);
+            } catch (error) {
+                console.warn(`Failed to close PTY process for session ${sessionId}:`, error);
+            }
+        }
+
+        const sessionIndex = sessions.findIndex((s) => s.id === sessionId);
+        sessions = sessions.filter((s) => s.id !== sessionId);
+
+        if (sessions.length === 0) {
+            activeSessionId = null;
+            open = false;
+            minimized = false;
+        } else if (sessionId === activeSessionId) {
+            // Switch to previous session or first available
+            const newActiveIndex = Math.max(0, sessionIndex - 1);
+            const newActiveSession = sessions[newActiveIndex];
+            switchToSession(newActiveSession.id);
+        }
+    }
+
+    function startEditing(sessionId: string) {
+        const session = sessions.find((s) => s.id === sessionId);
+        if (session) {
+            // Cancel any other editing sessions
+            sessions = sessions.map((s) => ({ ...s, editing: false }));
+
+            // Start editing this session
+            sessions = sessions.map((s) => (s.id === sessionId ? { ...s, editing: true } : s));
+            editingValue = session.title;
+        }
+    }
+
+    function saveEdit(sessionId: string) {
+        if (editingValue.trim()) {
+            sessions = sessions.map((s) =>
+                s.id === sessionId ? { ...s, title: editingValue.trim(), editing: false } : s
+            );
+        } else {
+            cancelEdit(sessionId);
+        }
+        editingValue = '';
+    }
+
+    function cancelEdit(sessionId: string) {
+        sessions = sessions.map((s) => (s.id === sessionId ? { ...s, editing: false } : s));
+        editingValue = '';
+    }
+
+    function handleKeydown(event: KeyboardEvent, sessionId: string) {
+        if (event.key === 'Enter') {
+            saveEdit(sessionId);
+        } else if (event.key === 'Escape') {
+            cancelEdit(sessionId);
+        }
+    }
+
+    function handleEditValueChange(value: string) {
+        editingValue = value;
+    }
+
+    function setPtyProcess(sessionId: string, ptyProcess: any) {
+        sessions = sessions.map((s) => (s.id === sessionId ? { ...s, ptyProcess } : s));
+    }
 </script>
 
 <!-- Terminal Container -->
 <div class="flex flex-col w-full">
+    <!-- Terminal Content - Always mounted but visibility controlled -->
     <div
         class="bg-background border border-border rounded-t-xl overflow-hidden transition-all duration-300 shadow-lg {open
             ? minimized
@@ -34,80 +165,58 @@
                 : 'opacity-100 translate-y-0 max-h-[60vh] pointer-events-auto'
             : 'opacity-0 translate-y-4 max-h-0 border-0 min-h-0 pointer-events-none'}"
     >
-        <div class="flex items-center justify-between bg-muted px-4 py-2 border-b border-border">
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-2">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        class="w-3 h-3 bg-destructive rounded-full hover:bg-destructive/80 transition-colors"
-                        onclick={handleClose}
-                        title="Close"
-                    ></Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        class="w-3 h-3 bg-yellow-500 dark:bg-yellow-600 rounded-full hover:bg-yellow-400 dark:hover:bg-yellow-500 transition-colors"
-                        onclick={handleMinimize}
-                        title="Minimize"
-                    ></Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        class="w-3 h-3 bg-emerald-500 dark:bg-emerald-600 rounded-full hover:bg-emerald-400 dark:hover:bg-emerald-500 transition-colors"
-                    ></Button>
-                </div>
-                <div class="flex items-center gap-2">
-                    <TerminalIcon size={16} class="text-primary" />
-                    <span class="text-sm font-medium text-foreground">Terminal</span>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    class="h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
-                    onclick={handleMinimize}
-                >
-                    <Minimize2 size={12} />
-                </Button>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    class="h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
-                    onclick={handleClose}
-                >
-                    <X size={12} />
-                </Button>
-            </div>
-        </div>
+        <!-- Terminal Header -->
+        <TerminalHeader
+            onClose={handleClose}
+            onMinimize={handleMinimize}
+            onNewTab={createNewSession}
+        />
+
+        <!-- Terminal Tabs -->
+        {#if !minimized}
+            <TabsBar
+                {sessions}
+                {editingValue}
+                onTabSelect={switchToSession}
+                onTabEdit={startEditing}
+                onTabSave={saveEdit}
+                onTabCancel={cancelEdit}
+                onTabClose={closeSession}
+                onEditValueChange={handleEditValueChange}
+                onKeydown={handleKeydown}
+                onNewTab={createNewSession}
+            />
+        {/if}
 
         <!-- Terminal Body -->
         <div class="bg-background {minimized ? 'hidden' : 'block'}">
-            <Terminal class="min-h-[40vh] max-h-[55vh] w-full" />
+            {#each sessions as session (session.id)}
+                <div
+                    class="terminal-session {session.active ? 'block' : 'hidden'}"
+                    data-session-id={session.id}
+                >
+                    <Terminal
+                        class="min-h-[50vh] max-h-[55vh]"
+                        sessionId={session.id}
+                        onPtyCreated={(ptyProcess) => setPtyProcess(session.id, ptyProcess)}
+                    />
+                </div>
+            {/each}
         </div>
     </div>
 
-    <div
-        class="flex flex-row items-center gap-x-2 bg-card px-4 py-2 border border-border transition-all rounded-b-xl duration-300 {open &&
-        !minimized
-            ? ' border-t-0'
-            : ''}"
-    >
-        <Button
-            variant="ghost"
-            class="rounded-xl gap-2 text-muted-foreground hover:text-foreground hover:bg-muted"
-            onclick={handleToggleTerminal}
-        >
-            <TerminalIcon size={16} />
-            Terminal
-        </Button>
-
-        <div class="flex-1"></div>
-
-        <div class="flex items-center gap-4 text-xs text-muted-foreground">
-            <span>ContainerKit v1.0</span>
-            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" title="Connected"></div>
-        </div>
-    </div>
+    <!-- Footer Bar -->
+    <TerminalFooter
+        isOpen={open}
+        isMinimized={minimized}
+        sessionCount={sessions.length}
+        onToggle={handleToggleTerminal}
+    />
 </div>
+
+<style>
+    .terminal-session {
+        min-height: 50vh;
+        max-height: 55vh;
+    }
+</style>
