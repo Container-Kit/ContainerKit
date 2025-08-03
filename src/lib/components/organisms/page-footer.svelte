@@ -2,7 +2,7 @@
     import Terminal from '$lib/components/molecules/terminal.svelte';
     import TerminalHeader from '$lib/components/molecules/terminal/header.svelte';
     import TabsBar from '$lib/components/molecules/terminal/tabs-bar.svelte';
-    import TerminalFooter from '$lib/components/molecules/terminal/footer.svelte';
+    import TerminalPageFooterActions from '$lib/components/molecules/page-footer-actions.svelte';
 
     type TerminalSession = {
         id: string;
@@ -162,7 +162,7 @@
         class="bg-background border border-border rounded-t-xl overflow-hidden transition-all duration-300 shadow-lg {open
             ? minimized
                 ? 'opacity-100 translate-y-0 max-h-12 pointer-events-auto'
-                : 'opacity-100 translate-y-0 max-h-[60vh] pointer-events-auto'
+                : 'opacity-100 translate-y-0 max-h-[40vh] pointer-events-auto'
             : 'opacity-0 translate-y-4 max-h-0 border-0 min-h-0 pointer-events-none'}"
     >
         <!-- Terminal Header -->
@@ -196,7 +196,7 @@
                     data-session-id={session.id}
                 >
                     <Terminal
-                        class="min-h-[50vh] max-h-[55vh]"
+                        class="min-h-[30vh] max-h-[40vh]"
                         sessionId={session.id}
                         onPtyCreated={(ptyProcess) => setPtyProcess(session.id, ptyProcess)}
                     />
@@ -206,7 +206,7 @@
     </div>
 
     <!-- Footer Bar -->
-    <TerminalFooter
+    <TerminalPageFooterActions
         isOpen={open}
         isMinimized={minimized}
         sessionCount={sessions.length}

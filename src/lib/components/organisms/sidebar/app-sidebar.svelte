@@ -88,7 +88,7 @@
     import NavGroup from './nav-group.svelte';
     import * as Sidebar from '$lib/components/ui/sidebar';
     import type { ComponentProps } from 'svelte';
-    import ThemeSwitcher from '$lib/components/atoms/theme-switcher.svelte';
+    import ThemeSwitcher from '$lib/components/molecules/theme-switcher.svelte';
     import { mode, setMode, setTheme, theme } from 'mode-watcher';
     import Moon from '@lucide/svelte/icons/moon';
     import Sun from '@lucide/svelte/icons/sun';

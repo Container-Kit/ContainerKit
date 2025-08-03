@@ -56,12 +56,12 @@
             }
 
             // Fit terminal to container
-            setTimeout(() => fitAddon.fit(), 100);
+            setTimeout(() => fitAddon.fit(), 10);
 
             // Create PTY process
             ptyProcess = spawn('zsh', [], {
-                cols: terminal?.cols || 80,
-                rows: terminal?.rows || 24
+                cols: terminal?.cols,
+                rows: terminal?.rows
             });
 
             // Notify parent component about PTY creation
@@ -89,7 +89,10 @@
                 }
             });
 
-            setTimeout(() => terminal?.focus(), 200);
+            // Access running container shell
+            // ptyProcess.write('container exec -it redis-2 sh \r')
+
+            setTimeout(() => terminal?.focus(), 100);
         } catch (error) {
             console.error('Terminal initialization failed:', error);
             if (terminal) {
