@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/state';
-    import PageFooter from '$lib/components/organisms/page-footer.svelte';
+    import Toolbar from '$lib/components/organisms/toolbar.svelte';
     import AppSidebar from '$lib/components/organisms/sidebar/app-sidebar.svelte';
     import SiteHeader from '$lib/components/organisms/sidebar/site-header.svelte';
     import * as Sidebar from '$lib/components/ui/sidebar';
@@ -20,9 +20,7 @@
             <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
                 {@render children()}
             </div>
-            <div class="rounded-b-xl w-full">
-                <PageFooter />
-            </div>
+            <Toolbar />
         </Sidebar.Inset>
     </Sidebar.Provider>
 </div>
