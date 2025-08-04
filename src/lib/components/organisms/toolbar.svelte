@@ -25,7 +25,7 @@
     let editingValue = $state('');
     let version = $state('0.0.0');
     let appName = $state('Container Kit');
-    let DEFAULT_BOTTOM_TOOLBAR_POSITION = 8
+    let DEFAULT_BOTTOM_TOOLBAR_POSITION = 8;
     // Dragging and positioning state
     let isDragging = $state(false);
     let dragStartY = $state(0);
@@ -51,6 +51,7 @@
                 toolbarBottom = Math.min(position, window.innerHeight - 100);
             }
         }
+        console.log(savedPosition, toolbarBottom);
     });
 
     onDestroy(() => {
@@ -201,7 +202,10 @@
         const windowHeight = window.innerHeight;
         const toolbarHeight = toolbarElement?.offsetHeight || 100;
         const maxBottom = windowHeight - toolbarHeight - DEFAULT_BOTTOM_TOOLBAR_POSITION;
-        const newBottom = Math.max(DEFAULT_BOTTOM_TOOLBAR_POSITION, Math.min(maxBottom, dragStartBottom + deltaY));
+        const newBottom = Math.max(
+            DEFAULT_BOTTOM_TOOLBAR_POSITION,
+            Math.min(maxBottom, dragStartBottom + deltaY)
+        );
         toolbarBottom = newBottom;
 
         // Save position during drag
@@ -229,7 +233,10 @@
             resetPosition();
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
-            const newBottom = Math.min(window.innerHeight - 100, toolbarBottom + 10);
+            const windowHeight = window.innerHeight;
+            const toolbarHeight = toolbarElement?.offsetHeight || 100;
+            const maxBottom = windowHeight - toolbarHeight - DEFAULT_BOTTOM_TOOLBAR_POSITION;
+            const newBottom = Math.min(maxBottom, toolbarBottom + 10);
             toolbarBottom = newBottom;
             localStorage.setItem(STORAGE_KEY, newBottom.toString());
         } else if (event.key === 'ArrowDown') {
@@ -249,43 +256,24 @@
             : 'calc(100vw - var(--sidebar-width-icon) - 3rem)';
     });
 
-    // Calculate responsive left offset - align toolbar with the inset content area
+    // Calculate responsive left offset - maintain same ratio for both states
     let toolbarLeft = $derived.by(() => {
-        // Start from sidebar width, add margins and padding
+        // Calculate the inset content area start position
+        // Both states should align the same way relative to their content area
         return sidebar.state === 'expanded'
             ? 'calc(var(--sidebar-width) + 1rem)'
-            : 'calc(var(--sidebar-width-icon) + 1.5rem)';
+            : 'calc(var(--sidebar-width-icon) + 2rem)';
     });
 </script>
-
-<!-- Drag Guide Lines -->
-{#if showDragGuide}
-    <div class="fixed inset-0 z-40 pointer-events-none">
-        <!-- Top constraint line -->
-        <div
-            class="absolute left-0 right-0 h-px opacity-70"
-            style={`bottom: ${window.innerHeight - (toolbarElement?.offsetHeight || 100) - 20}px;`}
-        ></div>
-        <!-- Bottom constraint line -->
-        <div class="absolute left-0 right-0 bottom-2 h-px bg-primary/30 opacity-70"></div>
-        <!-- Current position indicator -->
-        <div
-            class="absolute right-4 px-2 py-1 bg-primary text-primary-foreground text-xs rounded-md font-mono shadow-md"
-            style={`bottom: ${toolbarBottom + (toolbarElement?.offsetHeight || 100) / 2}px;`}
-        >
-            {Math.round(toolbarBottom)}px
-        </div>
-    </div>
-{/if}
 
 <!-- Floating Toolbar Container -->
 <div
     bind:this={toolbarElement}
     class={cn(
         'toolbar-container fixed z-50 flex flex-col',
-        isDragging && 'select-none cursor-grabbing shadow-2xl scale-[1.01]',
-        !isDragging && 'cursor-grab hover:shadow-xl transition-all duration-200',
-        showDragGuide && 'ring-2'
+        isDragging && 'select-none cursor-grabbing shadow-2xl',
+        !isDragging && 'hover:shadow-xl transition-all duration-200',
+        showDragGuide && 'ring-2 ring-primary/30 ring-offset-2'
     )}
     style={`
         bottom: ${toolbarBottom}px;
@@ -294,7 +282,6 @@
         transition: ${isDragging ? 'none' : 'left 200ms cubic-bezier(0.4, 0, 0.2, 1), width 200ms cubic-bezier(0.4, 0, 0.2, 1)'};
     `}
 >
-
     <!-- Terminal Content -->
     <div
         class={cn(
@@ -307,12 +294,37 @@
                 : 'opacity-0 translate-y-4 max-h-0 border-0 min-h-0 pointer-events-none'
         )}
     >
-        <!-- Terminal Header -->
-        <TerminalHeader
-            onClose={handleClose}
-            onMinimize={handleMinimize}
-            onNewTab={createNewSession}
-        />
+        <!-- Terminal Header with Drag Handle -->
+        <div
+            class={cn(
+                'cursor-grab active:cursor-grabbing transition-all duration-200 group',
+                'hover:bg-muted/30 rounded-t-xl -m-px p-px relative',
+                isDragging && 'bg-muted/40'
+            )}
+            onmousedown={handleDragStart}
+            ondblclick={resetPosition}
+            onkeydown={handleDragKeydown}
+            role="button"
+            tabindex="0"
+            aria-label="Drag to move toolbar • Double-click to reset position"
+            title="Drag terminal to move • Double-click to reset position"
+        >
+            <!-- Subtle drag indicator dots -->
+            <div
+                class="absolute top-1 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-50 transition-opacity duration-200"
+            >
+                <div class="flex gap-1">
+                    <div class="w-1 h-1 bg-muted-foreground rounded-full"></div>
+                    <div class="w-1 h-1 bg-muted-foreground rounded-full"></div>
+                    <div class="w-1 h-1 bg-muted-foreground rounded-full"></div>
+                </div>
+            </div>
+            <TerminalHeader
+                onClose={handleClose}
+                onMinimize={handleMinimize}
+                onNewTab={createNewSession}
+            />
+        </div>
 
         <!-- Terminal Tabs -->
         {#if !minimized}
@@ -357,8 +369,7 @@
             'shadow-lg transition-all duration-300 ease-out ring-1 ring-ring/5',
             'px-2 py-2 sm:px-4',
             open ? 'rounded-b-xl' : 'rounded-2xl',
-            open && !minimized && 'border-t-0 rounded-b-xl',
-            sidebar.state === 'collapsed' && 'justify-center px-1'
+            open && !minimized && 'border-t-0 rounded-b-xl'
         )}
     >
         <!-- Drag Handle -->
@@ -366,8 +377,7 @@
             class={cn(
                 'flex items-center justify-center p-1 rounded-md cursor-grab hover:bg-muted/50',
                 'transition-colors duration-200 select-none',
-                isDragging && 'cursor-grabbing bg-muted',
-                sidebar.state === 'collapsed' && 'order-last'
+                isDragging && 'cursor-grabbing bg-muted/70'
             )}
             onmousedown={handleDragStart}
             ondblclick={resetPosition}
@@ -377,7 +387,13 @@
             aria-label="Drag to move toolbar"
             onkeydown={handleDragKeydown}
         >
-            <GripVertical size={14} class="text-muted-foreground" />
+            <GripVertical
+                size={14}
+                class={cn(
+                    'text-muted-foreground transition-colors',
+                    isDragging && 'text-foreground'
+                )}
+            />
         </div>
 
         <!-- Terminal Toggle Button -->
@@ -385,22 +401,17 @@
             variant="ghost"
             class={cn(
                 'rounded-lg gap-2 text-muted-foreground hover:text-foreground hover:bg-muted/50',
-                'transition-all duration-200 relative flex items-center',
-                sidebar.state === 'collapsed' && 'min-w-10 justify-center px-2 gap-0'
+                'transition-all duration-200 relative flex items-center'
             )}
             onclick={handleToggleTerminal}
         >
             <TerminalIcon size={16} />
-            {#if sidebar.state === 'expanded'}
-                <span class="hidden xs:inline text-sm">Terminal</span>
-                <SessionBadge count={sessions.length} />
-            {:else}
-                <SessionBadge count={sessions.length} class="absolute -top-1 -right-1" />
-            {/if}
+            <span class="hidden xs:inline text-sm">Terminal</span>
+            <SessionBadge count={sessions.length} />
         </Button>
 
         <!-- Minimize/Maximize Button (only shown when terminal is open) -->
-        {#if open && sidebar.state === 'expanded'}
+        {#if open}
             <Button
                 variant="ghost"
                 size="sm"
@@ -417,25 +428,16 @@
         {/if}
 
         <!-- Spacer -->
-        {#if sidebar.state === 'expanded'}
-            <div class="flex-1"></div>
-        {/if}
+        <div class="flex-1"></div>
 
         <!-- App Info and Status -->
-        {#if sidebar.state === 'expanded'}
-            <div class="flex items-center gap-2 text-xs text-muted-foreground">
-                <span class="hidden md:inline truncate max-w-32">{appName} v{version}</span>
-                <div
-                    class="w-2 h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"
-                    title="Connected"
-                ></div>
-            </div>
-        {:else}
+        <div class="flex items-center gap-2 text-xs text-muted-foreground">
+            <span class="hidden md:inline truncate max-w-32">{appName} v{version}</span>
             <div
-                class="w-3 h-3 bg-green-500 rounded-full animate-pulse flex-shrink-0"
+                class="w-2 h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"
                 title="Connected"
             ></div>
-        {/if}
+        </div>
     </div>
 </div>
 
@@ -474,9 +476,10 @@
             0 4px 6px -2px hsl(var(--shadow) / 0.05);
     }
 
-    /* Ensure toolbar maintains proper size constraints */
+    /* Ensure toolbar maintains proper size constraints and stays within bounds */
     .toolbar-container {
-        min-width: 300px;
+        min-width: 200px;
         max-width: calc(100vw - 2rem);
+        contain: layout;
     }
 </style>
