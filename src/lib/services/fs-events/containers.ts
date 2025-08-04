@@ -1,5 +1,9 @@
 import { watchContainerDataDir } from '$lib/services/fs-events/watch';
-import { isCreateEvent, isRemoveEvent, isDataModifyEvent } from '$lib/services/fs-events/utils';
+import {
+    isCreateEvent,
+    isRemoveEvent,
+    isDataModifyEvent
+} from '$lib/services/fs-events/utils';
 import type { UnwatchFn, WatchEvent } from '@tauri-apps/plugin-fs';
 
 /**
@@ -22,6 +26,7 @@ export async function watchContainerChanges(
                 }
             }
         },
-        delayMs
+        delayMs,
+        true
     );
 }

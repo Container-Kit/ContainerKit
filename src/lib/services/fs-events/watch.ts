@@ -7,7 +7,8 @@ import { CONTAINER_APP_DATA_DIR } from '$lib/helpers/constants';
 async function createManagedWatcher(
     fullPath: string,
     callback: (event: WatchEvent) => void | Promise<void>,
-    delayMs: number
+    delayMs: number,
+    recursive: boolean = false
 ): Promise<UnwatchFn> {
     try {
         const unwatchFn = watch(
@@ -21,7 +22,8 @@ async function createManagedWatcher(
             },
             {
                 baseDir: BaseDirectory.Data,
-                delayMs
+                delayMs,
+                recursive
             }
         );
 
@@ -41,8 +43,9 @@ async function createManagedWatcher(
 export async function watchContainerDataDir(
     path: string,
     callback: (event: WatchEvent) => void | Promise<void>,
-    delayMs: number = 1000
+    delayMs: number = 1000,
+    recursive: boolean = false
 ): Promise<UnwatchFn> {
     const fullPath = `${CONTAINER_APP_DATA_DIR}/${path}`;
-    return createManagedWatcher(fullPath, callback, delayMs);
+    return createManagedWatcher(fullPath, callback, delayMs, recursive);
 }

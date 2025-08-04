@@ -71,6 +71,11 @@ export function columns({
                 `${row.configuration.hostname}${row.configuration?.dns?.domain === null || row.configuration?.dns?.domain === undefined ? '' : `.${row.configuration.dns.domain}`}`
         },
         {
+            id: 'network',
+            header: 'Network',
+            accessorFn: (row) => row.networks?.length > 0 ? row.networks?.map((network ) => network.address?.split('/')?.[0]).join(', ') : 'N/A'
+        },
+        {
             id: 'actions',
             header: 'Actions',
             cell: ({ row }) => {

@@ -156,7 +156,7 @@
 </script>
 
 <!-- Terminal Container -->
-<div class="flex flex-col ">
+<div class="flex flex-col">
     <!-- Terminal Content - Always mounted but visibility controlled -->
     <div
         class="bg-background border border-border rounded-t-xl overflow-hidden transition-all duration-300 shadow-lg {open

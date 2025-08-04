@@ -1,6 +1,7 @@
 <script lang="ts">
     import { cn, type WithElementRef } from '$lib/utils.js';
     import type { HTMLAttributes } from 'svelte/elements';
+    import { fade, slide } from 'svelte/transition';
 
     let {
         ref = $bindable(null),
@@ -18,6 +19,7 @@
         className
     )}
     {...restProps}
+    transition:slide
 >
     {@render children?.()}
 </tr>

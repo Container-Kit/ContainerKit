@@ -64,7 +64,7 @@
 
     onMount(async () => {
         await getAllContainerList();
-        containerChangeWatcher = await watchContainerChanges(getAllContainerList, 100)
+        containerChangeWatcher = await watchContainerChanges(getAllContainerList, 500)
     });
 
     onDestroy(() => {

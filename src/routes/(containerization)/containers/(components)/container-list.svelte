@@ -173,19 +173,21 @@
                 </Table.Header>
                 <Table.Body>
                     {#each table.getRowModel().rows as row (row.id)}
-                        <Table.Row
-                            data-state={row.getIsSelected() && 'selected'}
-                            class="table-animate"
-                        >
-                            {#each row.getVisibleCells() as cell (cell.id)}
-                                <Table.Cell>
-                                    <FlexRender
-                                        content={cell.column.columnDef.cell}
-                                        context={cell.getContext()}
-                                    />
-                                </Table.Cell>
-                            {/each}
-                        </Table.Row>
+                        {#key row.id}
+                            <Table.Row
+                                data-state={row.getIsSelected() && 'selected'}
+                                class="table-animate"
+                            >
+                                {#each row.getVisibleCells() as cell (cell.id)}
+                                    <Table.Cell>
+                                        <FlexRender
+                                            content={cell.column.columnDef.cell}
+                                            context={cell.getContext()}
+                                        />
+                                    </Table.Cell>
+                                {/each}
+                            </Table.Row>
+                        {/key}
                     {:else}
                         <Table.Row>
                             <Table.Cell colspan={columns.length} class="h-24 text-center">

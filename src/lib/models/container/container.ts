@@ -2,7 +2,7 @@ import type { ContainerImage } from '$lib/models/container/image';
 
 export type ContainerClient = {
     configuration: ContainerConfiguration;
-    networks: string[]; // This seems to be a duplicate or distinct from configuration.networks
+    networks: NetworkAttachment[]; // This seems to be a duplicate or distinct from configuration.networks
     status: 'running' | 'stopped';
 };
 
@@ -54,3 +54,13 @@ export type ContainerDNS = {
     domain: string;
     nameservers: string[];
 };
+
+export type NetworkAttachment = {
+     network: string
+    /// The hostname associated with the attachment.
+    hostname: string
+    /// The subnet CIDR, where the address is the container interface IPv4 address.
+    address: string
+    /// The IPv4 gateway address.
+    gateway: string
+}

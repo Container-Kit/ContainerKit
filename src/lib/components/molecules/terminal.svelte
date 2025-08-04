@@ -9,7 +9,7 @@
     import { spawn } from 'tauri-pty';
     import { onDestroy } from 'svelte';
 
-    let terminal: Terminal;
+    let terminal: Terminal | null = $state(null);
     let ptyProcess: ReturnType<typeof spawn>;
 
     type TerminalProps = {
