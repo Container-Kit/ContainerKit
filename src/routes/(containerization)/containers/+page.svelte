@@ -34,8 +34,6 @@
         }
 
         allContainers = JSON.parse(output.stdout) ?? [];
-
-        console.log(allContainers);
         if (allContainers.length > 0) {
             runningContainers = allContainers.filter(
                 (container: ContainerClient) => container.status === 'running'

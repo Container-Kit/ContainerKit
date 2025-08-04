@@ -156,13 +156,13 @@
 </script>
 
 <!-- Terminal Container -->
-<div class="flex flex-col w-full">
+<div class="flex flex-col ">
     <!-- Terminal Content - Always mounted but visibility controlled -->
     <div
         class="bg-background border border-border rounded-t-xl overflow-hidden transition-all duration-300 shadow-lg {open
             ? minimized
                 ? 'opacity-100 translate-y-0 max-h-12 pointer-events-auto'
-                : 'opacity-100 translate-y-0 max-h-[40vh] pointer-events-auto'
+                : 'opacity-100 translate-y-0 max-h-[52vh] pointer-events-auto'
             : 'opacity-0 translate-y-4 max-h-0 border-0 min-h-0 pointer-events-none'}"
     >
         <!-- Terminal Header -->
@@ -192,11 +192,11 @@
         <div class="bg-background {minimized ? 'hidden' : 'block'}">
             {#each sessions as session (session.id)}
                 <div
-                    class="terminal-session {session.active ? 'block' : 'hidden'}"
+                    class="terminal-session h-full w-full {session.active ? 'block' : 'hidden'}"
                     data-session-id={session.id}
                 >
                     <Terminal
-                        class="min-h-[30vh] max-h-[40vh]"
+                        class="min-h-[30vh] max-h-[50vh] scroll-pb-10"
                         sessionId={session.id}
                         onPtyCreated={(ptyProcess) => setPtyProcess(session.id, ptyProcess)}
                     />
@@ -215,8 +215,8 @@
 </div>
 
 <style>
-    .terminal-session {
-        min-height: 50vh;
-        max-height: 55vh;
-    }
+    /*.terminal-session {*/
+    /*    min-height: 30vh;*/
+    /*    max-height: 40vh;*/
+    /*}*/
 </style>

@@ -87,6 +87,10 @@
                 if (ptyProcess) {
                     ptyProcess.resize(cols, rows);
                 }
+                // Fix auto scroll to bottom of terminal when available
+                if (terminal) {
+                    terminal.scrollToBottom();
+                }
             });
 
             // Access running container shell
@@ -118,8 +122,9 @@
     });
 </script>
 
+<!-- fix: scroll bottom margin so content doesn't hide behind the terminal container suggestion -->
 <div class={['terminal-container', className]}>
-    <Xterm class="w-full h-full" bind:terminal {options} {onLoad} />
+    <Xterm class="w-full h-full !scroll-mb-10 pb-2" bind:terminal {options} {onLoad} />
 </div>
 
 <style lang="css">
@@ -131,20 +136,20 @@
         overflow-y: auto;
     }
 
-    :global(.terminal-container .xterm-viewport::-webkit-scrollbar) {
-        width: 8px;
-    }
+    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar) {*/
+    /*    width: 8px;*/
+    /*}*/
 
-    :global(.terminal-container .xterm-viewport::-webkit-scrollbar-track) {
-        background: transparent;
-    }
+    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar-track) {*/
+    /*    background: var(--color-foreground);*/
+    /*}*/
 
-    :global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb) {
-        background: hsl(var(--muted-foreground) / 0.4);
-        border-radius: 4px;
-    }
+    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb) {*/
+    /*    background: var(--color-background) / 0.4;*/
+    /*    border-radius: 4px;*/
+    /*}*/
 
-    :global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb:hover) {
-        background: hsl(var(--muted-foreground) / 0.6);
-    }
+    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb:hover) {*/
+    /*    background: var(--muted-foreground) / 0.6;*/
+    /*}*/
 </style>

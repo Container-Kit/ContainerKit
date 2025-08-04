@@ -1,8 +1,9 @@
 <script lang="ts">
     import { Input } from '$lib/components/ui/input';
     import TooltipWrapper from '$lib/components/atoms/tooltip.svelte';
-    import { Edit2, X, Check } from '@lucide/svelte';
+    import { Edit, X, Check } from '@lucide/svelte';
     import { cn } from '$lib/utils';
+    import { slide } from 'svelte/transition';
 
     interface TabItemProps {
         id: string;
@@ -74,9 +75,11 @@
         const target = event.target as HTMLInputElement;
         onEditValueChange?.(target.value);
     }
+
+
 </script>
 
-<div
+<div transition:slide={{axis: 'x'}}
     class={cn(
         'group flex items-center gap-2 px-3 py-2 text-sm border-r border-border transition-colors whitespace-nowrap cursor-pointer min-h-[40px]',
         active
@@ -130,12 +133,12 @@
             <TooltipWrapper content="Rename Session">
                 {#snippet children()}
                     <div
-                        class="w-4 h-4 rounded-sm hover:bg-muted-foreground/20 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity"
+                        class="w-4 h-4 rounded-sm hover:bg-muted-foreground/20 flex items-center justify-center cursor-pointer transition-opacity"
                         onclick={handleEditClick}
                         role="button"
                         tabindex="0"
                     >
-                        <Edit2 size={10} />
+                        <Edit size={10} />
                     </div>
                 {/snippet}
             </TooltipWrapper>
