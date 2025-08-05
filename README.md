@@ -101,10 +101,6 @@ _Comprehensive configuration options_
 xcode-select --install
 ```
 
-## 🔧 Development Environment
-
-For detailed IDE setup, development workflow, and code standards, see our [Contributing Guide](CONTRIBUTING.md).
-
 ### Download
 
 #### Option 1: Direct Download (Recommended)
@@ -139,30 +135,6 @@ pnpm tauri:build
 1. **Grant Permissions** - Container Kit requires system permissions for container management.
 2. **Code Signing** - The app is signed and notarized for security - Currently apple is not allowing to enroll me in the developer program.
 3. **Initial Setup** - Follow the welcome wizard to configure your environment - Maximum things are one time setup.
-
-## 📖 Usage
-
-### Getting Started
-
-1. **Launch Container Kit** from Applications or Spotlight
-2. **Dashboard** - Overview of your containers
-3. **Create Containers** - Use the container tab to create new Containers from images
-4. **Manage Existing** - View and manage containers in the Containers tab
-
-### Core Workflows
-
-#### Script Integration
-
-```bash
-# Build Tauri application
-pnpm build:tauri
-
-# Migration management
-pnpm db:generate
-
-# Development workflow
-pnpm tauri dev
-```
 
 ## 🏗️ Development
 
