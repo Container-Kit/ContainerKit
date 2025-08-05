@@ -1,5 +1,7 @@
 # Contributing to Container Kit
 
+> **⚠️ UNDER HEAVY DEVELOPMENT** - This project is actively being developed and may have breaking changes. Please check existing issues and discussions before starting major work.
+
 We welcome contributions to Container Kit! This guide will help you get started with contributing to our modern desktop application for Apple container management.
 
 ## 🚀 Getting Started
@@ -8,11 +10,13 @@ We welcome contributions to Container Kit! This guide will help you get started 
 
 Before you begin, ensure you have:
 
-- **macOS 26.0+** with Apple Silicon (M1/M2/M3/M4)
+> **⚠️ IMPORTANT**: Container Kit requires macOS 26.0+ and only supports Apple Silicon Macs.
+
+- **macOS 26.0+** with Apple Silicon (M1/M2/M3/M4) - Intel Macs not supported
 - **Xcode Command Line Tools**: `xcode-select --install`
-- **Apple Container**: `brew install --cask container`
-- **Node.js 18+** and **pnpm**: `npm install -g pnpm`
+- **Node.js 20+** and **pnpm**: `npm install -g pnpm`
 - **Git** for version control
+- **Apple Container CLI** (optional, for container features)
 
 ### Development Setup
 
@@ -29,26 +33,38 @@ Before you begin, ensure you have:
     pnpm install
     ```
 
-3. **Environment Setup**
+3. **Download Apple Container CLI**
 
     ```bash
-    # Copy environment template (if exists)
-    cp .env.example .env
-
-    # Configure signing keys for development (optional)
-    # Add your signing keys to .env file
+    # Download and extract Apple Container CLI
+    ./scripts/download-apple-container-cli.sh
     ```
 
-4. **Verify Setup**
+4. **Environment Setup**
 
     ```bash
+    # Create .env file for Tauri signing (optional)
+    touch .env
+
+    # Add signing keys if building signed releases
+    # TAURI_SIGNING_PRIVATE_KEY=your_key_here
+    # TAURI_SIGNING_PRIVATE_KEY_PASSWORD=your_password_here
+    ```
+
+5. **Verify Setup**
+
+    ```bash
+    # Generate database migrations
+    pnpm db:generate
+
     # Start development server
-    pnpm dev
+    pnpm tauri dev
     ```
 
 ## 🔧 Recommended IDE Setup
 
-**[Zed](https://zed.dev/)** - Fast, collaborative code editor built for performance
+**[Zed](https://zed.dev/)** - My choice
+**[Webstorm](https://zed.dev/)** - Better IDE but memory eater
 
 ### Extensions
 
@@ -59,7 +75,7 @@ Before you begin, ensure you have:
 
 ### Configuration
 
-Add to your Zed `.zed/settings.json`: [Zed project settings](./.zed/settings.json)
+Add to your Zed `.zed/settings.json`: [Zed project settings](./.zed/settings.json) - Only if you need to update specific configurations
 
 ### Alternative IDEs
 
@@ -102,7 +118,7 @@ Add to your Zed `.zed/settings.json`: [Zed project settings](./.zed/settings.jso
     pnpm lint
 
     # Test build
-    pnpm build:tauri
+    pnpm tauri:build
     ```
 
 4. **Commit Changes**
@@ -128,11 +144,11 @@ Add to your Zed `.zed/settings.json`: [Zed project settings](./.zed/settings.jso
 
 ```typescript
 // ✅ Good
-interface UserConfig {
+type UserConfig = {
     theme: 'light' | 'dark';
     autoUpdate: boolean;
-}
-
+};
+// ✅ Good
 export function updateConfig(config: UserConfig): Promise<void> {
     // implementation
 }
@@ -148,7 +164,6 @@ function updateConfig(config: any) {
 - **Component-scoped styles** - Use `<style>` blocks in components
 - **TypeScript in script blocks** - Always use `<script lang="ts">`
 - **Props with types** - Explicitly type all props
-- **Reactive statements** - Use `$derived` for derived values
 
 ```svelte
 <!-- ✅ Good -->
@@ -161,7 +176,7 @@ function updateConfig(config: any) {
     let { title, isActive = false }: Props = $props();
 </script>
 
-<h1 class={{isActive ? 'active' : 'inactive'}}>{title}</h1>
+<h1 class={[isActive ? 'active' : 'inactive', 'another-class']}>{title}</h1>
 
 <style>
     .active {
@@ -224,8 +239,8 @@ export const container = sqliteTable('container', {
 
 ### Frontend Testing
 
-- **Component tests** - Test component behavior and rendering (Storybook with tauri need to look for it).
-- **Integration tests** - Test user workflows
+- **Component tests** - Test component behavior and rendering (Storybook with tauri need to integrate it).
+- **Integration tests** - Test workflows
 - **Type tests** - Ensure TypeScript types are correct
 
 ### Backend Testing
@@ -233,14 +248,6 @@ export const container = sqliteTable('container', {
 - **Unit tests** - Test individual functions and modules
 - **Integration tests** - Test Tauri commands end-to-end
 - **Database tests** - Test schema and queries
-
-[//]: #
-[//]: # '### Running Tests'
-[//]: #
-[//]: # '```bash'
-[//]: # '# Frontend tests'
-[//]: # 'pnpm test'
-[//]: # '```'
 
 ## 📝 Documentation Standards
 
@@ -262,25 +269,35 @@ export const container = sqliteTable('container', {
 ### Development Builds
 
 ```bash
-# Frontend development
-pnpm dev
+# Frontend development with hot reload
+pnpm tauri dev
 
-# Full development build
-pnpm build
+# Generate database migrations
+pnpm db:generate
 
-# Tauri development build
-pnpm build:tauri
+# Tauri development build (Apple Silicon)
+pnpm tauri:build
 ```
 
 ### Release Process
 
+> **⚠️ Development Phase**: Automated release workflows are not yet implemented. Use manual builds for now.
+
 ```bash
-# Update version in src-tauri/tauri.conf.json
-# Then run complete release workflow
-pnpm release
+# Update version in src-tauri/tauri.conf.json and package.json
+# Build for production with signing (requires .env with signing keys)
+pnpm tauri:build
 ```
 
-See [scripts/docs/README.md](./scripts/docs/README.md) for detailed script documentation.
+**Environment Variables Required for Signed Builds:**
+
+```bash
+# Add to .env file
+TAURI_SIGNING_PRIVATE_KEY=your_private_key_here
+TAURI_SIGNING_PRIVATE_KEY_PASSWORD=your_password_here
+```
+
+See [SCRIPTS.md](./SCRIPTS.md) for detailed script documentation.
 
 ## 🏗️ Architecture and Tech Stack
 
@@ -335,15 +352,16 @@ ContainerKit/
 │   │   ├── commands/            # Tauri commands
 │   │   ├── services/            # Business logic
 │   │   └── main.rs              # Application entry point
-│   ├── migrations/              # SQL migration files
+│   ├── migrations/              # Generated SQL migration files
+│   ├── binaries/                # Sidecar binaries (Apple Container CLI)
 │   ├── tauri.conf.json         # Tauri configuration
 │   └── Cargo.toml              # Rust dependencies
-├── scripts/                     # TypeScript build and automation scripts
+├── scripts/                     # Build and automation scripts
 │   ├── docs/                    # Script documentation
-│   ├── templates/               # Template files
-│   └── utils/                   # Shared utilities
-├── static/                      # Static assets
-└── tests/                       # Test files
+│   ├── download-apple-container-cli.sh  # Apple CLI downloader
+│   └── generate-migrations.ts   # Migration generator
+├── static/                      # Static assets (logos, images)
+└── node_modules/                # Dependencies
 ```
 
 ### Development Architecture
@@ -352,12 +370,10 @@ ContainerKit/
 
 - **Component-Based Design** - Atomic design principles with reusable components
 - **Type-Safe State Management** - Svelte stores with TypeScript
-- **Server-Side Generation** - SvelteKit for optimal performance
-- **Responsive Design** - Mobile-first approach with TailwindCSS
 
 #### Backend Architecture
 
-- **Command Pattern** - Tauri commands for frontend-backend communication
+- **Command Pattern** - Tauri commands for frontend-backend communication (If required or use js api)
 - **Service Layer** - Business logic separated from UI concerns
 - **Database Layer** - Type-safe ORM with Drizzle
 - **Security First** - Rust's memory safety and Tauri's security model
@@ -366,8 +382,6 @@ ContainerKit/
 
 - **Modular Scripts** - Separate concerns for build, copy, and release
 - **TypeScript Automation** - Type-safe build scripts and utilities
-- **Hot Reload** - Fast development iteration with Vite
-- **Code Signing** - Automated signing for macOS distribution
 
 ## 🐛 Bug Reports
 
@@ -441,14 +455,17 @@ Any other context, mockups, or examples.
 
 - **UI inconsistencies** - Visual bugs and layout issues
 - **Performance issues** - Memory leaks, slow operations
-- **Compatibility problems** - Issues with different macOS versions
+- **Compatibility problems** - Issues with different macOS versions greater than 26.0, we don't plan to support older versions.
 - **Edge cases** - Handling of unusual input or states
 
 ### ✨ New Features
 
+> **Note**: Check existing issues and roadmap before starting new features during development phase.
+
 - **Container management** - New container operations and workflows
 - **UI improvements** - Better user experience and accessibility
-- **Integration features** - API integrations and external tool support
+- **Apple integration** - Enhanced macOS container and sandbox features
+- **Developer tools** - CLI improvements and automation scripts
 - **Performance optimizations** - Faster operations and better resource usage
 
 ### 📚 Documentation
@@ -474,8 +491,12 @@ Any other context, mockups, or examples.
 
 ### 🧪 Testing
 
+> **Development Priority**: Testing framework setup is needed.
+
 - **Unit tests** - Component and function testing
-- **Integration tests** - End-to-end user workflow testing
+- **Integration tests** - End-to-end workflow testing
+- **Performance tests** - Memory usage and speed benchmarks
+- **Apple Silicon testing** - macOS 26.0+ compatibility testing
 - **Performance tests** - Benchmarking and performance regression testing
 - **Accessibility tests** - Automated accessibility compliance testing
 
@@ -507,6 +528,7 @@ We follow the [Conventional Commits](https://www.conventionalcommits.org/) speci
 
 ```bash
 feat: add container status monitoring
+feat(ui): add container status monitoring
 fix: resolve memory leak in container list
 docs: update API documentation for container commands
 style: format TypeScript files with prettier
@@ -598,8 +620,6 @@ Contributors will be recognized in:
 
 - **GitHub Discussions** - [Project Discussions](https://github.com/etherCorps/ContainerKit/discussions)
 
-[//]: # '- **Discord** - [Development Chat](https://discord.gg/containerkit) (if available)'
-
 - **Email** - [shivam@ethercorps.io](mailto:shivam@ethercorps.io)
 
 ## 📚 Additional Resources
@@ -608,6 +628,8 @@ Contributors will be recognized in:
 - **Svelte 5 Documentation** - [https://svelte.dev/](https://svelte.dev/)
 - **Rust Book** - [https://doc.rust-lang.org/book/](https://doc.rust-lang.org/book/)
 - **TypeScript Handbook** - [https://www.typescriptlang.org/docs/](https://www.typescriptlang.org/docs/)
+- **Tailwind CSS Documentation** - [https://tailwindcss.com/](https://tailwindcss.com/)
+- **Shadcn-Svelte Documentation** - [https://shadcn-svelte.com/](https://shadcn-svelte.com/)
 
 ---
 

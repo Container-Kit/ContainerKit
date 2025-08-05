@@ -6,28 +6,19 @@ This document provides a comprehensive overview of all available pnpm scripts in
 
 > **⚠️ DO NOT CHANGE** - These are the primary development commands used by the team
 
-| Script    | Command        | Description                              |
-| --------- | -------------- | ---------------------------------------- |
-| `dev`     | `pnpm dev`     | Start development server with hot reload |
-| `build`   | `pnpm build`   | Build the application for production     |
-| `preview` | `pnpm preview` | Preview the production build             |
-| `tauri`   | `pnpm tauri`   | Run Tauri CLI commands                   |
+| Purspose     | Command            | Description                              |
+| ------------ | ------------------ | ---------------------------------------- |
+| `dev`        | `pnpm tauri dev`   | Start development server with hot reload |
+| `build`      | `pnpm tauri build` | Build the application for test           |
+| `production` | `pnpm tauri:build` | Build for production                     |
 
 ### Examples
 
 ```bash
-# Start development server
-pnpm dev
-
-# Build for production
-pnpm build
-
-# Preview production build
-pnpm preview
-
 # Run Tauri commands
 pnpm tauri dev
 pnpm tauri build
+pnpm tauri:build
 ```
 
 ## 🎨 Code Quality & Maintenance
@@ -39,124 +30,52 @@ pnpm tauri build
 | `format`      | `pnpm format`      | Format code with Prettier       |
 | `lint`        | `pnpm lint`        | Check code formatting           |
 
-### Examples
-
-```bash
-# Check types
-pnpm check
-
-# Format all files
-pnpm format
-
-# Check if code is properly formatted
-pnpm lint
-```
-
 ## 🏗️ Build Scripts
 
-| Script                  | Command                      | Description                                    |
-| ----------------------- | ---------------------------- | ---------------------------------------------- |
-| `build:tauri`           | `pnpm build:tauri`           | Build Tauri application with TypeScript script |
-| `build:tauri:skip-deps` | `pnpm build:tauri:skip-deps` | Build Tauri app without dependency preparation |
-| `build:tauri:help`      | `pnpm build:tauri:help`      | Show Tauri build script help                   |
-
-### Examples
+| Script        | Command            | Description                                         |
+| ------------- | ------------------ | --------------------------------------------------- |
+| `tauri:build` | `pnpm tauri:build` | Build Tauri application for Apple Silicon (aarch64) |
 
 ```bash
-# Build Tauri app
-pnpm build:tauri
-
-# Build Tauri app (skip deps for faster iteration)
-pnpm build:tauri:skip-deps
-```
-
-## 📦 Release Automation Scripts
-
-| Script                    | Command                        | Description                                         |
-| ------------------------- | ------------------------------ | --------------------------------------------------- |
-| `release`                 | `pnpm release`                 | Complete release workflow (build + copy to release) |
-| `release:force`           | `pnpm release:force`           | Force overwrite existing release                    |
-| `release:skip-build`      | `pnpm release:skip-build`      | Skip build step (only copy existing artifacts)      |
-| `release:skip-copy`       | `pnpm release:skip-copy`       | Skip copy step (only build)                         |
-| `release:help`            | `pnpm release:help`            | Show release script help                            |
-| `copy:build-files`        | `pnpm copy:build-files`        | Copy build artifacts to release directories         |
-| `copy:build-files:force`  | `pnpm copy:build-files:force`  | Force overwrite when copying build files            |
-| `copy:build-files:custom` | `pnpm copy:build-files:custom` | Copy with custom domain                             |
-| `copy:build-files:help`   | `pnpm copy:build-files:help`   | Show copy script help                               |
-
-### Examples
-
-```bash
-# Complete release workflow
-pnpm release
-
-# Release with custom version and domain
-pnpm release -- -v 1.0.0 -d https://releases.mydomain.com
-
-# Force overwrite existing release
-pnpm release:force
-
-# Only copy existing build artifacts
-pnpm release:skip-build
-
-# Copy build files with custom settings
-pnpm copy:build-files:custom https://releases.example.com
+# Build Tauri app for production (Apple Silicon)
+pnpm tauri:build
 ```
 
 ## 🗄️ Database Scripts
 
-| Script          | Command              | Description                             |
-| --------------- | -------------------- | --------------------------------------- |
-| `db:push`       | `pnpm db:push`       | Push schema changes to database         |
-| `db:generate`   | `pnpm db:generate`   | Generate SQL migrations + Rust bindings |
-| `db:migrations` | `pnpm db:migrations` | Generate Rust migration bindings only   |
-| `db:studio`     | `pnpm db:studio`     | Open Drizzle Studio                     |
-
-### Examples
+| Script               | Command                   | Description                             |
+| -------------------- | ------------------------- | --------------------------------------- |
+| `db:generate`        | `pnpm db:generate`        | Generate SQL migrations + Rust bindings |
+| `db:migrations:rust` | `pnpm db:migrations:rust` | Generate Rust migration bindings only   |
 
 ```bash
 # Generate migrations after schema changes
 pnpm db:generate
 
-# Open database studio
-pnpm db:studio
-
-# Push schema to database
-pnpm db:push
+# Generate only Rust migration bindings
+pnpm db:migrations:rust
 ```
 
-## 🚀 Migration Management
+## 🛠️ Additional Scripts
 
-| Script               | Command                   | Description                   |
-| -------------------- | ------------------------- | ----------------------------- |
-| `migration`          | `pnpm migration`          | Run migration CLI             |
-| `migration:generate` | `pnpm migration:generate` | Generate Rust migration files |
-| `migration:list`     | `pnpm migration:list`     | List all available migrations |
-| `migration:validate` | `pnpm migration:validate` | Validate migration files      |
-| `migration:status`   | `pnpm migration:status`   | Check migration system status |
+### Scripts
+
+The project includes additional shell scripts in the `scripts/` directory:
+
+| Script                            | Description                                        |
+| --------------------------------- | -------------------------------------------------- |
+| `download-apple-container-cli.sh` | Download and extract Apple Container CLI for Tauri |
+| `generate-migrations.ts`          | TypeScript script to generate Rust migration files |
 
 ### Examples
 
 ```bash
-# Generate migration files
-pnpm migration:generate
+# Download Apple Container CLI
+./scripts/download-apple-container-cli.sh
 
-# Check what migrations exist
-pnpm migration:list
-
-# Validate migration structure
-pnpm migration:validate
+# Generate migrations (called automatically by db:generate)
+tsx scripts/generate-migrations.ts
 ```
-
-### Release Documentation
-
-For detailed documentation on the release automation system, see:
-
-- **`scripts/docs/README.md`** - Complete scripts documentation overview
-- **`scripts/docs/build-and-copy-to-release.md`** - Complete release workflow
-- **`scripts/docs/build-tauri.md`** - Tauri build process
-- **`scripts/docs/copy-to-release.md`** - Release copying and packaging
-- **`scripts/docs/quick-reference.md`** - Command quick reference
 
 ## 🌟 Common Workflows
 
@@ -166,18 +85,15 @@ For detailed documentation on the release automation system, see:
 # Install dependencies
 pnpm install
 
-# Check everything is working
-container-kit-cli migration status
+# Generate database migrations
+pnpm db:generate
 ```
 
 ### Daily Development
 
 ```bash
 # Start development server
-pnpm dev
-
-# In another terminal, check types
-pnpm check:watch
+pnpm tauri dev
 ```
 
 ### Schema Changes
@@ -187,23 +103,15 @@ pnpm check:watch
 # 2. Generate migrations
 pnpm db:generate
 
-# 3. Verify migrations
-pnpm migration:list
-pnpm migration:validate
+# 3. Build will automatically include latest migrations
+pnpm tauri:build
 ```
 
 ### Building for Production
 
 ```bash
-# Build for production
-pnpm build
-
-# Build with CLI (Apple Silicon default)
-# Build Tauri application
-pnpm build:tauri
-
-# Complete release workflow
-pnpm release
+# Build Tauri application for Apple Silicon
+pnpm tauri:build
 ```
 
 ### Code Quality Check
@@ -220,76 +128,80 @@ pnpm check
 ### Build Issues
 
 ```bash
-# Rebuild Tauri application
-pnpm build:tauri
-
-# Check script help
-pnpm build:tauri:help
+# Clean and rebuild
+rm -rf node_modules .svelte-kit build
+pnpm install
+pnpm tauri:build
 ```
 
 ### Database Issues
 
 ```bash
-# Check migration status
-pnpm migration:status
-
 # Regenerate migrations
 pnpm db:generate
 ```
 
-### Clean Start
+### Tauri Build Issues
 
 ```bash
-# Clean build artifacts
-rm -rf node_modules .svelte-kit build
-pnpm install
+# Check Tauri setup
+pnpm tauri info
+
+# Clean Tauri build
+pnpm tauri build --help
 ```
-
-## 📝 Script Categories
-
-## 📝 Documentation
-
-### Project Documentation
-
-- `README.md` - Project overview and setup guide
-- `SCRIPTS.md` - This file, comprehensive script documentation
-- `llm.txt` - AI/LLM context for the entire project
-
-### CLI Documentation
-
-- `cli/README.md` - CLI tool documentation and usage
-- `cli/llm.txt` - CLI-specific AI/LLM context and architecture
-
-### Migration Documentation
-
-- `scripts/README-migrations.md` - Migration system documentation
 
 ## 📝 Script Categories
 
 - **🔄 Core**: Essential development commands (don't change these)
 - **🎨 Quality**: Code formatting and type checking
 - **🏗️ Build**: Compilation and bundling
-- **📦 Release**: Release automation and deployment
 - **🗄️ Database**: Schema and migration management
-- **🚀 Migration**: Migration-specific operations
+- **🛠️ Additional**: Helper scripts and tools
 
 ## 💡 Tips
 
-1. **Use verbose mode** by default - most commands show helpful output
-2. **Check status** before making changes: `container-kit-cli migration status`
-3. **Format code** before commits: `pnpm format`
-4. **Validate migrations** after changes: `pnpm migration:validate`
+1. **Build includes migrations** - `pnpm tauri:build` automatically runs `db:generate`
+2. **Format before commits** - Always run `pnpm format` before committing
+3. **Use watch mode** - `pnpm check:watch` for continuous type checking
+4. **Apple Silicon App** - `tauri:build` targets aarch64-apple-darwin by default
+
+## 📁 Project Structure
+
+```
+ContainerKit/
+├── scripts/
+│   ├── docs/                           # Script documentation
+│   ├── download-apple-container-cli.sh # Apple CLI download script
+│   └── generate-migrations.ts          # Migration generator
+├── src-tauri/
+│   └── migrations/                     # Generated migration files
+└── package.json                       # All pnpm scripts defined here
+```
+
+## 📚 Documentation
+
+### Script Documentation
+
+- `scripts/docs/download-apple-container-cli.md` - Apple Container CLI download script documentation
+
+### Project Documentation
+
+- `README.md` - Project overview and setup guide
+- `SCRIPTS.md` - This file, comprehensive script documentation
+
+## 🔧 Environment Variables
+
+Some scripts require environment variables:
+
+### Tauri Build
+
+```bash
+# Required for signed builds
+TAURI_SIGNING_PRIVATE_KEY=your_key_here
+TAURI_SIGNING_PRIVATE_KEY_PASSWORD=your_password_here
+```
+
+Create a `.env` file in the project root with these variables for `pnpm tauri:build`.
 
 ---
-
-## 🤖 AI/LLM Context Files
-
-This project includes comprehensive context files for AI assistants:
-
-- **`llm.txt`** - Main project architecture, tech stack, and development patterns
-
-These files help AI assistants understand the project better and provide more accurate assistance.
-
----
-
-_For more detailed information about specific commands, use `pnpm cli:help` or check individual command help with `--help` flag._

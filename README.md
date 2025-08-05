@@ -9,8 +9,11 @@
 [![Built with Tauri](https://img.shields.io/badge/Built%20with-Tauri-24C8DB?logo=tauri)](https://tauri.app)
 [![Svelte 5](https://img.shields.io/badge/Svelte-5-FF3E00?logo=svelte)](https://svelte.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript)](https://www.typescriptlang.org)
+[![Rust](https://img.shields.io/badge/Rust-007ACC?logo=rust)](https://www.rust-lang.org)
 
 _Built with Tauri, Svelte 5, Typescript • Features beautiful native interface for managing macOS containers, sandboxes, and virtualization_
+
+> **⚠️ UNDER HEAVY DEVELOPMENT** - This project is actively being developed and may have breaking changes. Only supports **macOS 26.0+** with Apple Silicon.
 
 [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Development](#-development) • [CLI Tools](#-cli-tools)
 
@@ -20,31 +23,30 @@ _Built with Tauri, Svelte 5, Typescript • Features beautiful native interface 
 
 ## 🚀 Overview
 
-Container Kit is a comprehensive desktop application designed specifically for Apple ecosystem container management. It provides a beautiful, native interface for managing macOS app containers, sandboxes, virtualization environments, and more, all while maintaining the highest standards of security and performance that Apple users expect.
+Container Kit is a comprehensive desktop application designed specifically for Apple ecosystem container management. It provides a beautiful interface for managing macOS app containers, sandboxes, virtualization environments, and more, all while maintaining the highest standards of security and performance that developers expect.
+
+> **🚧 Development Status**: This project is under heavy development. Features and APIs may change significantly between releases. We rely on apple container cli which is still in development and may have breaking changes.
 
 ### 🎯 Key Highlights
 
-- **🍎 Apple-First Design** - Built specifically for macOS with native Apple HIG compliance
+- **🍎 Apple-First Design** - Built specifically for macOS 26.0+ with native Apple HIG compliance
 - **⚡ Modern Architecture** - Tauri + Svelte 5 + Typescript developer experience
 - **🛡️ Security Focused** - Comprehensive sandbox and container security management
 - **🎨 Beautiful Interface** - Multiple theming options with dark/light modes and smooth animations
-- **🔧 Developer Friendly** - Extensive CLI tooling and migration system for development
+- **🚨 Development Phase** - Active development with frequent updates and changes
 
 ## ✨ Features
 
 ### 🏗️ Container Management
 
-- **App Sandbox Containers** - Manage sandboxed macOS application environments
-- **System Containers** - Handle isolated service environments and system processes
+- **App Sandbox Containers** - Manage sandboxed macOS application environments with Apple's container CLI
+- **System Containers** - Handle isolated service environments and system processes with Apple's container CLI
 - **Virtualization Containers** - Full integration with Apple's container CLI
-
-### 🌐 Network & Infrastructure
-
 - **Container Networking** - Advanced networking configuration for Apple virtualization
 - **DNS Management** - Container-specific DNS settings and resolution
 - **Registry Management** - Apple container configuration and policy management
 
-### 🎨 User Experience
+### 🎨 Developer Experience
 
 - **ShadCN Interface** - Follows ShadCN Interface Guidelines
 - **Dark/Light Themes** - Automatic theme switching with system preferences
@@ -89,18 +91,14 @@ _Comprehensive configuration options_
 
 ### Prerequisites
 
-- **macOS 26.0+** (Apple Silicon required)
-- **Apple Silicon Mac** (M1/M2/M3/M4)
+> **⚠️ IMPORTANT**: Container Kit requires macOS 26.0 or later and is only compatible with Apple Silicon Macs.
+
+- **macOS 26.0+** (Required - older versions not supported)
+- **Apple Silicon Mac** (M1/M2/M3/M4 - Intel Macs not supported)
 - **Xcode Command Line Tools**
 
 ```bash
 xcode-select --install
-```
-
-- **Apple Container CLI** (if using container features)
-
-```bash
-brew install --cask container
 ```
 
 ## 🔧 Development Environment
@@ -111,31 +109,36 @@ For detailed IDE setup, development workflow, and code standards, see our [Contr
 
 #### Option 1: Direct Download (Recommended)
 
-1. Download the latest `.dmg` from [Releases](https://github.com/your-username/container-kit/releases)
+> **🚧 Note**: Pre-built releases may not be available during development phase. Use build from source option below.
+
+1. Download the latest `.dmg` from [Releases](https://github.com/etherCorps/ContainerKit/releases)
 2. Open the downloaded `.dmg` file
 3. Drag Container Kit to your Applications folder
-4. Launch from Applications or Spotlight
+4. Launch from Applications or Spotlight or Terminal
 
-#### Option 2: Build from Source
+#### Option 2: Build from Source (Recommended during development)
 
 ```bash
 # Clone the repository
-git clone https://github.com/etherCorps/containerKit.git
-cd containerKit
+git clone https://github.com/etherCorps/ContainerKit.git
+cd ContainerKit
 
 # Install dependencies (requires pnpm)
 npm install -g pnpm
 pnpm install
 
+# Download Apple Container CLI (macOS only)
+./scripts/download-apple-container-cli.sh
+
 # Build the application
-pnpm release
+pnpm tauri:build
 ```
 
 ### First Launch
 
-1. **Grant Permissions** - Container Kit requires system permissions for container management
-2. **Code Signing** - The app is signed and notarized for security
-3. **Initial Setup** - Follow the welcome wizard to configure your environment
+1. **Grant Permissions** - Container Kit requires system permissions for container management.
+2. **Code Signing** - The app is signed and notarized for security - Currently apple is not allowing to enroll me in the developer program.
+3. **Initial Setup** - Follow the welcome wizard to configure your environment - Maximum things are one time setup.
 
 ## 📖 Usage
 
@@ -148,59 +151,17 @@ pnpm release
 
 ### Core Workflows
 
-[//]: # '#### Creating a New Container'
-[//]: #
-[//]: # '1. Navigate to **Builder** → **New Container**'
-[//]: # '2. Select container type (App Sandbox, System, Virtualization, etc.)'
-[//]: # '3. Configure resources and security policies'
-[//]: # '4. Review settings and create'
-[//]: # '#### Managing Existing Containers'
-[//]: #
-[//]: # '1. Go to **Containers** tab'
-[//]: # '2. View running, stopped, and configured containers'
-[//]: # '3. Use context menus for start/stop/configure operations'
-[//]: # '4. Monitor resource usage and logs'
-[//]: #
-[//]: # '#### Network Configuration'
-[//]: #
-[//]: # '1. Access **Network** section'
-[//]: # '2. Configure container networking and DNS'
-[//]: # '3. Set up port forwarding and security rules'
-[//]: # '4. Monitor network activity'
-[//]: #
-[//]: # '#### Registry Management'
-[//]: #
-[//]: # '1. Open **Registry** tab'
-[//]: # '2. Manage container images and configurations'
-[//]: # '3. Import/export container policies'
-[//]: # '4. Version control for container definitions'
-
-### Advanced Features
-
 #### Script Integration
 
 ```bash
 # Build Tauri application
 pnpm build:tauri
 
-# Complete release workflow
-pnpm release
-
 # Migration management
-pnpm db:migrations
-
-# Development workflow
-pnpm dev
-```
-
-#### Database Management
-
-```bash
-# Generate SQL migrations from schema
 pnpm db:generate
 
-# Generate Rust migration bindings
-pnpm db:migrations
+# Development workflow
+pnpm tauri dev
 ```
 
 ## 🏗️ Development
@@ -208,7 +169,7 @@ pnpm db:migrations
 ### Tech Stack
 
 - **Frontend**: Svelte 5, SvelteKit, TypeScript, TailwindCSS
-- **Backend**: Tauri 2.x, Rust, LibSQL, Drizzle ORM
+- **Backend**: Tauri 2.x, Rust, Sqlx, Drizzle ORM
 - **Build**: TypeScript automation scripts, pnpm, Vite
 
 ### Quick Start
@@ -227,31 +188,13 @@ pnpm build:tauri
 
 For detailed setup, architecture, project structure, and development workflows, see our [Contributing Guide](CONTRIBUTING.md).
 
-## 🤖 AI/LLM Integration
-
-This project includes comprehensive AI/LLM context files:
-
-- **`llm.txt`** - Main project context and architecture
-
-These files help AI assistants understand the project structure and provide better development assistance.
-
 ## 📋 Scripts Reference
 
 ### Core Development Commands
 
 ```bash
-pnpm dev           # Development server with hot reload
-pnpm build         # Production frontend build
-pnpm preview       # Preview production build
-pnpm tauri         # Tauri CLI commands
-```
-
-### Build and Release Commands
-
-```bash
-pnpm build:tauri           # Build Tauri application
-pnpm release               # Complete build and release workflow
-pnpm copy:build-files      # Copy build artifacts to release structure
+pnpm tauri dev           # Development server with hot reload
+pnpm tauri:build         # Production frontend build
 ```
 
 ### Database Management
@@ -268,6 +211,8 @@ For detailed documentation on all available scripts, see [scripts/docs/README.md
 ## 🤝 Contributing
 
 We welcome contributions! Whether you're fixing bugs, adding features, improving documentation, or enhancing the developer experience, your contributions help make Container Kit better for everyone.
+
+> **Development Note**: As this project is under heavy development, please check existing issues and discussions before starting major work to avoid conflicts with ongoing development.
 
 Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on:
 
@@ -290,8 +235,8 @@ Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on
 
 ## 📞 Support
 
-- 📖 **Documentation** - Check our [Wiki](https://github.com/your-username/container-kit/wiki)
-- 🐛 **Bug Reports** - [GitHub Issues](https://github.com/etherCorps/ContainerKit/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen)
+- 📖 **Documentation** - Check our [Wiki](https://github.com/etherCorps/container-kit)
+- 🐛 **Bug Reports** - [GitHub Issues](https://github.com/etherCorps/container-kit/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen)
 - 💬 **Discussions** - [GitHub Discussions](https://github.com/etherCorps/ContainerKit/discussions)
 - 📧 **Email** - [shivam@ethercorps.io](mailto:shivam@ethercorps.io)
 
@@ -299,7 +244,7 @@ Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information on
 
 <div align="center">
 
-**Built with ❤️ for the Apple ecosystem**
+**Built with ❤️ for Developers**
 
 [⭐ Star this project](https://github.com/etherCorps/ContainerKit) • [🐦 Follow updates](https://twitter.com/theether0) • [💻 Contribute](CONTRIBUTING.md)
 

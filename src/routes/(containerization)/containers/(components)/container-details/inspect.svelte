@@ -1,6 +1,5 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
-    import logs from './inspect.json?raw';
     import { highlightCode } from '$lib/helpers/highlight-code';
     import { inspectContainer } from '$lib/services/containerization/containers';
     import { toast } from 'svelte-sonner';
@@ -11,7 +10,7 @@
 
     let { id }: Props = $props();
 
-    let code: string = $state('');
+    let inspectJson: string = $state('');
     let loadingInspectData = $state(false)
 
     onMount(async () => {
@@ -24,7 +23,7 @@
             })
         }
 
-        code = await highlightCode(JSON.stringify(JSON.parse(output.stdout), null, 2), 'json');
+        inspectJson = await highlightCode(JSON.stringify(JSON.parse(output.stdout), null, 2), 'json');
         loadingInspectData = false
     });
 
@@ -39,6 +38,6 @@
     </div>
 {:else }
     <div class="px-5 bg-secondary dark:bg-secondary-foreground rounded-2xl w-full">
-        {@html code}
+        {@html inspectJson}
     </div>
 {/if}
