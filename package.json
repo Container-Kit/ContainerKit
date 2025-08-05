@@ -13,20 +13,8 @@
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "format": "prettier --write .",
         "lint": "prettier --check .",
-        "build:tauri": "tsx scripts/build-tauri.ts",
-        "build:tauri:skip-deps": "tsx scripts/build-tauri.ts --skip-deps",
-        "build:tauri:help": "tsx scripts/build-tauri.ts -h",
         "db:generate": "drizzle-kit generate && pnpm db:migrations:rust",
-        "db:migrations:rust": "tsx scripts/generate-migrations.ts",
-        "copy:build-files": "tsx scripts/copy-build-files-to-release.ts",
-        "copy:build-files:force": "tsx scripts/copy-build-files-to-release.ts -f",
-        "copy:build-files:custom": "tsx scripts/copy-build-files-to-release.ts -d",
-        "copy:build-files:help": "tsx scripts/copy-build-files-to-release.ts -h",
-        "release": "tsx scripts/build-and-copy-to-release.ts",
-        "release:force": "tsx scripts/build-and-copy-to-release.ts -f",
-        "release:skip-build": "tsx scripts/build-and-copy-to-release.ts --skip-build",
-        "release:skip-copy": "tsx scripts/build-and-copy-to-release.ts --skip-copy",
-        "release:help": "tsx scripts/build-and-copy-to-release.ts -h"
+        "db:migrations:rust": "tsx scripts/generate-migrations.ts"
     },
     "license": "MIT",
     "dependencies": {
@@ -45,7 +33,6 @@
         "@xterm/xterm": "^5.5.0",
         "dotenv": "^17.2.0",
         "drizzle-orm": "^0.44.3",
-        "motion": "^12.23.5",
         "runed": "^0.28.0",
         "tauri-pty": "^0.1.0",
         "uuid": "^11.1.0"

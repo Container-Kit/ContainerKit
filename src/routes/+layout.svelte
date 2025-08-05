@@ -11,10 +11,10 @@
     import { isContainerizationActive } from '$lib/stores/containerization.svelte';
     import { toast } from 'svelte-sonner';
     import { goto } from '$app/navigation';
-
+    import { isLoading } from './loading.svelte';
     let { children } = $props();
     let containerizationInterval: ReturnType<typeof setInterval> | null = $state(null);
-
+    isLoading.setTrue();
     if (isSupportedVersion()) {
         startContainerization();
         isContainerizationActive.setTrue();
