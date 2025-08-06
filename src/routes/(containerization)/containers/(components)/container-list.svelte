@@ -9,7 +9,6 @@
         getFilteredRowModel,
         getPaginationRowModel
     } from '@tanstack/table-core';
-    import { animate, stagger } from 'motion';
     import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
     import * as Table from '$lib/components/ui/table';
     import { Input } from '$lib/components/ui/input';
@@ -97,18 +96,6 @@
     });
 
     let searchValue = $state((table.getColumn('id')?.getFilterValue() as string) ?? '');
-
-    $effect(() => {
-        if (document.querySelectorAll('.table-animate').length === 0) return;
-        animate(
-            'tr.table-animate',
-            {
-                opacity: [0, 1],
-                translateY: [-50, 0]
-            },
-            {}
-        );
-    });
 </script>
 
 <div class="space-y-4">

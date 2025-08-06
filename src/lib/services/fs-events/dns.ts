@@ -1,4 +1,4 @@
-import { watchContainerDataDir } from '$lib/services/fs-events/watch';
+import { watchContainerDataDir, watchDnsResolverDir } from '$lib/services/fs-events/watch';
 import { isDataModifyEvent, isCreateEvent, isRemoveEvent } from '$lib/services/fs-events/utils';
 import type { UnwatchFn, WatchEvent } from '@tauri-apps/plugin-fs';
 
@@ -35,10 +35,10 @@ export async function watchDnsResolverChanges(
     callback: (event: WatchEvent) => void | Promise<void>,
     delayMs: number = 1000
 ): Promise<UnwatchFn> {
-    return watchContainerDataDir(
-        'dns/resolver.conf',
+    return watchDnsResolverDir(
         async (event: WatchEvent) => {
-            if (isDataModifyEvent(event)) {
+            console.log('DNS changes callback:', event);
+            if (isDataModifyEvent(event) || isCreateEvent(event) || isRemoveEvent(event)) {
                 try {
                     await callback(event);
                 } catch (error) {

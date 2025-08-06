@@ -7,6 +7,7 @@
   ],
   "permissions": [
     "core:default",
+    "core:app:allow-default-window-icon",
     "opener:default",
     "os:default",
     "sql:default",
@@ -17,9 +18,9 @@
       "description": "Permission to run apple containers",
       "allow": [
         {
-          "name": "container",
-          "cmd": "container",
-          "args": true
+          "name": "binaries/sidecar/apple-container/bin/container",
+          "args": true,
+          "sidecar": true
         }
       ]
     },
@@ -28,9 +29,9 @@
       "description": "Permission to run apple containers",
       "allow": [
         {
-          "name": "container",
-          "cmd": "container",
-          "args": true
+          "name": "binaries/sidecar/apple-container/bin/container",
+          "args": true,
+          "sidecar": true
         }
       ]
     },
@@ -39,9 +40,9 @@
       "description": "Permission to run apple containers",
       "allow": [
         {
-          "name": "container",
-          "cmd": "container",
-          "args": true
+          "name": "binaries/sidecar/apple-container/bin/container",
+          "args": true,
+          "sidecar": true
         }
       ]
     },
@@ -50,20 +51,30 @@
       "description": "Permission to run apple containers",
       "allow": [
         {
-          "name": "container",
-          "cmd": "container",
-          "args": true
+          "name": "binaries/sidecar/apple-container/bin/container",
+          "args": true,
+          "sidecar": true
         }
       ]
     },
+
     "fs:default",
     "fs:allow-data-read-recursive",
     "fs:allow-data-read",
     {
         "identifier": "fs:allow-exists",
-        "allow": [{ "path": "$DATA/*" }]
+        "allow": [
+          { "path": "$DATA/*" }
+        ]
     },
-    "pty:allow-spawn", "pty:default"
+    {
+        "identifier": "fs:scope",
+        "allow": [
+          { "path": "/etc/resolver", "recursive": true }
+        ]
+    },
+    "pty:allow-spawn",
+    "pty:default"
   ],
   "platforms": [
     "macOS"

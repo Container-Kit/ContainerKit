@@ -7,6 +7,7 @@
     import { toast } from 'svelte-sonner';
     import { watchContainerChanges } from '$lib/services/fs-events/containers';
     import type { UnwatchFn } from '@tauri-apps/plugin-fs';
+    import { watchDnsResolverChanges } from '$lib/services/fs-events/dns';
 
     type ErrorLog = {
         message: string;
@@ -18,6 +19,7 @@
     let runningContainers: Array<ContainerClient> = $state([]);
     let showOnlyRunningContainers = $state(false);
     let containerChangeWatcher: UnwatchFn | null = $state(null)
+    let dnsChangeWatcher: UnwatchFn | null = $state(null)
     let error: ErrorLog | null = $state(null);
 
     async function getAllContainerList() {
@@ -65,11 +67,15 @@
     onMount(async () => {
         await getAllContainerList();
         containerChangeWatcher = await watchContainerChanges(getAllContainerList, 500)
+        dnsChangeWatcher = await watchDnsResolverChanges(getAllContainerList, 1000)
     });
 
     onDestroy(() => {
         if (containerChangeWatcher) {
             containerChangeWatcher()
+        }
+        if (dnsChangeWatcher) {
+            dnsChangeWatcher()
         }
     })
 </script>

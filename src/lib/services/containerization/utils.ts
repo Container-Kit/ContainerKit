@@ -26,5 +26,5 @@ export function validateCommandOutput(output: ChildProcess<string>): Output {
 }
 
 export function createContainerCommand(args: string[]): Command<string> {
-   return  Command.create('container', args)
+   return  Command.sidecar('binaries/sidecar/apple-container/bin/container', args)
 }

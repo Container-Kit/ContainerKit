@@ -49,6 +49,9 @@
 	        "hardenedRuntime": true,
 	        "minimumSystemVersion": "26.0"
         },
+        "externalBin": [
+            "binaries/sidecar/apple-container/bin/container"
+        ],
         "resources": ["migrations/*", "icons/icon.iconset/*", "binaries/sidecar/apple-container/**/*"],
         "createUpdaterArtifacts": true,
         "active": true,

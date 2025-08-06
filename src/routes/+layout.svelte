@@ -7,18 +7,17 @@
         containerizationStatus,
         startContainerization
     } from '$lib/services/containerization/system/service.js';
-    import { onDestroy } from 'svelte';
+    import { onDestroy, onMount } from 'svelte';
     import { isContainerizationActive } from '$lib/stores/containerization.svelte';
     import { toast } from 'svelte-sonner';
     import { goto } from '$app/navigation';
     import { isLoading } from './loading.svelte';
+
     let { children } = $props();
     let containerizationInterval: ReturnType<typeof setInterval> | null = $state(null);
-    isLoading.setTrue();
-    if (isSupportedVersion()) {
-        startContainerization();
-        isContainerizationActive.setTrue();
-        containerizationInterval = setInterval(async () => {
+
+    function watchContainerizationStatus() {
+        return setInterval(async () => {
             const output = await containerizationStatus();
             if (output.error) {
                 toast.warning('Some error while getting containerization status.', {
@@ -43,6 +42,22 @@
             }
         }, 5000);
     }
+
+    onMount(async () => {
+        if (!isSupportedVersion()) return goto('/unsupported');
+        isLoading.setTrue();
+        const containerizationOutput = await startContainerization();
+
+        if (containerizationOutput.error || containerizationOutput.stderr) {
+            toast.error('Not able to start containerization process', {
+                description: containerizationOutput.stderr
+            });
+            isContainerizationActive.setFalse();
+            return goto('/containerization-status');
+        }
+        isContainerizationActive.setTrue();
+        containerizationInterval = watchContainerizationStatus();
+    })
 
     onDestroy(() => {
         if (containerizationInterval) {
