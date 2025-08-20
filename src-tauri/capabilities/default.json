@@ -21,6 +21,11 @@
           "name": "binaries/sidecar/apple-container/bin/container",
           "args": true,
           "sidecar": true
+        },
+        {
+          "name": "container",
+          "cmd": "container",
+          "args": true
         }
       ]
     },
@@ -32,6 +37,11 @@
           "name": "binaries/sidecar/apple-container/bin/container",
           "args": true,
           "sidecar": true
+        },
+        {
+          "name": "container",
+          "cmd": "container",
+          "args": true
         }
       ]
     },
@@ -43,6 +53,11 @@
           "name": "binaries/sidecar/apple-container/bin/container",
           "args": true,
           "sidecar": true
+        },
+        {
+          "name": "container",
+          "cmd": "container",
+          "args": true
         }
       ]
     },
@@ -54,10 +69,14 @@
           "name": "binaries/sidecar/apple-container/bin/container",
           "args": true,
           "sidecar": true
+        },
+        {
+          "name": "container",
+          "cmd": "container",
+          "args": true
         }
       ]
     },
-
     "fs:default",
     "fs:allow-data-read-recursive",
     "fs:allow-data-read",
@@ -65,6 +84,15 @@
         "identifier": "fs:allow-exists",
         "allow": [
           { "path": "$DATA/*" }
+        ]
+    },
+    "fs:write-all",
+    "fs:allow-write-file",
+    "fs:write-files",
+    {
+        "identifier": "fs:allow-write",
+        "allow": [
+            { "path": "/etc/resolver", "recursive": true }
         ]
     },
     {

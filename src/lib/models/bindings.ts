@@ -15,6 +15,14 @@ async runContainerCommandWithStdin(args: string[], stdin: string) : Promise<Resu
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async executeWithElevatedCommand(command: string, args: string[]) : Promise<Result<CommandResult, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("execute_with_elevated_command", { command, args }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 

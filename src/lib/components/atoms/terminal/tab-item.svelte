@@ -88,12 +88,13 @@
         className
     )}
     onclick={handleClick}
+    onkeydown={() => {}}
     role="tab"
     tabindex="0"
     aria-selected={active}
 >
     {#if editing}
-        <div class="flex items-center gap-1 py-1" onclick={(e) => e.stopPropagation()}>
+        <div class="flex items-center gap-1 py-1" role="button" tabindex="0" onkeydown={() => {}} onclick={(e) => e.stopPropagation()}>
             <Input
                 value={editingValue}
                 class="h-6 px-2 py-0 text-xs w-24 focus:w-32 transition-all"
@@ -104,14 +105,14 @@
             />
             <TooltipWrapper content="Save">
                 {#snippet children()}
-                    <div
+                    <button
                         class="w-4 h-4 rounded-sm hover:bg-green-500/20 flex items-center justify-center cursor-pointer text-green-600"
                         onclick={handleSaveClick}
                         role="button"
                         tabindex="0"
                     >
                         <Check size={10} />
-                    </div>
+                    </button>
                 {/snippet}
             </TooltipWrapper>
             <TooltipWrapper content="Cancel">

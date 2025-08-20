@@ -3,9 +3,11 @@ use specta_typescript::Typescript;
 use tauri_specta::{Builder, collect_commands};
 
 use crate::commands::registry::run_container_command_with_stdin;
+use crate::commands::system::execute_with_elevated_command;
 
 // mods
 mod commands;
+mod types;
 
 include!(concat!("../migrations", "/generated_migrations.rs"));
 
@@ -19,8 +21,11 @@ fn greet(name: &str) -> String {
 pub async fn run() {
     let migrations = load_migrations();
 
-    let spectabuilder = Builder::<tauri::Wry>::new()
-        .commands(collect_commands![greet, run_container_command_with_stdin]);
+    let spectabuilder = Builder::<tauri::Wry>::new().commands(collect_commands![
+        greet,
+        run_container_command_with_stdin,
+        execute_with_elevated_command
+    ]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
     spectabuilder
@@ -28,8 +33,7 @@ pub async fn run() {
         .expect("Failed to export typescript bindings");
 
     #[cfg(debug_assertions)]
-    let builder = tauri::Builder::default()
-        .plugin(tauri_plugin_devtools::init());
+    let builder = tauri::Builder::default().plugin(tauri_plugin_devtools::init());
     #[cfg(not(debug_assertions))]
     let builder = tauri::Builder::default();
 

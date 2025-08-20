@@ -137,6 +137,7 @@
                         <img
                             src="/logo.png"
                             class="rounded-xs scale-125 transform-3d transition-all duration-500 group-hover:scale-150"
+                            alt="container kit logo"
                         />
                     </div>
                     <span class="font-mono text-xl text-primary">ContainerKit</span>

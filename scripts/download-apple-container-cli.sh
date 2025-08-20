@@ -126,6 +126,25 @@ if [ -d "${FINAL_BINARIES_DIR}" ]; then
     find "${FINAL_BINARIES_DIR}" -type f -exec chmod +x {} \; 2>/dev/null || true
 fi
 
+# --- Create container-aarch64-apple-darwin Copy ---
+echo "Creating container-aarch64-apple-darwin copy..."
+
+# Check if the container binary exists and create the aarch64 copy
+CONTAINER_BIN="${FINAL_BINARIES_DIR}/bin/container"
+CONTAINER_AARCH64="${FINAL_BINARIES_DIR}/bin/container-aarch64-apple-darwin"
+
+if [ -f "${CONTAINER_BIN}" ]; then
+    echo "Creating copy: container -> container-aarch64-apple-darwin"
+    cp "${CONTAINER_BIN}" "${CONTAINER_AARCH64}"
+
+    # Ensure the copy is executable
+    chmod +x "${CONTAINER_AARCH64}"
+
+    echo "Successfully created ${CONTAINER_AARCH64}"
+else
+    echo "Warning: container binary not found at ${CONTAINER_BIN}"
+fi
+
 # --- Cleanup ---
 echo "Cleaning up temporary files..."
 rm -rf "${DOWNLOAD_DIR}"

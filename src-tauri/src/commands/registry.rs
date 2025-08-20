@@ -1,14 +1,5 @@
-use serde::{Deserialize, Serialize};
-use specta::Type;
+use crate::types::CommandResult;
 use std::{os::unix::process::ExitStatusExt, process::Command};
-
-#[derive(Debug, Clone, Serialize, Deserialize, Type)]
-pub struct CommandResult {
-    pub signal: Option<i32>,
-    pub stdout: String,
-    pub stderr: String,
-    pub code: Option<i32>,
-}
 
 // Copied from https://github.com/ducheharsh/apple-container-desktop/blob/main/src-tauri/src/lib.rs
 #[tauri::command]

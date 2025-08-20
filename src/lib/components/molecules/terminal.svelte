@@ -9,13 +9,14 @@
     import { spawn } from 'tauri-pty';
     import { onDestroy } from 'svelte';
 
-    let terminal: Terminal | null = $state(null);
+    let terminal: Terminal | undefined = $state(undefined);
     let ptyProcess: ReturnType<typeof spawn>;
 
     type TerminalProps = {
         class?: string;
         sessionId?: string;
         onPtyCreated?: (ptyProcess: any) => void;
+        container?: string
     };
 
     let options: ITerminalOptions & ITerminalInitOnlyOptions = {
@@ -37,20 +38,21 @@
 
     async function onLoad() {
         try {
+            if (!terminal) return;
             // Load addons
             const fitAddon = new (await XtermAddon.FitAddon()).FitAddon();
             const webLinksAddon = new (await XtermAddon.WebLinksAddon()).WebLinksAddon();
             const searchAddon = new (await XtermAddon.SearchAddon()).SearchAddon();
 
             // Load addons to terminal
-            terminal?.loadAddon(fitAddon);
-            terminal?.loadAddon(webLinksAddon);
-            terminal?.loadAddon(searchAddon);
+            terminal.loadAddon(fitAddon);
+            terminal.loadAddon(webLinksAddon);
+            terminal.loadAddon(searchAddon);
 
             // Try to load WebGL addon with fallback
             try {
                 const webglAddon = new (await XtermAddon.WebglAddon()).WebglAddon();
-                terminal?.loadAddon(webglAddon);
+                terminal.loadAddon(webglAddon);
             } catch (e) {
                 console.warn('WebGL addon failed to load, using canvas renderer');
             }
@@ -60,8 +62,8 @@
 
             // Create PTY process
             ptyProcess = spawn('zsh', [], {
-                cols: terminal?.cols,
-                rows: terminal?.rows
+                cols: terminal.cols,
+                rows: terminal.rows
             });
 
             // Notify parent component about PTY creation
@@ -87,6 +89,8 @@
                 if (ptyProcess) {
                     ptyProcess.resize(cols, rows);
                 }
+
+                fitAddon.fit();
                 // Fix auto scroll to bottom of terminal when available
                 if (terminal) {
                     terminal.scrollToBottom();
@@ -94,7 +98,9 @@
             });
 
             // Access running container shell
-            // ptyProcess.write('container exec -it redis-2 sh \r')
+            if (container) {
+                ptyProcess.write(`container exec -it ${container} sh \r`)
+            }
 
             setTimeout(() => terminal?.focus(), 100);
         } catch (error) {
@@ -107,7 +113,7 @@
         }
     }
 
-    let { class: className, sessionId, onPtyCreated }: TerminalProps = $props();
+    let { class: className, sessionId, container, onPtyCreated }: TerminalProps = $props();
 
     // Cleanup PTY process when component is destroyed
     onDestroy(() => {
@@ -135,21 +141,4 @@
     :global(.terminal-container .xterm-viewport) {
         overflow-y: auto;
     }
-
-    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar) {*/
-    /*    width: 8px;*/
-    /*}*/
-
-    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar-track) {*/
-    /*    background: var(--color-foreground);*/
-    /*}*/
-
-    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb) {*/
-    /*    background: var(--color-background) / 0.4;*/
-    /*    border-radius: 4px;*/
-    /*}*/
-
-    /*:global(.terminal-container .xterm-viewport::-webkit-scrollbar-thumb:hover) {*/
-    /*    background: var(--muted-foreground) / 0.6;*/
-    /*}*/
 </style>

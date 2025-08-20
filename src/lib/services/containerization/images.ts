@@ -1,4 +1,3 @@
-import { Command } from '@tauri-apps/plugin-shell';
 import { createContainerCommand, validateCommandOutput } from '$lib/services/containerization/utils';
 import type { Output } from '$lib/services/containerization/models';
 
