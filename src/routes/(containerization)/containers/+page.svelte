@@ -52,7 +52,7 @@
             toast.error(`Unable to delete ${id} container`);
             return;
         }
-        // await getAllContainerList();
+
         toast.success(`Successfully deleted ${id} container`);
     }
 

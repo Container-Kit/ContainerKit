@@ -16,7 +16,9 @@ pub async fn execute_with_elevated_command(
     let output = if is_elevated {
         cmd.output().map_err(|e| e.to_string())?
     } else {
-        let elevated_cmd = Command::new(cmd);
+        let mut elevated_cmd = Command::new(cmd);
+        elevated_cmd.name("ContainerKit".to_string());
+        elevated_cmd.icon(include_bytes!("../../icons/icon.icns").to_vec());
         elevated_cmd.output().map_err(|e| e.to_string())?
     };
 

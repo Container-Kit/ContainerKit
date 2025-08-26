@@ -18,7 +18,6 @@
     import { Button } from '$lib/components/ui/button';
     import Refresh from '@lucide/svelte/icons/rotate-ccw';
     import Search from '@lucide/svelte/icons/search';
-    import { onMount } from 'svelte';
 
     type DataTableProps<TData, TValue> = {
         columns: ColumnDef<TData, TValue>[];
@@ -27,14 +26,12 @@
 
     type Props = {
         showOnlyRunningContainers: boolean;
-        getAllContainers: () => Promise<void>;
     };
 
     let {
         data,
         columns,
-        showOnlyRunningContainers = $bindable(),
-        getAllContainers
+        showOnlyRunningContainers = $bindable()
     }: DataTableProps<TData, TValue> & Props = $props();
 
     let searchInputBox: HTMLInputElement | null = $state(null);
@@ -133,10 +130,10 @@
             />
             <Label for="running-containers-only">Running Containers Only</Label>
         </div>
-        <Button size="sm" variant="outline" onclick={getAllContainers}>
-            <Refresh />
-            <span>Refresh</span>
-        </Button>
+<!--        <Button size="sm" variant="outline" onclick={getAllContainers}>-->
+<!--            <Refresh />-->
+<!--            <span>Refresh</span>-->
+<!--        </Button>-->
     </div>
 
     <div class="flex flex-col space-y-2">
