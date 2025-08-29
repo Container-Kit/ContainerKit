@@ -25,4 +25,4 @@ export const getAllDnsConfig = async (): Promise<Output> => {
     const command = createContainerCommand(['s', 'dns', 'ls']);
     const output = await command.execute();
     return validateCommandOutput(output);
-}
+};
