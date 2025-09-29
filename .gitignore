@@ -21,3 +21,6 @@ vite.config.ts.timestamp-*
 apple-container-cli/**
 apple-container-cli/libexec/**
 apple-container-cli/bin/**
+apple-container-src/**
+apple-container-src/libexec/**
+apple-container-src/bin/**
