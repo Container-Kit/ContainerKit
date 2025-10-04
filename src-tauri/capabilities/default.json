@@ -18,11 +18,6 @@
       "description": "Permission to run apple containers",
       "allow": [
         {
-          "name": "binaries/sidecar/apple-container/bin/container",
-          "args": true,
-          "sidecar": true
-        },
-        {
           "name": "container",
           "cmd": "container",
           "args": true
@@ -33,11 +28,6 @@
       "identifier": "shell:allow-spawn",
       "description": "Permission to run apple containers",
       "allow": [
-        {
-          "name": "binaries/sidecar/apple-container/bin/container",
-          "args": true,
-          "sidecar": true
-        },
         {
           "name": "container",
           "cmd": "container",
@@ -50,11 +40,6 @@
       "description": "Permission to run apple containers",
       "allow": [
         {
-          "name": "binaries/sidecar/apple-container/bin/container",
-          "args": true,
-          "sidecar": true
-        },
-        {
           "name": "container",
           "cmd": "container",
           "args": true
@@ -65,11 +50,6 @@
       "identifier": "shell:allow-stdin-write",
       "description": "Permission to run apple containers",
       "allow": [
-        {
-          "name": "binaries/sidecar/apple-container/bin/container",
-          "args": true,
-          "sidecar": true
-        },
         {
           "name": "container",
           "cmd": "container",
