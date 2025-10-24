@@ -8,7 +8,7 @@
         "build": "pnpm db:generate && vite build",
         "preview": "vite preview",
         "tauri": "tauri",
-        "tauri:build": "source .env && TAURI_SIGNING_PRIVATE_KEY_PASSWORD=$TAURI_SIGNING_PRIVATE_KEY_PASSWORD TAURI_SIGNING_PRIVATE_KEY=$TAURI_SIGNING_PRIVATE_KEY tauri build --target aarch64-apple-darwin",
+        "tauri:build": "./scripts/tauri-build.sh",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
         "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "format": "prettier --write .",
