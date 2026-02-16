@@ -7,9 +7,9 @@
 @import './themes/cosmic-night.css';
 @import './themes/tangerine.css';
 @import './themes/perpetuity.css';
-@import './themes/modern-minimal.css';
 @import './themes/t3-chat.css';
-@import './themes/starry-night.css';
+@import './themes/caffeine.css';
+@import './themes/kit.css';
 
 @custom-variant dark (&:is(.dark *));
 
