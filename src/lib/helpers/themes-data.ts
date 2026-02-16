@@ -2,9 +2,19 @@ export type Theme = { name: string; class: string; title: string };
 
 export const themes = [
     {
+        class: 'text-[#6b49c7] dark:text-[#a18cd1]',
+        title: 'Container Kit',
+        name: 'container-kit'
+    },
+    {
         class: 'text-[#171717] dark:text-[#e5e5e5]',
-        title: 'Default',
-        name: ''
+        title: 'ShadCN',
+        name: 'shadcn'
+    },
+    {
+        class: 'text-[#644a40] dark:text-[#ffe0c2]',
+        title: 'Caffeine',
+        name: 'caffeine'
     },
     {
         class: 'text-[#e05d38] dark:text-[#e05d38]',
@@ -20,20 +30,5 @@ export const themes = [
         class: 'text-[#6e56cf] dark:text-[#a48fff]',
         title: 'Cosmic Night',
         name: 'cosmic-night'
-    },
-    {
-        class: 'text-[#3b82f6] dark:text-[#3b82f6]',
-        title: 'Modern Minimal',
-        name: 'modern-minimal'
-    },
-    {
-        class: 'text-[#a84370] dark:text-[#a3004c]',
-        title: 'T3 Chat',
-        name: 't3-chat'
-    },
-    {
-        class: 'text-[#3a5ba0] dark:text-[#3a5ba0]',
-        title: 'Starry Night',
-        name: 'starry-night'
     }
-];
+]
