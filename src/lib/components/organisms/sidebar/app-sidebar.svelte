@@ -1,6 +1,7 @@
 <script lang="ts" module>
     import Container from '@lucide/svelte/icons/container';
     import Image from '@lucide/svelte/icons/image';
+    import Volume from '@lucide/svelte/icons/database';
     import Hammer from '@lucide/svelte/icons/hammer';
     import WayPoints from '@lucide/svelte/icons/waypoints';
     import Network from '@lucide/svelte/icons/network';
@@ -27,7 +28,7 @@
             {
                 name: 'Volumes',
                 url: '/volumes',
-                icon: Image,
+                icon: Volume,
                 isActive: false
             },
             {

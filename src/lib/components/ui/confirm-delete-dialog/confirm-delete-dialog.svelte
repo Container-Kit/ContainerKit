@@ -95,7 +95,7 @@
 					{dialogState.options?.title}
 				</AlertDialog.Title>
 				<AlertDialog.Description>
-					{dialogState.options?.description}
+					{@html dialogState.options?.description}
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			{#if dialogState.options?.input}

@@ -9,10 +9,10 @@
         getFilteredRowModel,
         getPaginationRowModel
     } from '@tanstack/table-core';
-    import * as Dialog from "$lib/components/ui/dialog/index.js";
+    import * as Dialog from '$lib/components/ui/dialog/index.js';
     import { createSvelteTable, FlexRender } from '$lib/components/ui/data-table';
     import DeleteConfirmationDialog from '$lib/components/molecules/delete-confirmation-dialog.svelte';
-    import * as Alert from "$lib/components/ui/alert/index.js";
+    import * as Alert from '$lib/components/ui/alert/index.js';
     import * as Table from '$lib/components/ui/table';
     import { Input } from '$lib/components/ui/input';
     import { Label } from '$lib/components/ui/label';
@@ -24,7 +24,7 @@
     import Import from '@lucide/svelte/icons/import';
     import CloudDownload from '@lucide/svelte/icons/cloud-download';
     import Delete from '@lucide/svelte/icons/trash-2';
-    import AlertCircleIcon from "@lucide/svelte/icons/alert-circle";
+    import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
     import { Badge } from '$lib/components/ui/badge/index.js';
     import { getAllContainers } from '$lib/services/containerization/containers';
     import { tryCatch } from '$lib/helpers/try-catch.js';
@@ -32,6 +32,10 @@
     import type { ContainerClient, ContainerImage } from '$lib/models/container';
     import { removeMultipleImages } from '$lib/services/containerization/images';
     import { ConfirmDeleteDialog } from '$lib/components/ui/confirm-delete-dialog';
+    import TarFromImage from '../(components)/tar-from-image.svelte';
+    import * as Card from '$lib/components/ui/card/index.js';
+    import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
+    import { routes } from '$lib/helpers/routes';
 
     type DataTableProps<TData, TValue> = {
         columns: ColumnDef<TData, TValue>[];
@@ -42,13 +46,21 @@
 
     type Props = {} & DataTableProps<TData, TValue>;
 
-    let { data, columns, showPullImageDialog = $bindable(), showTarImageDialog = $bindable() }: Props = $props();
+    let {
+        data,
+        columns,
+        showPullImageDialog = $bindable(),
+        showTarImageDialog = $bindable()
+    }: Props = $props();
 
     let searchInputBox: HTMLInputElement | null = $state(null);
     let showKeyboardShortcut = $state(true);
-    let showMultipleDeleteDialog = $state(false);
-    let imagesInUse: Record<string, string[]> = $state({});
-    let imagesToDelete: string[] = $state([]);
+    let bulkDeleteState = $state({
+        showDialog: false,
+        imagesInUse: {} as Record<string, string[]>,
+        imagesToDelete: [] as string[],
+        sizeFreedUp: 0
+    });
 
     const keys = new PressedKeys();
     keys.onKeys(['meta', 'k'], () => {
@@ -108,7 +120,7 @@
     let searchValue = $state((table.getColumn('name')?.getFilterValue() as string) ?? '');
 
     async function deleteSelectedImages() {
-        if (imagesToDelete.length === 0) {
+        if (bulkDeleteState.imagesToDelete.length === 0) {
             toast.warning('No images to delete', {
                 description: 'All selected images are currently in use by containers.'
             });
@@ -116,7 +128,9 @@
             return;
         }
 
-        const {data, error} = await tryCatch(removeMultipleImages(imagesToDelete))
+        const { data, error } = await tryCatch(
+            removeMultipleImages(bulkDeleteState.imagesToDelete)
+        );
         closeDeleteDialog();
         if (error) {
             toast.error(error.message);
@@ -124,12 +138,12 @@
         }
 
         if (data.error) {
-            toast.error(data.stderr)
+            toast.error(data.stderr);
             return;
         }
 
         if (data && data.stdout) {
-            toast.success('Selected images deleted successfully', {description: data.stdout});
+            toast.success('Selected images deleted successfully', { description: data.stdout });
             table.resetRowSelection();
         }
     }
@@ -154,28 +168,43 @@
             return;
         }
 
-        const containers: ContainerClient[] = JSON.parse(output.stdout) ?? [] satisfies ContainerClient[];
+        const containers: ContainerClient[] =
+            JSON.parse(output.stdout) ?? ([] satisfies ContainerClient[]);
         const selectedRowIds = Object.keys(rowSelection);
-        const selectedRowsData = selectedRowIds.map((rowId) => table.getRow(rowId).original) as Array<ContainerImage>;
+        const selectedRowsData = selectedRowIds.map(
+            (rowId) => table.getRow(rowId).original
+        ) as Array<ContainerImage>;
         const imagesInUseMap: Record<string, string[]> = {};
         for (const image of selectedRowsData) {
-            const containersUsingImage = containers.filter((container) => image.reference === container.configuration.image.reference);
+            const containersUsingImage = containers.filter(
+                (container) => image.reference === container.configuration.image.reference
+            );
             if (containersUsingImage.length > 0) {
-                const containerIds = containersUsingImage.map((container) => container.configuration.id);
+                const containerIds = containersUsingImage.map(
+                    (container) => container.configuration.id
+                );
                 imagesInUseMap[image.reference] = containerIds;
             } else {
-                imagesToDelete.push(image.reference)
+                bulkDeleteState.sizeFreedUp += parseFloat(image.fullSize);
+                bulkDeleteState.imagesToDelete.push(image.reference);
             }
         }
 
-        imagesInUse = imagesInUseMap;
-        showMultipleDeleteDialog = true;
+        bulkDeleteState.imagesInUse = imagesInUseMap;
+        bulkDeleteState.showDialog = true;
     }
 
     function closeDeleteDialog() {
-        imagesInUse = {};
-        imagesToDelete = [];
-        showMultipleDeleteDialog = false;
+        bulkDeleteState = {
+            imagesInUse: {},
+            imagesToDelete: [],
+            sizeFreedUp: 0,
+            showDialog: false
+        };
+        // bulkDeleteState.imagesInUse = {};
+        // bulkDeleteState.imagesToDelete = [];
+        // bulkDeleteState.sizeFreedUp = 0;
+        // bulkDeleteState.showDialog = false;
     }
 </script>
 
@@ -212,26 +241,28 @@
             </div>
             <div class="flex items-center space-x-2">
                 <!-- TODO: Implement a dialog to fetch a new image -->
-                <Button variant="outline" onclick={() => showTarImageDialog = true}>
+                <Button variant="outline" onclick={() => (showTarImageDialog = true)}>
                     <Import /> Import Image
                 </Button>
             </div>
             <div class="flex items-center space-x-2">
                 <!-- TODO: Implement a dialog to fetch a new image -->
-                <Button variant="outline" onclick={() => showPullImageDialog = true}>
+                <Button variant="outline" onclick={() => (showPullImageDialog = true)}>
                     <CloudDownload />
                     Pull Remote Image
                 </Button>
             </div>
         </div>
-        {#if Object.keys(rowSelection).length > 0 }
-            <div class="flex items-center space-x-2">
-                <Button class="relative" variant="destructive" onclick={startMultipleImagesDelete}>
-                    <Delete />
-                    Delete
+        <div class="flex items-center space-x-2">
+            {#if Object.keys(rowSelection).length > 0}
+                <div class="flex relative">
+                    <Button class="flex " variant="destructive" onclick={startMultipleImagesDelete}>
+                        <Delete />
+                        Delete
+                    </Button>
                     <Badge
                         variant="destructive"
-                        class="absolute rounded-full -top-3 -right-2 bg-destructive-foreground! text-destructive!"
+                        class="absolute -top-3 -right-1.5 rounded-full bg-destructive-foreground! text-destructive!"
                     >
                         {@const totalSelectedRows = Object.keys(rowSelection).length}
                         {#if totalSelectedRows !== data.length}
@@ -240,9 +271,9 @@
                             All
                         {/if}
                     </Badge>
-                </Button>
-            </div>
-        {/if}
+                </div>
+            {/if}
+        </div>
     </div>
 
     <div class="flex flex-col space-y-2">
@@ -319,27 +350,53 @@
 </div>
 
 <DeleteConfirmationDialog
-    bind:open={showMultipleDeleteDialog}
-    title="Delete Images"
-    description="Are you sure you want to delete the selected images? This action cannot be undone."
+    bind:open={bulkDeleteState.showDialog}
+    title="Delete Selected Images?"
+    description="This action cannot be undone. This will permanently delete the selected container images."
     deleteAction={deleteSelectedImages}
     onClose={closeDeleteDialog}
 >
-    {#if Object.keys(imagesInUse).length > 0}
+    <Card.Root class="@container/card">
+        <Card.Header>
+            <Card.Description>Total space to be freed up</Card.Description>
+            <Card.Title class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+                {bulkDeleteState.sizeFreedUp} MB
+            </Card.Title>
+            <Card.Description>
+                You are about to delete {bulkDeleteState.imagesToDelete.length} image(s)
+                {#if (Object.keys(bulkDeleteState.imagesInUse).length > 0)}
+                out of selected {Object.keys(rowSelection).length} image(s) as the rest are currently in use by containers.
+                {/if}
+            </Card.Description>
+        </Card.Header>
+    </Card.Root>
+    {#if Object.keys(bulkDeleteState.imagesInUse).length > 0}
         <Alert.Root variant="destructive" class="mb-4">
-            <AlertCircleIcon />
-            <Alert.Title>Some images are currently in use.</Alert.Title>
+            <Alert.Title class="flex flex-row items-center gap-1.5 text-lg">
+                <AlertCircleIcon class="size-4" /> Deletion Blocked for Some Images
+            </Alert.Title>
             <Alert.Description>
-                The following images are being used by running containers and cannot be deleted:
-                <ul class="list-inside list-disc mt-2">
-                    {#each Object.keys(imagesInUse) as reference (reference)}
-                        <li>Container -> {imagesInUse[reference].join(', ')} uses image -> {reference.split('/').at(-1)}</li>
+                The following images cannot be deleted as they are currently in use by one or more
+                containers:
+                <ul class="list-inside list-disc mt-2 space-y-1">
+                    {#each Object.keys(bulkDeleteState.imagesInUse) as reference (reference)}
+                        <li>
+                            <span class="font-semibold">{reference.split('/').at(-1)}</span> is in
+                            use by container(s):
+                            <span class="font-semibold"
+                                >{bulkDeleteState.imagesInUse[reference].join(', ')}</span
+                            >
+                        </li>
                     {/each}
                 </ul>
-                <p class="font-semibold tracking-wider">Cannot delete image(s): Container dependencies exist. Delete the containers first.</p>
+                <p class="font-semibold tracking-wider mt-2">
+                    To delete these images, you must first remove the containers that depend on
+                    them.
+                </p>
             </Alert.Description>
         </Alert.Root>
     {/if}
 </DeleteConfirmationDialog>
 
 <ConfirmDeleteDialog />
+<TarFromImage />

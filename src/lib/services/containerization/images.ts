@@ -30,8 +30,21 @@ export async function removeMultipleImages(imagesReference: Array<string>): Prom
     return validateCommandOutput(output);
 }
 
+export async function inspectImage(imageReference: string): Promise<Output> {
+    const command = createContainerCommand(['image', 'inspect', imageReference]);
+    const output = await command.execute();
+    return validateCommandOutput(output);
+}
+
 export async function importImageFromTar(path: string): Promise<Output> {
     const command = createContainerCommand(['image', 'load', '-i', path]);
+    const output = await command.execute();
+    return validateCommandOutput(output);
+}
+
+export async function exportImageToTar(imageReference: string, path: string, additionalOptions: string[] = []): Promise<Output> {
+    // container i save --arch aarch64 --output /Users/shivammeena/Projects/ContainerKit/static/test-tar.tar redis
+    const command = createContainerCommand(['image', 'save', ...additionalOptions, '-o', path, imageReference]);
     const output = await command.execute();
     return validateCommandOutput(output);
 }

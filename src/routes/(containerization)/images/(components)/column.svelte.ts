@@ -4,7 +4,6 @@ import { renderComponent } from '$lib/components/ui/data-table';
 import DataTableCheckbox from '$lib/components/atoms/data-table-checkbox.svelte';
 import ImageListActions from './image-list-actions.svelte';
 import ImageCellWithTooltip from './image-list-cell-with-tooltip.svelte';
-import prettyBytes from 'pretty-bytes';
 
 export function columns(): ColumnDef<ContainerImage>[] {
     return [
@@ -65,8 +64,8 @@ export function columns(): ColumnDef<ContainerImage>[] {
         },
         {
             id: 'size',
-            header: 'Size (Waiting for fix)',
-            accessorFn: (row) => prettyBytes(row.descriptor.size) ?? 'N/A'
+            header: 'Size',
+            accessorFn: (row) => row.fullSize ?? 'N/A'
         },
         {
             id: 'actions',

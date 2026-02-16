@@ -28,7 +28,6 @@
 
     async function deleteImage() {
         const { data: output, error } = await tryCatch(getAllContainers());
-        let imagesToDelete = []
         if (error) {
             console.error('Error fetching containers:', error);
             toast.error(error.message);
@@ -53,8 +52,8 @@
             return toast.error(`You can't delete an image which is being used in containers: ${containersUsingImage.join(', ')}`)
         }
         confirmDelete({
-            title: name,
-            description: `Are you sure you want to delete ${name} image?`,
+            title: "Delete Image?",
+            description: `Are you sure you want to delete <strong>${reference?.split('/').at(-1) ?? name}</strong> image?`,
             onConfirm: async () => {
                 await removeImage(reference);
             }

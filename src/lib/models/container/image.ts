@@ -5,4 +5,5 @@ export type ContainerImage = {
         mediaType: string;
     };
     reference: string;
+    fullSize: string;
 };
