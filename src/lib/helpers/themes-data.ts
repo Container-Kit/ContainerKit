@@ -3,6 +3,11 @@ export type Theme = { name: string; class: string; title: string };
 export const themes = [
     {
         class: 'text-[#6b49c7] dark:text-[#a18cd1]',
+        title: 'Default Theme',
+        name: ''
+    },
+    {
+        class: 'text-[#6b49c7] dark:text-[#a18cd1]',
         title: 'Container Kit',
         name: 'container-kit'
     },

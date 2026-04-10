@@ -25,12 +25,12 @@
     let editingValue = $state('');
     let version = $state('0.6.0');
     let appName = $state('Container Kit');
-    let DEFAULT_BOTTOM_TOOLBAR_POSITION = 8;
+    let DEFAULT_BOTTOM_TOOLBAR_POSITION = 20;
     // Dragging and positioning state
     let isDragging = $state(false);
     let dragStartY = $state(0);
     let dragStartBottom = $state(0);
-    let toolbarBottom = $state(DEFAULT_BOTTOM_TOOLBAR_POSITION); // Initial bottom position (bottom-2 = 8px)
+    let toolbarBottom = $state(DEFAULT_BOTTOM_TOOLBAR_POSITION);
     let toolbarElement: HTMLDivElement | null = $state(null);
     let showDragGuide = $state(false);
 

@@ -17,7 +17,7 @@
         <AppSidebar variant="inset" collapsible="icon" />
         <Sidebar.Inset>
             <SiteHeader {route} />
-            <div class="flex flex-1 flex-col gap-4 p-4 pt-0">
+            <div class="flex flex-1 flex-col gap-4 p-4 pt-0 max-h-[80svh]">
                 {@render children()}
             </div>
             <Toolbar />

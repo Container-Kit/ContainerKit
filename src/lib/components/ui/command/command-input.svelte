@@ -1,26 +1,31 @@
 <script lang="ts">
-    import { Command as CommandPrimitive } from 'bits-ui';
-    import SearchIcon from '@lucide/svelte/icons/search';
-    import { cn } from '$lib/utils.js';
+	import { Command as CommandPrimitive } from "bits-ui";
+	import { cn } from "$lib/utils.js";
+	import * as InputGroup from "$lib/components/ui/input-group/index.js";
+	import { IconSearch } from '@tabler/icons-svelte';
 
-    let {
-        ref = $bindable(null),
-        class: className,
-        value = $bindable(''),
-        ...restProps
-    }: CommandPrimitive.InputProps = $props();
+	let {
+		ref = $bindable(null),
+		class: className,
+		value = $bindable(""),
+		...restProps
+	}: CommandPrimitive.InputProps = $props();
 </script>
 
-<div class="flex h-9 items-center gap-2 border-b px-3" data-slot="command-input-wrapper">
-    <SearchIcon class="size-4 shrink-0 opacity-50" />
-    <CommandPrimitive.Input
-        data-slot="command-input"
-        class={cn(
-            'placeholder:text-muted-foreground outline-hidden flex h-10 w-full rounded-md bg-transparent py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50',
-            className
-        )}
-        bind:ref
-        {...restProps}
-        bind:value
-    />
+<div data-slot="command-input-wrapper" class="p-1 pb-0">
+	<InputGroup.Root class="bg-input/50 h-9">
+		<CommandPrimitive.Input
+			data-slot="command-input"
+			class={cn(
+				"w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+				className
+			)}
+			bind:ref
+			{...restProps}
+			bind:value
+		/>
+		<InputGroup.Addon>
+			<IconSearch class="size-4 shrink-0 opacity-50" />
+		</InputGroup.Addon>
+	</InputGroup.Root>
 </div>

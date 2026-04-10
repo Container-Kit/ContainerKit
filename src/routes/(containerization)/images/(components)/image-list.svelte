@@ -35,6 +35,7 @@
     import TarFromImage from '../(components)/tar-from-image.svelte';
     import * as Card from '$lib/components/ui/card/index.js';
     import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
+    import * as DataTableExtensions from '$lib/components/atoms/data-table-extensions/index.js';
     import { routes } from '$lib/helpers/routes';
 
     type DataTableProps<TData, TValue> = {
@@ -211,34 +212,36 @@
 <div class="space-y-4">
     <div class="flex justify-between w-full">
         <div class="flex items-center space-x-2">
-            <div class="relative flex-1">
-                <Search class="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                {#if showKeyboardShortcut}
-                    <kbd
-                        class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
-                    >
-                        <span class="text-xs tracking-wider">⌘</span>K
-                    </kbd>
-                {/if}
-                <Input
-                    bind:ref={searchInputBox}
-                    type="text"
-                    placeholder="Search images..."
-                    bind:value={searchValue}
-                    oninput={() => table.getColumn('name')?.setFilterValue(searchValue)}
-                    onkeydown={(e) => {
-                        if (e.key === 'Escape') {
-                            return searchInputBox?.blur();
-                        }
-                        if (e.key === 'Enter') {
-                            table.getColumn('name')?.setFilterValue(searchValue);
-                        }
-                    }}
-                    onfocus={() => (showKeyboardShortcut = false)}
-                    onblur={() => (showKeyboardShortcut = searchValue?.length === 0)}
-                    class="pl-8 text-pretty"
-                />
-            </div>
+            <DataTableExtensions.SearchInput {table} columnToFilter="name" placeholder="Search Images..."/>
+
+<!--            <div class="relative flex-1">-->
+<!--                <Search class="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />-->
+<!--                {#if showKeyboardShortcut}-->
+<!--                    <kbd-->
+<!--                        class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"-->
+<!--                    >-->
+<!--                        <span class="text-xs tracking-wider">⌘</span>K-->
+<!--                    </kbd>-->
+<!--                {/if}-->
+<!--                <Input-->
+<!--                    bind:ref={searchInputBox}-->
+<!--                    type="text"-->
+<!--                    placeholder="Search images..."-->
+<!--                    bind:value={searchValue}-->
+<!--                    oninput={() => table.getColumn('name')?.setFilterValue(searchValue)}-->
+<!--                    onkeydown={(e) => {-->
+<!--                        if (e.key === 'Escape') {-->
+<!--                            return searchInputBox?.blur();-->
+<!--                        }-->
+<!--                        if (e.key === 'Enter') {-->
+<!--                            table.getColumn('name')?.setFilterValue(searchValue);-->
+<!--                        }-->
+<!--                    }}-->
+<!--                    onfocus={() => (showKeyboardShortcut = false)}-->
+<!--                    onblur={() => (showKeyboardShortcut = searchValue?.length === 0)}-->
+<!--                    class="pl-8 text-pretty"-->
+<!--                />-->
+<!--            </div>-->
             <div class="flex items-center space-x-2">
                 <!-- TODO: Implement a dialog to fetch a new image -->
                 <Button variant="outline" onclick={() => (showTarImageDialog = true)}>

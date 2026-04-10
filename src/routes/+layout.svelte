@@ -84,7 +84,7 @@
     });
 </script>
 
-<ModeWatcher defaultMode="light" track={true} defaultTheme="container-kit" />
+<ModeWatcher defaultMode="light" track={true} />
 <Toaster theme={mode.current} richColors={true} closeButton={true} position="bottom-right" />
 
 {@render children()}

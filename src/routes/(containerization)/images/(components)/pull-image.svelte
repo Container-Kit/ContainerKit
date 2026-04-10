@@ -83,7 +83,6 @@
 </script>
 
 <Dialog.Root open={show} onOpenChange={(val) => (show = val)}>
-    <Dialog.Trigger>Open</Dialog.Trigger>
     <Dialog.Content>
         <Dialog.Header>
             <Dialog.Title>Pull Image</Dialog.Title>

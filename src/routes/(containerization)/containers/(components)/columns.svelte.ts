@@ -10,7 +10,6 @@ import {
 import ContainerStatus from './container-status.svelte';
 import ContainerActions from './container-actions.svelte';
 import ContainerLastStarted from './container-last-started.svelte';
-import { createRawSnippet } from 'svelte';
 
 type ContainerColumnProps = {
     deleteContainer: (id: string) => Promise<void>;
