@@ -9,7 +9,7 @@
 
     import type { ContainerClient } from '$lib/models/container';
 
-    import * as ButtonGroup from "$lib/components/ui/button-group/index.js";
+    import * as ButtonGroup from '$lib/components/ui/button-group/index.js';
     import { Button } from '$lib/components/ui/button';
     import * as Tooltip from '$lib/components/ui/tooltip';
     import { Separator } from '$lib/components/ui/separator';
@@ -23,31 +23,42 @@
         deleteContainer: (id: string) => Promise<void>;
     };
 
+    type ActionState = {
+        loadingStatus: ContainerClient['status'] | null;
+        disableActions: boolean;
+        showDeleteDialog: boolean;
+    };
+
     let { status, id, deleteContainer }: Props = $props();
 
-    let disableActions = $state(false);
-    let startingContainer = $state(false);
-    let showDeleteDialog = $state(false);
+    let actionState = $state<ActionState>({
+        loadingStatus: null,
+        disableActions: false,
+        showDeleteDialog: false
+    });
+
     let showInformationDrawer = $state(false);
 
     async function handleContainerRunningState() {
-        startingContainer = disableActions = true;
+        actionState.loadingStatus = status;
+        actionState.disableActions = true;
         const message = status === 'running' ? 'stopped' : 'started';
         const output = status === 'running' ? await stopContainer(id) : await startContainer(id);
-        startingContainer = disableActions = false;
+        actionState.disableActions = false;
+        actionState.loadingStatus = null;
         if (output.error) {
-            toast.error(output.stderr);
-            return;
+            return toast.error(output.stderr);
         }
 
         if (output.stdout && !output.error) {
-            toast.success(`Container ${output.stdout} ${message} successfully`);
+            status = status === 'running' ? 'stopped' : 'running';
+            return toast.success(`Container ${output.stdout} ${message} successfully`);
         }
     }
 
     function handleDeleteContainer() {
         deleteContainer(id);
-        showDeleteDialog = false;
+        actionState.showDeleteDialog = false;
     }
 
     function handleShowInformationDrawer() {
@@ -71,12 +82,14 @@
                                     ? 'text-green-400'
                                     : 'text-red-400 hover:bg-red-100 hover:text-red-400'
                             ]}
-                            disabled={disableActions}
+                            disabled={actionState.disableActions}
                         >
-                            {#if status === 'running'}
-                                <CircleStop />
-                            {:else if startingContainer}
+                            {#if actionState.loadingStatus === 'stopped'}
                                 <Loader class="animate-spin" />
+                            {:else if actionState.loadingStatus === 'running'}
+                                <Loader class="animate-spin text-destructive" />
+                            {:else if status === 'running'}
+                                <CircleStop />
                             {:else}
                                 <CirclePlay />
                             {/if}
@@ -97,10 +110,10 @@
                                 {...props}
                                 variant="outline"
                                 size="icon"
-                                disabled={disableActions}
-                                onclick={() => (showDeleteDialog = true)}
+                                disabled={actionState.disableActions}
+                                onclick={() => (actionState.showDeleteDialog = true)}
                             >
-                                <Delete class="text-destructive"/>
+                                <Delete class="text-destructive" />
                             </Button>
                         {/snippet}
                     </Tooltip.Trigger>
@@ -113,31 +126,35 @@
                     </Tooltip.Content>
                 </Tooltip.Root>
             </Tooltip.Provider>
-            <ContainerDeleteDialog bind:open={showDeleteDialog} {handleDeleteContainer} {id} />
+            <ContainerDeleteDialog
+                bind:open={actionState.showDeleteDialog}
+                {handleDeleteContainer}
+                {id}
+            />
         {/if}
 
         {#if status === 'running'}
-        <Tooltip.Provider delayDuration={150}>
-            <Tooltip.Root>
-                <Tooltip.Trigger>
-                    {#snippet child({ props })}
-                        <Button
-                            {...props}
-                            variant="outline"
-                            size="icon"
-                            onclick={handleShowInformationDrawer}
-                            disabled={disableActions}
-                        >
-                            <Information />
-                        </Button>
-                    {/snippet}
-                </Tooltip.Trigger>
-                <Tooltip.Content side="right">
-                    <p>Container details</p>
-                </Tooltip.Content>
-            </Tooltip.Root>
-        </Tooltip.Provider>
-        <InformationDrawer bind:open={showInformationDrawer} {id} />
-    {/if}
+            <Tooltip.Provider delayDuration={150}>
+                <Tooltip.Root>
+                    <Tooltip.Trigger>
+                        {#snippet child({ props })}
+                            <Button
+                                {...props}
+                                variant="outline"
+                                size="icon"
+                                onclick={handleShowInformationDrawer}
+                                disabled={actionState.disableActions}
+                            >
+                                <Information />
+                            </Button>
+                        {/snippet}
+                    </Tooltip.Trigger>
+                    <Tooltip.Content side="right">
+                        <p>Container details</p>
+                    </Tooltip.Content>
+                </Tooltip.Root>
+            </Tooltip.Provider>
+            <InformationDrawer bind:open={showInformationDrawer} {id} />
+        {/if}
     </ButtonGroup.Root>
 </div>

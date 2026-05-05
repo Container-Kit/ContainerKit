@@ -64,6 +64,7 @@
     }
 
     onMount(async () => {
+
         if (!isSupportedVersion()) return goto(routes.Unsupported);
         if (!(await hasContainerCli())) return goto(routes.Setup);
         containerizationInterval = watchContainerizationStatus();

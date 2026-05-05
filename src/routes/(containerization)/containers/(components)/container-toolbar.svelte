@@ -4,12 +4,19 @@
     import { Switch } from '$lib/components/ui/switch';
     import { Label } from '$lib/components/ui/label';
 
-    let { table, showOnlyRunningContainers = $bindable(false) }: { table: Table<TData>, showOnlyRunningContainers: boolean } = $props();
+    let {
+        table,
+        showOnlyRunningContainers = $bindable(false)
+    }: { table: Table<TData>; showOnlyRunningContainers: boolean } = $props();
 </script>
 
 <div class="flex items-center justify-between">
     <div class="flex flex-1 items-center space-x-2">
-        <DataTableExtensions.SearchInput {table} columnToFilter="id" placeholder="Search container..."/>
+        <DataTableExtensions.SearchInput
+            {table}
+            columnToFilter="id"
+            placeholder="Search container..."
+        />
     </div>
     <div class="flex flex-row items-center gap-x-4">
         <div class="flex items-center space-x-2">

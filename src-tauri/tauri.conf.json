@@ -14,8 +14,9 @@
     "windows": [
       {
         "title": "Container Kit",
-        "width": 1200,
-        "height": 900,
+        "minWidth": 1200,
+        "minHeight": 900,
+        "visible": false,
         "resizable": true,
         "hiddenTitle": true
       }
@@ -41,7 +42,7 @@
           "y": 200
         },
         "windowSize": {
-          "height": 500,
+          "height": 1200,
           "width": 900
         }
       },
@@ -63,8 +64,7 @@
     "createUpdaterArtifacts": true,
     "active": true,
     "targets": [
-      "dmg",
-      "app"
+      "dmg"
     ],
     "icon": [
       "icons/icon.png",

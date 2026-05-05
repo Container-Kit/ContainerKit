@@ -9,10 +9,10 @@
         getFilteredRowModel,
         getPaginationRowModel
     } from '@tanstack/table-core';
-    import {slide} from 'svelte/transition';
+    import { fade } from 'svelte/transition';
     import { createSvelteTable } from '$lib/components/ui/data-table';
     import DeleteConfirmationDialog from '$lib/components/molecules/delete-confirmation-dialog.svelte';
-    import ImageDataTable from "./image-data-table.svelte";
+    import ImageDataTable from './image-data-table.svelte';
     import * as Alert from '$lib/components/ui/alert/index.js';
     import { Button } from '$lib/components/ui/button';
     import Refresh from '@lucide/svelte/icons/rotate-ccw';
@@ -188,34 +188,34 @@
             sizeFreedUp: 0,
             showDialog: false
         };
-        // bulkDeleteState.imagesInUse = {};
-        // bulkDeleteState.imagesToDelete = [];
-        // bulkDeleteState.sizeFreedUp = 0;
-        // bulkDeleteState.showDialog = false;
     }
 </script>
 
 <div class="space-y-4">
     <div class="flex items-center justify-between w-full">
         <div class="flex items-center space-x-2">
-                <DataTableExtensions.SearchInput {table} columnToFilter="name" placeholder="Search Images..."/>
-                <div class="flex items-center space-x-2">
-                    <!-- TODO: Implement a dialog to fetch a new image -->
-                    <Button variant="outline" onclick={() => (showTarImageDialog = true)}>
-                        <Import /> Import Image
-                    </Button>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <!-- TODO: Implement a dialog to fetch a new image -->
-                    <Button variant="outline" onclick={() => (showPullImageDialog = true)}>
-                        <CloudDownload />
-                        Pull Remote Image
-                    </Button>
-                </div>
+            <DataTableExtensions.SearchInput
+                {table}
+                columnToFilter="name"
+                placeholder="Search Images..."
+            />
+            <div class="flex items-center space-x-2">
+                <!-- TODO: Implement a dialog to fetch a new image -->
+                <Button variant="outline" onclick={() => (showTarImageDialog = true)}>
+                    <Import /> Import Image
+                </Button>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- TODO: Implement a dialog to fetch a new image -->
+                <Button variant="outline" onclick={() => (showPullImageDialog = true)}>
+                    <CloudDownload />
+                    Pull Remote Image
+                </Button>
+            </div>
         </div>
         <div class="flex items-center space-x-2">
             {#if Object.keys(rowSelection).length > 0}
-                <div class="flex relative" transition:slide>
+                <div class="flex relative" transition:fade>
                     <Button class="flex " variant="destructive" onclick={startMultipleImagesDelete}>
                         <Delete />
                         Delete
@@ -242,30 +242,30 @@
             <ImageDataTable {table} {columns} />
         </div>
         <DataTableExtensions.Pagination {table} />
-<!--        <div class="flex items-center justify-end space-x-2">-->
-<!--            <div class="text-muted-foreground flex-1 text-sm">-->
-<!--                {table.getFilteredSelectedRowModel().rows.length} of-->
-<!--                {table.getFilteredRowModel().rows.length} row(s) selected.-->
-<!--            </div>-->
-<!--            <div class="space-x-2">-->
-<!--                <Button-->
-<!--                    variant="outline"-->
-<!--                    size="sm"-->
-<!--                    onclick={() => table.previousPage()}-->
-<!--                    disabled={!table.getCanPreviousPage()}-->
-<!--                >-->
-<!--                    Previous-->
-<!--                </Button>-->
-<!--                <Button-->
-<!--                    variant="outline"-->
-<!--                    size="sm"-->
-<!--                    onclick={() => table.nextPage()}-->
-<!--                    disabled={!table.getCanNextPage()}-->
-<!--                >-->
-<!--                    Next-->
-<!--                </Button>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="flex items-center justify-end space-x-2">-->
+        <!--            <div class="text-muted-foreground flex-1 text-sm">-->
+        <!--                {table.getFilteredSelectedRowModel().rows.length} of-->
+        <!--                {table.getFilteredRowModel().rows.length} row(s) selected.-->
+        <!--            </div>-->
+        <!--            <div class="space-x-2">-->
+        <!--                <Button-->
+        <!--                    variant="outline"-->
+        <!--                    size="sm"-->
+        <!--                    onclick={() => table.previousPage()}-->
+        <!--                    disabled={!table.getCanPreviousPage()}-->
+        <!--                >-->
+        <!--                    Previous-->
+        <!--                </Button>-->
+        <!--                <Button-->
+        <!--                    variant="outline"-->
+        <!--                    size="sm"-->
+        <!--                    onclick={() => table.nextPage()}-->
+        <!--                    disabled={!table.getCanNextPage()}-->
+        <!--                >-->
+        <!--                    Next-->
+        <!--                </Button>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </div>
 
@@ -284,8 +284,9 @@
             </Card.Title>
             <Card.Description>
                 You are about to delete {bulkDeleteState.imagesToDelete.length} image(s)
-                {#if (Object.keys(bulkDeleteState.imagesInUse).length > 0)}
-                out of selected {Object.keys(rowSelection).length} image(s) as the rest are currently in use by containers.
+                {#if Object.keys(bulkDeleteState.imagesInUse).length > 0}
+                    out of selected {Object.keys(rowSelection).length} image(s) as the rest are currently
+                    in use by containers.
                 {/if}
             </Card.Description>
         </Card.Header>

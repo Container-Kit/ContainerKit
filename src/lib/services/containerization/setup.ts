@@ -43,7 +43,11 @@ export async function createSymlink() {
 
     const output = await commands.executeWithElevatedCommand('rm', ['-rf', shellCommands]);
     if (output.status === 'ok') {
-        return validateCommandOutput(output.data);
+        return {
+            error: false,
+            stderr: '',
+            stdout: ''
+        } as Output;
     }
 
     return {

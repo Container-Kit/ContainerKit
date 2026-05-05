@@ -7,8 +7,7 @@
     import { createSymlink, hasContainerCli } from '$lib/services/containerization/setup.js';
     import { toast } from 'svelte-sonner';
     import { routes } from '$lib/helpers/routes';
-
-    let haveContainerCli = $state(false);
+    import { onMount } from 'svelte';
 
     async function startSymlink() {
         const containerCliExist = await hasContainerCli();
@@ -22,9 +21,9 @@
         await goto(routes.Containers);
     }
 
-    // $effect(async () => {
-    //     haveContainerCli = await hasContainerCli()
-    // })
+    onMount(async () => {
+        await startSymlink();
+    })
 </script>
 
 <div class="flex items-center justify-center min-h-screen p-4">
@@ -35,12 +34,12 @@
             >
                 <TriangleAlert class="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
             </div>
-            <Card.Title>Symlink Error</Card.Title>
+            <Card.Title>Container CLI Error</Card.Title>
             <Card.Description><strong></strong></Card.Description>
         </Card.Header>
         <Card.Content class="space-y-4">
             <div class="flex flex-col gap-2">
-                <Button variant="secondary" onclick={startSymlink}>Create</Button>
+                <Button variant="secondary" onclick={startSymlink}>Create Stmlink</Button>
 
                 {#if isSupportedVersion()}
                     <Button variant="outline" onclick={() => goto('/')}>Start</Button>
