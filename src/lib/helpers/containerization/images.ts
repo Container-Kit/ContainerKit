@@ -4,11 +4,11 @@ function getPortsFromHistory(manifestData) {
     // Drill down into the specific OCI structure you provided
     const history = manifestData[0]?.variants?.[0]?.config?.history || [];
 
-    history.forEach(layer => {
-        const cmd = layer.created_by || "";
+    history.forEach((layer: string) => {
+        const cmd = layer.created_by || '';
 
-        // Only process if the line is an EXPOSE instruction
-        if (cmd.includes("EXPOSE")) {
+        // Only process if the line is an exposé instruction
+        if (cmd.includes('EXPOSE')) {
             // Regex explanation:
             // (\d+)      : Capture the port numbers
             // \/?        : Optional slash
@@ -17,7 +17,7 @@ function getPortsFromHistory(manifestData) {
 
             for (const match of matches) {
                 const port = match[1];
-                const proto = match[2] || "tcp"; // Default to tcp if not specified
+                const proto = match[2] || 'tcp'; // Default to tcp if not specified
                 portSet.add(`${port}/${proto}`);
             }
         }

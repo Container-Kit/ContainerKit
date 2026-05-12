@@ -242,30 +242,6 @@
             <ImageDataTable {table} {columns} />
         </div>
         <DataTableExtensions.Pagination {table} />
-        <!--        <div class="flex items-center justify-end space-x-2">-->
-        <!--            <div class="text-muted-foreground flex-1 text-sm">-->
-        <!--                {table.getFilteredSelectedRowModel().rows.length} of-->
-        <!--                {table.getFilteredRowModel().rows.length} row(s) selected.-->
-        <!--            </div>-->
-        <!--            <div class="space-x-2">-->
-        <!--                <Button-->
-        <!--                    variant="outline"-->
-        <!--                    size="sm"-->
-        <!--                    onclick={() => table.previousPage()}-->
-        <!--                    disabled={!table.getCanPreviousPage()}-->
-        <!--                >-->
-        <!--                    Previous-->
-        <!--                </Button>-->
-        <!--                <Button-->
-        <!--                    variant="outline"-->
-        <!--                    size="sm"-->
-        <!--                    onclick={() => table.nextPage()}-->
-        <!--                    disabled={!table.getCanNextPage()}-->
-        <!--                >-->
-        <!--                    Next-->
-        <!--                </Button>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
 </div>
 

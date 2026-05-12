@@ -11,8 +11,8 @@
         getPaginationRowModel
     } from '@tanstack/table-core';
     import { createSvelteTable } from '$lib/components/ui/data-table';
-    import ContainerToolbar from "./container-toolbar.svelte"
-    import ContainerTable from "./container-table.svelte"
+    import ContainerToolbar from './container-toolbar.svelte';
+    import ContainerTable from './container-table.svelte';
 
     type DataTableProps<TData, TValue> = {
         columns: ColumnDef<TData, TValue>[];
@@ -34,7 +34,6 @@
     let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
     let sorting = $state<SortingState>([]);
     let columnVisibility = $state<VisibilityState>({});
-
 
     const table = createSvelteTable({
         get data() {
@@ -59,7 +58,7 @@
             },
             get columnVisibility() {
                 return columnVisibility;
-            },
+            }
         },
         onColumnFiltersChange: (updater) => {
             if (typeof updater === 'function') {
@@ -83,7 +82,7 @@
             }
         },
         onColumnVisibilityChange: (updater) => {
-            if (typeof updater === "function") {
+            if (typeof updater === 'function') {
                 columnVisibility = updater(columnVisibility);
             } else {
                 columnVisibility = updater;
