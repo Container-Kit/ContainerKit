@@ -33,13 +33,7 @@ export {
 } from './types/result';
 
 export {
-    COMMANDS,
-    CONTAINER_ACTIONS,
-    IMAGE_ACTIONS,
-    SYSTEM_ACTIONS,
     TIMEOUTS,
-    CONTAINER_STATES,
-    OUTPUT_FORMATS,
     formatJSON,
     getTimeout
 } from './constants';
@@ -80,24 +74,3 @@ export {
     importImageFromTar,
     exportImageToTar
 } from './images';
-
-export const containerization = {
-    containers: {
-        list: getAllContainers,
-        get: getContainer,
-        start: startContainer,
-        stop: stopContainer,
-        remove: removeContainer,
-        logs: getContainerLogs,
-        create: createContainer,
-        inspect: inspectContainer
-    },
-    images: {
-        list: listImages,
-        pull: pullImage,
-        remove: removeImage,
-        inspect: inspectImage,
-        import: importImageFromTar,
-        export: exportImageToTar
-    }
-};
