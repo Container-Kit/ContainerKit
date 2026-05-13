@@ -21,7 +21,7 @@ export const CONTAINER_IMAGE_SUBCOMMANDS = {
     SAVE: 'save',
     // Create a new reference for an existing image
     TAG: 'tag'
-};
+} as const;
 
 export const CONTAINER_IMAGE_DELETE_OPTIONS = {
     // USAGE: container image delete [--all] [--force] [<images> ...] [--debug]
@@ -31,13 +31,13 @@ export const CONTAINER_IMAGE_DELETE_OPTIONS = {
     FORCE: '--force',
     // Enable debug output [environment: CONTAINER_DEBUG]
     DEBUG: '--debug'
-};
+} as const;
 
 export const CONTAINER_IMAGE_INSPECT_OPTIONS = {
     // USAGE: container image inspect [--debug] <images> ...
     // Enable debug output [environment: CONTAINER_DEBUG]
     DEBUG: '--debug'
-};
+} as const;
 
 export const CONTAINER_IMAGE_LOAD_OPTIONS = {
     // USAGE: container image load [--input <input>] [--force] [--debug]

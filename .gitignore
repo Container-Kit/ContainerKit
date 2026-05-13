@@ -26,3 +26,4 @@ apple-container-src/libexec/**
 apple-container-src/bin/**
 test-items/**
 refactoring-docs/**
+.fallow/

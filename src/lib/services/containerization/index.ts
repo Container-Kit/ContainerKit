@@ -62,9 +62,7 @@ export {
 export { parseContainer, parseContainers, parseImage, parseImages } from './core/parsers';
 
 export {
-    listContainers,
     getAllContainers,
-    getContainer,
     startContainer,
     stopContainer,
     removeContainer,
@@ -74,7 +72,6 @@ export {
 } from './containers';
 
 export {
-    listImages,
     getAllImages,
     pullImage,
     removeImage,
@@ -86,7 +83,7 @@ export {
 
 export const containerization = {
     containers: {
-        list: listContainers,
+        list: getAllContainers,
         get: getContainer,
         start: startContainer,
         stop: stopContainer,

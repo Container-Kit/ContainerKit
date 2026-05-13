@@ -1,9 +1,12 @@
+export const OUTPUT_FLAG = '--format';
+export const DEBUG_FORMAT_FLAG = '--debug';
+
 export const OUTPUT_FORMAT_FLAG = {
-    FORMAT: '--format'
+    FORMAT: OUTPUT_FLAG
 } as const;
 
 export const DEBUG_FLAG = {
-    DEBUG: '--debug'
+    DEBUG: DEBUG_FORMAT_FLAG
 } as const;
 
 export const OUTPUT_FORMAT = {
