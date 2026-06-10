@@ -1,76 +1,67 @@
-export type { Result } from './types/result';
-export type {
-    Container,
-    Image,
-    ContainerId,
-    ImageReference,
-    DomainName,
-    Port
-} from './types/common';
-export { createContainerId, createImageReference, createDomainName } from './types/common';
-export type {
-    ContainerSummary,
-    ContainerState,
-    ContainerInspection,
-    CreateContainerOptions
-} from './types/container';
-export type {
-    ImageSummary,
-    ImageInspection,
-    ImagePullOptions,
-    ImagePullResponse
-} from './types/image';
+/**
+ * @fileoverview Main export for the Container CLI service
+ * Re-exports all public types and functions
+ */
 
+// Type exports
+export type { Either } from './types';
 export {
-    isSuccess,
-    isFailure,
-    map,
+    Left,
+    Right,
+    isLeft,
+    isRight,
+    mapRight,
+    mapLeft,
     flatMap,
     fold,
-    pipe,
     getOrElse,
-    withRetry
-} from './types/result';
+    pipeEither,
+    flatMapAsync,
+    tryCatch,
+    tryCatchAsync
+} from './types';
 
-export {
-    TIMEOUTS,
-    formatJSON,
-    getTimeout
-} from './constants';
+// CLI exports
+export type { CLIError, CLIOutput } from './cli';
+export { executeCLI, validateCLIOutput, executeAndValidate } from './cli';
 
+// Parser exports
+export type { ParseError } from './parsers';
 export {
-    buildCommand,
-    withArgs,
-    withFlag,
-    withTimeout,
-    executeCommand,
-    commandToString
-} from './core/command';
-export {
-    validateCommandOutput,
-    validateJSON,
-    validateNonEmpty,
-    isSuccessful,
-    isJSON
-} from './core/validation';
-export { parseContainer, parseContainers, parseImage, parseImages } from './core/parsers';
+    parseJSON,
+    parseJSONArray,
+    parseJSONObject,
+    parseSpaceSeparated,
+    parseCommaSeparated,
+    parseLines,
+    parseNonEmptyString
+} from './parsers';
 
+// Command exports - re-export everything from commands module
+export * from './commands';
+
+// Service exports
+export type { ServiceError, Container, Image, Network } from './services';
 export {
-    getAllContainers,
+    listContainers,
     startContainer,
     stopContainer,
-    removeContainer,
+    removeContainers,
+    inspectContainer,
     getContainerLogs,
-    createContainer,
-    inspectContainer
-} from './containers';
-
-export {
-    getAllImages,
+    listImages,
     pullImage,
-    removeImage,
-    removeMultipleImages,
+    removeImages,
     inspectImage,
-    importImageFromTar,
-    exportImageToTar
-} from './images';
+    saveImage,
+    loadImage,
+    listNetworks,
+    createNetwork,
+    removeNetworks,
+    inspectNetwork,
+    getVersion,
+    getStatus,
+    listDNS,
+    createDNS,
+    removeDNS
+} from './services';
