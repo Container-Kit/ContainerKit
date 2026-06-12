@@ -3,7 +3,7 @@
     import { type ComponentProps, onMount } from 'svelte';
     import RegistryCard from './(components)/registry-card.svelte';
     import DeleteConfirmationDialog from '$lib/components/molecules/delete-confirmation-dialog.svelte';
-    import type { InsertRegistry } from '$lib/models/container';
+    import type { Registry } from '$lib/models/container';
 
     const { data } = $props();
     let showDeleteDialog: boolean = $state(false);
@@ -14,7 +14,7 @@
         deleteDialogProps = null;
     }
 
-    function handleDeleteRegistry(registry: InsertRegistry) {
+    function handleDeleteRegistry(registry: Registry) {
         deleteDialogProps = {
             title: `Are you sure about deleting ${registry.name} registry?`,
             description: `The ${registry.name} registry is selected for deletion. Any additional data associated with this registry are also deleted.`,
@@ -30,7 +30,7 @@
 <div class="flex flex-col w-full h-full">
     <div class="flex flex-col items-center justify-normal"></div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {#each data.registries as registry (registry.id)}
+        {#each data.registries as registry (registry.url)}
             {@const props = {
                 ...registry,
                 isDefault: data.defaultRegistry === registry.url

@@ -1,9 +1,9 @@
 <script lang="ts">
     import * as Card from '$lib/components/ui/card/index.js';
     import { Button } from '$lib/components/ui/button';
-    import type { InsertRegistry } from '$lib/models/container';
+    import type { Registry } from '$lib/models/container';
 
-    type Props = Required<InsertRegistry> & {
+    type Props = Registry & {
         isDefault: boolean;
         handleDeleteRegistry: () => void;
     };

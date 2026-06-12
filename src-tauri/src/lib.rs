@@ -11,12 +11,8 @@ use crate::commands::utils::stream_container_command;
 mod commands;
 mod types;
 
-include!(concat!("../migrations", "/generated_migrations.rs"));
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub async fn run() {
-    let migrations = load_migrations();
-
     let spectabuilder = Builder::<tauri::Wry>::new().commands(collect_commands![
         run_container_command_with_stdin,
         execute_with_elevated_command,
@@ -46,11 +42,6 @@ pub async fn run() {
         .plugin(tauri_plugin_clipboard_manager::init())
         //         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_store::Builder::new().build())
-        .plugin(
-            tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:container-kit.db", migrations)
-                .build(),
-        )
         .plugin(tauri_plugin_fs::init())
         .invoke_handler(spectabuilder.invoke_handler())
         .setup(move |app| {

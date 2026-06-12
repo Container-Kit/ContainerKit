@@ -1,6 +1,3 @@
-import type { InferInsertModel } from 'drizzle-orm';
-import { registry, seeds } from '$lib/db/schema';
-
 export type RegistryLoginParams = {
     username: string;
     password: string;
@@ -12,4 +9,8 @@ export type RegistryLogoutParams = {
     registry: string;
 };
 
-export type InsertRegistry = InferInsertModel<typeof registry>;
+export type Registry = {
+    name: string;
+    url: string;
+    loggedIn?: boolean;
+};

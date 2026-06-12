@@ -56,7 +56,6 @@
       "binaries/sidecar/apple-container/bin/container"
     ],
     "resources": [
-      "migrations/*",
       "icons/container-kit.icon",
       "icons/icon.iconset/*",
       "binaries/sidecar/apple-container/**/*"

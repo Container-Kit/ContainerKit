@@ -10,8 +10,6 @@
     "core:app:allow-default-window-icon",
     "opener:default",
     "os:default",
-    "sql:default",
-    "sql:allow-execute",
     "store:default",
     {
       "identifier": "shell:allow-execute",

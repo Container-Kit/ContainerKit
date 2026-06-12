@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onDestroy, onMount } from 'svelte';
     import { goto } from '$app/navigation';
-    import { addRegistriesSeedV1 } from '$lib/db/seeds/registery';
     import Loader from '@lucide/svelte/icons/loader';
     import { isLoading } from './loading.svelte';
     import { startContainerization } from '$lib/services/containerization/system/service';
@@ -18,9 +17,9 @@
         if (!(await hasContainerCli())) return goto(routes.Setup);
         const containerizationOutput = await startContainerization();
 
-        if (containerizationOutput.error || containerizationOutput.stderr) {
+        if (!containerizationOutput.ok) {
             toast.error('Not able to start containerization process', {
-                description: containerizationOutput.stderr
+                description: containerizationOutput.error
             });
             isContainerizationActive.setFalse();
             return goto(routes.ContainerizationStatus);
@@ -28,7 +27,6 @@
 
         isContainerizationActive.setTrue();
         await createTray();
-        await Promise.all([addRegistriesSeedV1()]);
         await goto(routes.Containers);
         isLoading.setFalse();
     });
