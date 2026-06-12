@@ -34,7 +34,10 @@
             });
         }
         states.importing = true;
-        toast.promise(importImageFromTar(file), {
+        const importPromise = importImageFromTar(file).then((result) => {
+            if (!result.ok) throw new Error(result.error);
+        });
+        toast.promise(importPromise, {
             position: 'top-right',
             loading: 'Importing image from tar archive...',
             success: () => {
@@ -87,7 +90,7 @@
                 >
                     {#if states.importing}
                         <Loader class="size-7 animate-spin" />
-                    {:else }
+                    {:else}
                         <UploadIcon class="size-7" />
                     {/if}
                 </div>
@@ -95,7 +98,7 @@
                     <span class="text-muted-foreground font-medium">
                         {#if states.importing}
                             Loading...
-                        {:else }
+                        {:else}
                             Click to select image tar archive
                         {/if}
                     </span>

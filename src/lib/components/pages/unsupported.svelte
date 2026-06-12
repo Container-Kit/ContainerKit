@@ -3,7 +3,7 @@
     import { Button } from '../ui/button/index.js';
     import * as Card from '../ui/card';
     import { goto } from '$app/navigation';
-    import { isSupportedVersion } from '$lib/stores/mac-os.svelte.ts';
+    import { isSupportedVersion } from '$lib/stores/mac-os.svelte.js';
     import { routes } from '$lib/helpers/routes.js';
 </script>
 

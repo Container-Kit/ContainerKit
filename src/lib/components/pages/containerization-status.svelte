@@ -3,7 +3,8 @@
     import { Button } from '../ui/button/index.js';
     import * as Card from '../ui/card';
     import { goto } from '$app/navigation';
-    import { isSupportedVersion } from '$lib/stores/mac-os.svelte.ts';
+    import { isSupportedVersion } from '$lib/stores/mac-os.svelte.js';
+    import { startContainerization } from '$lib/services/containerization/system/service.js';
 </script>
 
 <div class="flex items-center justify-center min-h-screen p-4">
@@ -23,7 +24,7 @@
         <Card.Content class="space-y-4">
             <div class="flex flex-col gap-2">
                 {#if isSupportedVersion()}
-                    <Button variant="outline" onclick={() => goto('/')}>Start</Button>
+                    <Button variant="outline" onclick={() => {startContainerization(); goto('/')}}>Start</Button>
                 {/if}
             </div>
         </Card.Content>

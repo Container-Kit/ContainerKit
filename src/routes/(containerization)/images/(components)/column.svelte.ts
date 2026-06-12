@@ -1,6 +1,7 @@
 import type { ColumnDef } from '@tanstack/table-core';
-import type { ContainerImage } from '$lib/models/container';
+import { imageReference, imageSizeInBytes, type ContainerImage } from '$lib/models/container';
 import { renderComponent } from '$lib/components/ui/data-table';
+import prettyBytes from 'pretty-bytes';
 import { DataTableCheckbox, DataTableFeaturedTextCell } from '$lib/components/atoms/data-table-extensions/index.js';
 import ImageListActions from './image-list-actions.svelte';
 
@@ -31,22 +32,22 @@ export function columns(): ColumnDef<ContainerImage>[] {
             cell: ({ row }) => {
                 return renderComponent(DataTableFeaturedTextCell, {
                     content: row.getValue<string>('name'),
-                    tooltip: row.original.reference.split(':').at(0) || 'N/A',
-                    href: '/images/' + row.original?.reference?.split('/')?.at(-1)
+                    tooltip: imageReference(row.original).split(':').at(0) || 'N/A',
+                    href: '/images/' + imageReference(row.original).split('/').at(-1)
                 });
             },
-            accessorFn: (row) => row.reference?.split('/').at(-1)?.split(':').at(0)
+            accessorFn: (row) => imageReference(row).split('/').at(-1)?.split(':').at(0)
         },
         {
             id: 'tag',
             header: 'Tag',
-            accessorFn: (row) => row.reference?.split('/')?.at(-1)?.split(':')?.at(-1) ?? 'N/A'
+            accessorFn: (row) => imageReference(row).split('/').at(-1)?.split(':').at(-1) ?? 'N/A'
         },
         {
             id: 'registry',
             header: 'Registry',
             accessorFn: (row) => {
-                const reference = row.reference
+                const reference = imageReference(row);
                 const rowData = reference.split('/');
                 if (!rowData.length) return reference;
                 if (reference?.startsWith('http')) {
@@ -57,7 +58,7 @@ export function columns(): ColumnDef<ContainerImage>[] {
             cell: ({ row }) => {
                 return renderComponent(DataTableFeaturedTextCell, {
                     content: row.getValue<string>('registry'),
-                    tooltip: row.original.reference,
+                    tooltip: imageReference(row.original),
                     copy: true
                 });
             }
@@ -65,7 +66,10 @@ export function columns(): ColumnDef<ContainerImage>[] {
         {
             id: 'size',
             header: 'Size',
-            accessorFn: (row) => row.fullSize ?? 'N/A'
+            accessorFn: (row) => {
+                const size = imageSizeInBytes(row);
+                return size != null ? prettyBytes(size) : 'N/A';
+            }
         },
         {
             id: 'actions',
@@ -73,7 +77,7 @@ export function columns(): ColumnDef<ContainerImage>[] {
             cell: ({ row }) => {
                 return renderComponent(ImageListActions, {
                     name: row.getValue<string>('name'),
-                    reference: row.original.reference
+                    reference: imageReference(row.original)
                 });
             }
         }

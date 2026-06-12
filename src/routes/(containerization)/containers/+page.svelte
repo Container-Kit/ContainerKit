@@ -9,30 +9,23 @@
     import type { UnwatchFn } from '@tauri-apps/plugin-fs';
 
     let allContainers: Array<ContainerClient> = $state([]);
-    let runningContainers: Array<ContainerClient> = $state([]);
+    let runningContainers: Array<ContainerClient> = $derived(
+        allContainers.filter((container) => container.status.state === 'running')
+    );
     let showOnlyRunningContainers = $state(false);
     let containerChangeWatcher: UnwatchFn | null = $state(null);
 
     async function getAllContainerList() {
         const output = await getAllContainers();
 
-        if (output.error || output.stderr) {
+        if (!output.ok) {
             toast.error('Error in getting container list', {
-                description: output.stderr
+                description: output.error
             });
             return;
         }
 
-        if (!output.stdout) {
-            return;
-        }
-
-        allContainers = JSON.parse(output.stdout) ?? [];
-        if (allContainers.length > 0) {
-            runningContainers = allContainers.filter(
-                (container: ContainerClient) => container.status === 'running'
-            );
-        }
+        allContainers = output.data;
     }
 
     async function deleteContainer(id: string) {
@@ -43,13 +36,10 @@
             return;
         }
         const output = await removeContainer(id);
-        if (output.error) {
-            toast.error(`Unable to delete ${id} container`);
-            return;
-        }
-
-        if (!output.stdout) {
-            toast.error(`Unable to delete ${id} container`);
+        if (!output.ok) {
+            toast.error(`Unable to delete ${id} container`, {
+                description: output.error
+            });
             return;
         }
 

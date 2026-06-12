@@ -1,6 +1,7 @@
 <script lang="ts">
     type Props = {
-        lastStarted: number;
+        // ISO date string from `status.startedDate`; absent while stopped
+        lastStarted?: string;
     };
 
     let { lastStarted }: Props = $props();
@@ -8,13 +9,13 @@
     let timeAgo = $state('');
 
     function updateAgo(): void {
-        const timestamp = Number(lastStarted);
+        const timestamp = lastStarted ? Date.parse(lastStarted) : NaN;
         if (isNaN(timestamp)) {
             timeAgo = 'N/A';
             return;
         }
 
-        const date = new Date((timestamp + 978307200) * 1000);
+        const date = new Date(timestamp);
         const now = new Date();
         let delta = Math.floor((now.getTime() - date.getTime()) / 1000);
 

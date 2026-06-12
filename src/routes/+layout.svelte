@@ -29,27 +29,24 @@
         return setInterval(async () => {
             try {
                 const output = await containerizationStatus();
-                if (output.error && !isFallbackPage()) {
-                    toast.warning('Some error while getting containerization status.', {
-                        description: output.stderr
-                    });
-                    isContainerizationActive.setFalse();
-                    await goto(routes.ContainerizationStatus);
+                if (!output.ok) {
+                    if (!isFallbackPage()) {
+                        toast.warning('Some error while getting containerization status.', {
+                            description: output.error
+                        });
+                        isContainerizationActive.setFalse();
+                        await goto(routes.ContainerizationStatus);
+                    }
                     return;
                 }
 
-                if (
-                    output.stdout.startsWith('apiserver is running') &&
-                    !isContainerizationActive.current
-                ) {
+                const isRunning = output.data.status === 'running';
+
+                if (isRunning && !isContainerizationActive.current) {
                     return isContainerizationActive.setTrue();
                 }
 
-                if (
-                    output.stdout.startsWith('apiserver is not running') &&
-                    isContainerizationActive.current &&
-                    !isFallbackPage()
-                ) {
+                if (!isRunning && isContainerizationActive.current && !isFallbackPage()) {
                     isContainerizationActive.setFalse();
                     return goto(routes.ContainerizationStatus);
                 }
@@ -64,7 +61,6 @@
     }
 
     onMount(async () => {
-
         if (!isSupportedVersion()) return goto(routes.Unsupported);
         if (!(await hasContainerCli())) return goto(routes.Setup);
         containerizationInterval = watchContainerizationStatus();

@@ -4,7 +4,7 @@
     import { Button } from '../ui/button/index.js';
     import * as Card from '../ui/card';
     import { goto } from '$app/navigation';
-    import { isSupportedVersion } from '$lib/stores/mac-os.svelte.ts';
+    import { isSupportedVersion } from '$lib/stores/mac-os.svelte.js';
 </script>
 
 <div class="flex items-center justify-center min-h-screen p-4">

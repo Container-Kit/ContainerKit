@@ -15,7 +15,7 @@
             return await goto(routes.Containers);
         }
         const output = await createSymlink();
-        if (output.error) {
+        if (!output.ok) {
             return toast.error('Please complete the symlink process');
         }
         await goto(routes.Containers);
@@ -23,7 +23,7 @@
 
     onMount(async () => {
         await startSymlink();
-    })
+    });
 </script>
 
 <div class="flex items-center justify-center min-h-screen p-4">

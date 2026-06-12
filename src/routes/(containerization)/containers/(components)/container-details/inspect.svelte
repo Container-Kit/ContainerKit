@@ -17,16 +17,14 @@
         loadingInspectData = true;
         const output = await inspectContainer(id);
 
-        if (output.error || output.stderr) {
+        if (!output.ok) {
+            loadingInspectData = false;
             return toast.error(`Error while inspecting container ${id}`, {
-                description: output.stderr
+                description: output.error
             });
         }
 
-        inspectJson = await highlightCode(
-            JSON.stringify(JSON.parse(output.stdout), null, 2),
-            'json'
-        );
+        inspectJson = await highlightCode(JSON.stringify(output.data, null, 2), 'json');
         loadingInspectData = false;
     });
 

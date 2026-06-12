@@ -12,6 +12,7 @@
 
     let terminal: Terminal | undefined = $state(undefined);
     let ptyProcess: ReturnType<typeof spawn>;
+    let exited = false;
 
     type TerminalProps = {
         class?: string;
@@ -63,15 +64,17 @@
             // Fit terminal to container
             setTimeout(() => fitAddon.fit(), 10);
 
-            const shell = await getDefaultShell();
-
-            console.log(shell);
-
-            // Create PTY process
-            ptyProcess = spawn(shell, [], {
-                cols: terminal.cols,
-                rows: terminal.rows
-            });
+            // For a container, the PTY is the exec process itself — never a host
+            // shell, so a failed/finished exec can't strand the user on the host.
+            ptyProcess = container
+                ? spawn('container', ['exec', '-i', '-t', container, 'sh'], {
+                      cols: terminal.cols,
+                      rows: terminal.rows
+                  })
+                : spawn(await getDefaultShell(), [], {
+                      cols: terminal.cols,
+                      rows: terminal.rows
+                  });
 
             // Notify parent component about PTY creation
             if (onPtyCreated) {
@@ -86,14 +89,21 @@
             });
 
             terminal.onData((data) => {
-                if (ptyProcess) {
+                if (ptyProcess && !exited) {
                     ptyProcess.write(data);
                 }
             });
 
+            ptyProcess.onExit(({ exitCode }) => {
+                exited = true;
+                terminal?.write(
+                    `\r\n\x1b[90m[session ended with exit code ${exitCode}]\x1b[0m\r\n`
+                );
+            });
+
             // Handle resize events
             terminal.onResize(({ cols, rows }) => {
-                if (ptyProcess) {
+                if (ptyProcess && !exited) {
                     ptyProcess.resize(cols, rows);
                 }
 
@@ -103,12 +113,6 @@
                     terminal.scrollToBottom();
                 }
             });
-
-            // Access running container shell
-            if (container) {
-                ptyProcess.write(`container exec -it ${container} sh \r`);
-                ptyProcess.write(`clear \r`);
-            }
 
             setTimeout(() => terminal?.focus(), 100);
         } catch (error) {

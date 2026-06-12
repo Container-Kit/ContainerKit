@@ -12,11 +12,10 @@
     type Props = {
         open: boolean;
         id: string;
+        activeTab?: string;
     };
 
-    let { open = $bindable(false), id }: Props = $props();
-
-    let activeTab = $state(tabs[0].value);
+    let { open = $bindable(false), id, activeTab = $bindable(tabs[0].value) }: Props = $props();
 
     const componentMap: Record<TabsType[number]['label'], Component<any>> = {
         logs: Logs,

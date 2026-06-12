@@ -21,7 +21,7 @@
             <span class={[copyFirst && 'order-2', 'max-w-fit truncate']}>{content}</span>
         {/if}
         {#if copy || copyFirst}
-            <CopyButton size="sm" class={[copyFirst && '-ml-11', 'has-[>svg]:w-5 has-[>svg]:h-5']} text={tooltip} />
+            <CopyButton variant="ghost" size="sm" class={[copyFirst && '-ml-11', 'has-[>svg]:w-5 has-[>svg]:h-5']} text={tooltip} />
         {/if}
     </div>
 </Tooltip>

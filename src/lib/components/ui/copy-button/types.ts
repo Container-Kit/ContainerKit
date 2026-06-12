@@ -1,11 +1,10 @@
 import type { Snippet } from 'svelte';
-import type { ButtonPropsWithoutHTML } from '../button/index.js';
+import type { ButtonProps } from '../button/index.js';
 import type { UseClipboard } from '../../../hooks/use-clipboard.svelte.js';
-import type { HTMLAttributes } from 'svelte/elements';
 import type { WithChildren, WithoutChildren } from 'bits-ui';
 
 export type CopyButtonPropsWithoutHTML = WithChildren<
-	Pick<ButtonPropsWithoutHTML, 'size' | 'variant'> & {
+	Pick<ButtonProps, 'size' | 'variant'> & {
 		ref?: HTMLButtonElement | null;
 		text: string;
 		icon?: Snippet<[]>;
@@ -15,4 +14,4 @@ export type CopyButtonPropsWithoutHTML = WithChildren<
 >;
 
 export type CopyButtonProps = CopyButtonPropsWithoutHTML &
-	WithoutChildren<HTMLAttributes<HTMLButtonElement>>;
+	WithoutChildren<Omit<ButtonProps, 'size' | 'variant' | 'ref'>>;

@@ -21,16 +21,13 @@
 
     async function streamContainerLogs() {
         console.log('called ik');
-        const output = await getContainerLogs(id)
-        if (output && output.stdout) {
-            const logLines = output.stdout.split('\n');
-            logs = [...logLines];
-            return
+        const output = await getContainerLogs(id);
+        if (!output.ok) {
+            toast.error(output.error);
+            return;
         }
 
-        if (output && output.stderr) {
-            toast.error(output.stderr);
-        }
+        logs = output.data ? output.data.split('\n') : [];
     }
 
     onMount(async () => {

@@ -23,9 +23,14 @@
     import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
     import { Badge } from '$lib/components/ui/badge/index.js';
     import { getAllContainers } from '$lib/services/containerization/containers';
-    import { tryCatch } from '$lib/helpers/try-catch.js';
     import { toast } from 'svelte-sonner';
-    import type { ContainerClient, ContainerImage } from '$lib/models/container';
+    import {
+        imageReference,
+        imageSizeInBytes,
+        type ContainerClient,
+        type ContainerImage
+    } from '$lib/models/container';
+    import prettyBytes from 'pretty-bytes';
     import { removeMultipleImages } from '$lib/services/containerization/images';
     import { ConfirmDeleteDialog } from '$lib/components/ui/confirm-delete-dialog';
     import TarFromImage from '../(components)/tar-from-image.svelte';
@@ -115,65 +120,45 @@
             return;
         }
 
-        const { data, error } = await tryCatch(
-            removeMultipleImages(bulkDeleteState.imagesToDelete)
-        );
+        const result = await removeMultipleImages(bulkDeleteState.imagesToDelete);
         closeDeleteDialog();
-        if (error) {
-            toast.error(error.message);
+        if (!result.ok) {
+            toast.error(result.error);
             return;
         }
 
-        if (data.error) {
-            toast.error(data.stderr);
-            return;
-        }
-
-        if (data && data.stdout) {
-            toast.success('Selected images deleted successfully', { description: data.stdout });
-            table.resetRowSelection();
-        }
+        toast.success('Selected images deleted successfully', { description: result.data });
+        table.resetRowSelection();
     }
 
     async function startMultipleImagesDelete() {
-        const { data: output, error } = await tryCatch(getAllContainers());
-        if (error) {
-            console.error('Error fetching containers:', error);
-            toast.error(error.message);
-            return;
-        }
-
-        if (output.error || output.stderr) {
+        const output = await getAllContainers();
+        if (!output.ok) {
             toast.error('Error in getting container list', {
-                description: output.stderr
+                description: output.error
             });
             return;
         }
 
-        if (!output.stdout) {
-            toast.error('Error in getting container list');
-            return;
-        }
-
-        const containers: ContainerClient[] =
-            JSON.parse(output.stdout) ?? ([] satisfies ContainerClient[]);
+        const containers: ContainerClient[] = output.data;
         const selectedRowIds = Object.keys(rowSelection);
         const selectedRowsData = selectedRowIds.map(
             (rowId) => table.getRow(rowId).original
         ) as Array<ContainerImage>;
         const imagesInUseMap: Record<string, string[]> = {};
         for (const image of selectedRowsData) {
+            const reference = imageReference(image);
             const containersUsingImage = containers.filter(
-                (container) => image.reference === container.configuration.image.reference
+                (container) => reference === container.configuration.image.reference
             );
             if (containersUsingImage.length > 0) {
                 const containerIds = containersUsingImage.map(
                     (container) => container.configuration.id
                 );
-                imagesInUseMap[image.reference] = containerIds;
+                imagesInUseMap[reference] = containerIds;
             } else {
-                bulkDeleteState.sizeFreedUp += parseFloat(image.fullSize);
-                bulkDeleteState.imagesToDelete.push(image.reference);
+                bulkDeleteState.sizeFreedUp += imageSizeInBytes(image) ?? 0;
+                bulkDeleteState.imagesToDelete.push(reference);
             }
         }
 
@@ -256,7 +241,7 @@
         <Card.Header>
             <Card.Description>Total space to be freed up</Card.Description>
             <Card.Title class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-                {bulkDeleteState.sizeFreedUp} MB
+                {prettyBytes(bulkDeleteState.sizeFreedUp)}
             </Card.Title>
             <Card.Description>
                 You are about to delete {bulkDeleteState.imagesToDelete.length} image(s)

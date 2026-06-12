@@ -1,6 +1,6 @@
 import type { ColumnDef } from '@tanstack/table-core';
 
-import type { ContainerClient } from '$lib/models/container';
+import type { ContainerClient, ContainerState } from '$lib/models/container';
 import { renderComponent, renderSnippet } from '$lib/components/ui/data-table';
 import {
     DataTableCheckbox,
@@ -52,10 +52,10 @@ export function columns({ deleteContainer }: ContainerColumnProps): ColumnDef<Co
         },
         {
             id: 'status',
-            accessorKey: 'status',
+            accessorFn: (row) => row.status.state,
             header: 'Status',
             cell: ({ row }) => {
-                const status = row.getValue('status') as ContainerClient['status'];
+                const status = row.getValue('status') as ContainerState;
                 return renderComponent(ContainerStatus, { status });
             },
             enableHiding: false
@@ -70,12 +70,12 @@ export function columns({ deleteContainer }: ContainerColumnProps): ColumnDef<Co
             id: 'host',
             header: 'Host',
             accessorFn: (row) => {
-                const status = row.status;
-                if (status === 'stopped' || !row.networks.length) {
+                const { state, networks } = row.status;
+                if (state === 'stopped' || !networks.length) {
                     return 'N/A';
                 }
 
-                const hostnames = row.networks
+                const hostnames = networks
                     .map((network) => network.hostname)
                     .filter(Boolean);
                 return hostnames.length > 0 ? hostnames.at(0)?.endsWith('.') ? hostnames.at(0)?.slice(0, -1) : hostnames.at(0): 'N/A';
@@ -94,19 +94,19 @@ export function columns({ deleteContainer }: ContainerColumnProps): ColumnDef<Co
             header: 'Network',
             enableHiding: true,
             accessorFn: (row) =>{
-                const status = row.status;
-                if (status === 'stopped' || !row.networks.length) {
+                const { state, networks } = row.status;
+                if (state === 'stopped' || !networks.length) {
                     return 'N/A';
                 }
 
-                const IPv4Addresses = row.networks
+                const IPv4Addresses = networks
                     .map((network) => network.ipv4Address?.split('/')?.[0])
                     .filter(Boolean);
 
                 return IPv4Addresses.length > 0 ? IPv4Addresses.at(0) : 'N/A';
             },
             cell: ({ row }) => {
-                const content = row.getValue('network') as ContainerClient['networks'][number]['ipv4Address'];
+                const content = row.getValue<string>('network');
                 return renderComponent(DataTableFeaturedTextCell, {
                     content: content,
                     tooltip: content,
@@ -117,10 +117,10 @@ export function columns({ deleteContainer }: ContainerColumnProps): ColumnDef<Co
         {
             id: 'lastStarted',
             header: 'Last Started',
-            accessorFn: (row) => row.startedDate,
+            accessorFn: (row) => row.status.startedDate,
             cell: ({ row }) => {
                 return renderComponent(ContainerLastStarted, {
-                    lastStarted: row.original.startedDate
+                    lastStarted: row.original.status.startedDate
                 });
             }
         },
@@ -129,7 +129,7 @@ export function columns({ deleteContainer }: ContainerColumnProps): ColumnDef<Co
             header: 'Actions',
             cell: ({ row }) => {
                 const id = row.getValue('id') as ContainerClient['configuration']['id'];
-                const status = row.getValue('status') as ContainerClient['status'];
+                const status = row.getValue('status') as ContainerState;
                 return renderComponent(ContainerActions, {
                     status,
                     id,

@@ -4,10 +4,11 @@
     import Delete from '@lucide/svelte/icons/trash-2';
     import Loader from '@lucide/svelte/icons/loader';
     import Information from '@lucide/svelte/icons/sliders-horizontal';
+    import SquareTerminal from '@lucide/svelte/icons/square-terminal';
 
     import { toast } from 'svelte-sonner';
 
-    import type { ContainerClient } from '$lib/models/container';
+    import type { ContainerState } from '$lib/models/container';
 
     import * as ButtonGroup from '$lib/components/ui/button-group/index.js';
     import { Button } from '$lib/components/ui/button';
@@ -18,13 +19,13 @@
     import InformationDrawer from './information-drawer.svelte';
 
     type Props = {
-        status: ContainerClient['status'];
+        status: ContainerState;
         id: string;
         deleteContainer: (id: string) => Promise<void>;
     };
 
     type ActionState = {
-        loadingStatus: ContainerClient['status'] | null;
+        loadingStatus: ContainerState | null;
         disableActions: boolean;
         showDeleteDialog: boolean;
     };
@@ -38,6 +39,7 @@
     });
 
     let showInformationDrawer = $state(false);
+    let drawerTab = $state('logs');
 
     async function handleContainerRunningState() {
         actionState.loadingStatus = status;
@@ -46,14 +48,12 @@
         const output = status === 'running' ? await stopContainer(id) : await startContainer(id);
         actionState.disableActions = false;
         actionState.loadingStatus = null;
-        if (output.error) {
-            return toast.error(output.stderr);
+        if (!output.ok) {
+            return toast.error(output.error);
         }
 
-        if (output.stdout && !output.error) {
-            status = status === 'running' ? 'stopped' : 'running';
-            return toast.success(`Container ${output.stdout} ${message} successfully`);
-        }
+        status = status === 'running' ? 'stopped' : 'running';
+        return toast.success(`Container ${output.data.trim()} ${message} successfully`);
     }
 
     function handleDeleteContainer() {
@@ -62,6 +62,11 @@
     }
 
     function handleShowInformationDrawer() {
+        showInformationDrawer = true;
+    }
+
+    function handleOpenTerminal() {
+        drawerTab = 'terminal';
         showInformationDrawer = true;
     }
 </script>
@@ -142,6 +147,26 @@
                                 {...props}
                                 variant="outline"
                                 size="icon"
+                                onclick={handleOpenTerminal}
+                                disabled={actionState.disableActions}
+                            >
+                                <SquareTerminal />
+                            </Button>
+                        {/snippet}
+                    </Tooltip.Trigger>
+                    <Tooltip.Content side="right">
+                        <p>Open terminal</p>
+                    </Tooltip.Content>
+                </Tooltip.Root>
+            </Tooltip.Provider>
+            <Tooltip.Provider delayDuration={150}>
+                <Tooltip.Root>
+                    <Tooltip.Trigger>
+                        {#snippet child({ props })}
+                            <Button
+                                {...props}
+                                variant="outline"
+                                size="icon"
                                 onclick={handleShowInformationDrawer}
                                 disabled={actionState.disableActions}
                             >
@@ -154,7 +179,7 @@
                     </Tooltip.Content>
                 </Tooltip.Root>
             </Tooltip.Provider>
-            <InformationDrawer bind:open={showInformationDrawer} {id} />
+            <InformationDrawer bind:open={showInformationDrawer} bind:activeTab={drawerTab} {id} />
         {/if}
     </ButtonGroup.Root>
 </div>

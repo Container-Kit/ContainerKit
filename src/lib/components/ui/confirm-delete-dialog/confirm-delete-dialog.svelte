@@ -78,6 +78,7 @@
 <script lang="ts">
     import * as AlertDialog from '../alert-dialog';
     import { Input } from '../input';
+    import { Spinner } from '../spinner';
 </script>
 
 <AlertDialog.Root bind:open={dialogState.open}>
@@ -118,10 +119,13 @@
                 <AlertDialog.Action
                     type="submit"
                     variant="destructive"
-                    loading={dialogState.loading}
-                    disabled={dialogState.options?.input &&
-                        dialogState.inputText !== dialogState.options.input.confirmationText}
+                    disabled={dialogState.loading ||
+                        (dialogState.options?.input &&
+                            dialogState.inputText !== dialogState.options.input.confirmationText)}
                 >
+                    {#if dialogState.loading}
+                        <Spinner />
+                    {/if}
                     {dialogState.options?.confirm?.text ?? 'Delete'}
                 </AlertDialog.Action>
             </AlertDialog.Footer>

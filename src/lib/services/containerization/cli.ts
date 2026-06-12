@@ -1,108 +1,50 @@
-/**
- * @fileoverview Pure functional container CLI command execution
- * Handles shell command execution with functional error handling
- */
-
 import { Command } from '@tauri-apps/plugin-shell';
-import { Either, Left, Right, tryCatchAsync } from './types';
+import { z } from 'zod';
 
 /**
- * Error type for CLI execution
+ * Result of a containerization operation. `ok: false` carries a
+ * human-readable error message (stderr or a parse/validation failure).
  */
-export type CLIError = {
-  readonly type: 'ExecutionError';
-  readonly message: string;
-  readonly exitCode: number | null;
-  readonly stderr: string;
-};
+export type Result<T> =
+    | { readonly ok: true; readonly data: T }
+    | { readonly ok: false; readonly error: string };
+
+export const ok = <T>(data: T): Result<T> => ({ ok: true, data });
+export const err = (error: string): Result<never> => ({ ok: false, error });
 
 /**
- * Raw output from a CLI command
+ * Execute `container <args>`. Succeeds only on exit code 0; data is raw stdout.
+ * Never throws — spawn failures become an err Result.
  */
-export type CLIOutput = {
-  readonly code: number | null;
-  readonly stdout: string;
-  readonly stderr: string;
-};
+export async function run(args: string[]): Promise<Result<string>> {
+    try {
+        const output = await Command.create('container', args).execute();
+        if (output.code !== 0) {
+            return err(
+                output.stderr.trim() ||
+                    `"container ${args.join(' ')}" exited with code ${output.code}`
+            );
+        }
+        return ok(output.stdout);
+    } catch (e) {
+        return err(e instanceof Error ? e.message : String(e));
+    }
+}
 
 /**
- * Create a CLI error
+ * Parse text as JSON and validate it against a zod schema, so callers get
+ * typed data instead of a raw stdout string.
  */
-const createCLIError = (
-  message: string,
-  exitCode: number | null,
-  stderr: string
-): CLIError => ({
-  type: 'ExecutionError',
-  message,
-  exitCode,
-  stderr
-});
-
-/**
- * Execute a raw container CLI command
- * Pure function that returns Either<CLIError, CLIOutput>
- */
-export const executeCLI = async (args: readonly string[]): Promise<Either<CLIError, CLIOutput>> => {
-  return tryCatchAsync(
-    async () => {
-      const command = Command.create('container', Array.from(args));
-      const output = await command.execute();
-
-      if (output == null) {
-        throw new Error('No output received from command');
-      }
-
-      return {
-        code: output.code,
-        stdout: output.stdout ?? '',
-        stderr: output.stderr ?? ''
-      };
-    },
-    (error) =>
-      createCLIError(
-        error instanceof Error ? error.message : 'Unknown error',
-        null,
-        error instanceof Error ? error.message : ''
-      )
-  )();
-};
-
-/**
- * Validate CLI output - check if command succeeded
- */
-export const validateCLIOutput = (output: CLIOutput): Either<CLIError, CLIOutput> => {
-  if (output.code !== 0 && output.code !== null) {
-    return Left(
-      createCLIError(
-        `Command failed with exit code ${output.code}`,
-        output.code,
-        output.stderr
-      )
-    );
-  }
-
-  if (!output.stdout && !output.stderr) {
-    return Left(
-      createCLIError('Command returned empty output', output.code, output.stderr)
-    );
-  }
-
-  return Right(output);
-};
-
-/**
- * Execute CLI and validate output
- * Combination of execution + validation in one function
- */
-export const executeAndValidate = async (
-  args: readonly string[]
-): Promise<Either<CLIError, CLIOutput>> => {
-  const result = await executeCLI(args);
-
-  if (result.type === 'Left') {
-    return result;
-  }
-
-  return validateCLIOutput(result.value);
-};
+export function parseJson<S extends z.ZodType>(text: string, schema: S): Result<z.infer<S>> {
+    let value: unknown;
+    try {
+        value = JSON.parse(text);
+    } catch {
+        return err('Command did not return valid JSON');
+    }
+    const parsed = schema.safeParse(value);
+    if (!parsed.success) {
+        return err(`Unexpected output shape: ${z.prettifyError(parsed.error)}`);
+    }
+    return ok(parsed.data);
+}

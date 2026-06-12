@@ -22,10 +22,8 @@
         openDynamicDialog({
             title: 'Save Image',
             description: 'This will save the image as a tar archive. Do you want to proceed?',
-            text: {
-                confirm: 'Yes, Save',
-                cancel: 'No, Cancel'
-            },
+            confirm: { text: 'Yes, Save', action: async () => {} },
+            cancel: { text: 'No, Cancel' },
             onConfirm: async () => {
                 saveState = 'saving';
                 try {
