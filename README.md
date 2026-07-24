@@ -1,3 +1,11 @@
+
+
+> [!IMPORTANT]
+> I have found a better alternative to this. So, I'm gonna archive and stop development. I have started another project which is a mail client on top cloudflafre infrastructure - [doota.dev](https://doota.dev)
+
+> [!IMPORTANT]
+> My suggestion: https://github.com/wouterdebie/davit - A Mac Native app.
+
 <div align="center">
   <img src="static/logo.png" alt="Container Kit Logo" width="120" height="120">
 
